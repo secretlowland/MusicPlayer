@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/bg_01"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--上半部分，歌词，图片-->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
+
+    <!--下半部分（歌曲信息，播放控制，收藏，删除，进度条）-->
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="#34000000"
+        android:layout_weight="0"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <!--歌曲信息，收藏-->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:padding="15dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_music_play_name"
+                    android:text="歌曲名"
+                    android:textSize="20sp"
+                    android:singleLine="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_music_play_singer"
+                    android:text="歌手"
+                    android:singleLine="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <ToggleButton
+                android:id="@+id/tb_add_to_favorite_toggle"
+                android:src="@drawable/favorite"
+                android:scaleType="fitXY"
+                android:layout_weight="0"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+
+        </LinearLayout>
+
+        <!--进度条-->
+        <TextView
+            android:background="#34bed984"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp" />
+        <!--<SeekBar-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/seekBar"/>-->
+
+        <!--播放控制-->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <ImageButton
+                    android:id="@+id/btn_music_play_pre"
+                    android:src="@drawable/btn_previous"
+                    android:text="上一首"
+                    android:background="#00000000"
+                    android:layout_toLeftOf="@+id/tb_music_play_toggle"
+                    android:layout_centerVertical="true"
+                    android:scaleType="fitXY"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp" />
+                <ToggleButton
+                    android:id="@+id/tb_music_play_toggle"
+                    android:background="@drawable/toggle_btn"
+                    android:textOff=""
+                    android:textOn=""
+                    android:layout_marginLeft="45dp"
+                    android:layout_marginRight="45dp"
+                    android:layout_centerInParent="true"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp" />
+                <ImageButton
+                    android:id="@+id/btn_music_play_next"
+                    android:src="@drawable/btn_next"
+                    android:text="下一首"
+                    android:layout_toRightOf="@id/tb_music_play_toggle"
+                    android:layout_centerVertical="true"
+                    android:scaleType="fitXY"
+                    android:background="#00000000"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+     </LinearLayout>
+
+</LinearLayout>

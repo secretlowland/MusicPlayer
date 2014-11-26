@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@drawable/bg_01"
+    android:layout_height="match_parent">
+
+
+    <ListView
+        android:id="@android:id/list"
+        android:descendantFocusability="beforeDescendants"
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp" />
+
+    <fragment
+        android:id="@+id/frag_play_bar"
+        android:name="com.andy.music.widget.PlayBarFragment"
+        android:layout_weight="0"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+
+
+    <!--<LinearLayout-->
+        <!--android:id="@+id/ll_play_bar"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:background="#fff"-->
+        <!--android:alpha="0.2"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <!--<ImageView-->
+            <!--android:src="@drawable/ic_launcher"-->
+            <!--android:contentDescription="专辑图片"-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="30dp" />-->
+
+        <!--<LinearLayout-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content">-->
+            <!--<TextView-->
+                <!--android:id="@+id/tv_play_bar_music_name"-->
+                <!--android:text="歌曲名"-->
+                <!--android:singleLine="true"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content" />-->
+            <!--<TextView-->
+                <!--android:id="@+id/tv_play_bar_music_singer"-->
+                <!--android:text="歌手"-->
+                <!--android:singleLine="true"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content" />-->
+
+        <!--</LinearLayout>-->
+
+        <!--<ToggleButton-->
+            <!--android:id="@+id/tb_play_bar_toggle_play"-->
+            <!--android:text="播放/暂停"-->
+            <!--android:layout_weight="0"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+        <!--<Button-->
+            <!--android:id="@+id/btn_music_play_next"-->
+            <!--android:text="下一首"-->
+            <!--android:layout_weight="0"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+
+    <!--</LinearLayout>-->
+
+
+
+
+</LinearLayout>

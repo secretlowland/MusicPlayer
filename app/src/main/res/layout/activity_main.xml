@@ -1,0 +1,72 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg_01"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_to_local_music"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="本地音乐"/>
+
+        <Button
+            android:id="@+id/btn_to_favorite_music"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="我的最爱"/>
+
+        <Button
+            android:id="@+id/btn_to_recent_music"
+            android:text="最近播放"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btn_to_custom_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="我的列表"/>
+
+        <Button
+            android:id="@+id/btn_to_play_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="播放界面"/>
+
+     </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/fragment_container"
+        android:layout_weight="0"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+     </LinearLayout>
+
+
+
+    <!--<RelativeLayout-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <!--<fragment android:name="com.andy.music.widget.PlayBarFragment"-->
+            <!--android:id="@+id/frag_music_control_bar"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+
+     <!--</RelativeLayout>-->
+
+
+
+</LinearLayout>
