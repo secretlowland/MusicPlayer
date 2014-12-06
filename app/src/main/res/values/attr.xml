@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The attributes of SlideMenu -->
+    <declare-styleable name="SlideMenu">
+        <!--The distance of the menu to the right when the menu is open. -->
+        <attr name="paddingRight" format="dimension"/>
+    </declare-styleable>
+
+    <!-- The attributes of TitleBar -->
+    <declare-styleable name="TitleBar">
+        <attr name="background" format="reference|color"/>
+        <attr name="height" format="reference|dimension"/>
+        <attr name="titleIcon" format="reference"/>
+        <attr name="title" format="reference|string"/>
+        <attr name="titleTextSize" format="reference|dimension"/>
+        <attr name="titleTextColor" format="reference|color"/>
+        <attr name="searchIcon" format="reference"/>
+        <attr name="menuIcon" format="reference"/>
+        <attr name="menuButtonWidth" format="dimension|reference"/>
+        <attr name="menuButtonHeight" format="dimension|reference"/>
+    </declare-styleable>
+</resources>

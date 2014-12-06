@@ -1,32 +1,20 @@
-package com.andy.music.view;
+package com.andy.music.abandoned;
 
 import android.app.ListActivity;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
-import com.andy.music.function.MusicChangedListener;
 import com.andy.music.function.MusicListAdapter;
-import com.andy.music.function.MusicPlayListener;
 import com.andy.music.R;
 import com.andy.music.entity.Music;
 import com.andy.music.entity.MusicList;
 import com.andy.music.entity.TagConstants;
-import com.andy.music.function.MusicPlayService;
 import com.andy.music.utility.MusicLocator;
 
 /**

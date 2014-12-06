@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:andy="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#cc00045F"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.andy.music.view.TitleBar
+        android:id="@+id/title_bar"
+        andy:background="#cc00045F"
+        andy:searchIcon="@drawable/ic_launcher"
+        andy:menuIcon="@drawable/ic_launcher"
+        andy:title="我的标题"
+        android:layout_width="match_parent"
+        android:layout_height="75dp">
+
+    </com.andy.music.view.TitleBar>
+
+    <!--<TextView-->
+        <!--android:id="@+id/tv_title"-->
+        <!--android:text="音乐"-->
+        <!--android:paddingLeft="20dp"-->
+        <!--android:paddingTop="12dp"-->
+        <!--android:paddingBottom="12dp"-->
+        <!--android:textSize="20dp"-->
+        <!--android:textColor="#ccffffff"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
+    <!--<View-->
+        <!--android:background="#34000000"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"/>-->
+
+</LinearLayout>

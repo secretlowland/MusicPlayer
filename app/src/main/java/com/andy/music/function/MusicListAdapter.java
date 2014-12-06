@@ -2,6 +2,7 @@ package com.andy.music.function;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.ToggleButton;
 
 import com.andy.music.R;
 import com.andy.music.entity.Music;
+import com.andy.music.entity.TagConstants;
 import com.andy.music.utility.MusicLocator;
 
 import java.util.List;
@@ -60,6 +62,7 @@ public class MusicListAdapter extends BaseAdapter {
         return position;
     }
 
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
@@ -75,6 +78,8 @@ public class MusicListAdapter extends BaseAdapter {
             holder = new ViewHolder();
             convertView = inflater.inflate(resource, null);
 
+            holder.cell = (LinearLayout)convertView.findViewById(R.id.ll_music_list_cell);
+            holder.locBar =  convertView.findViewById(R.id.v_locator_bar);
             holder.number = (TextView)convertView.findViewById(R.id.tv_music_number);
             holder.name = (TextView) convertView.findViewById(R.id.tv_music_name);
             holder.singer = (TextView) convertView.findViewById(R.id.tv_music_singer);
@@ -91,12 +96,19 @@ public class MusicListAdapter extends BaseAdapter {
         holder.singer.setText(musicList.get(position).getSinger());
 
         // 设置歌曲样式
-//        holder.name.setTextColor(Color.parseColor("#eeeeee"));
-
+        holder.cell.setBackgroundColor(Color.parseColor("#00000000"));
+        holder.locBar.setBackgroundColor(Color.parseColor("#00000000"));
+        holder.name.setTextColor(Color.parseColor("#ccffffff"));
+        holder.singer.setTextColor(Color.parseColor("#78ffffff"));
+        holder.number.setTextColor(Color.parseColor("#78ffffff"));
 
         // 设置当前歌曲样式
         if(position == MusicLocator.getPosition()) {
+            holder.cell.setBackgroundColor(Color.parseColor("#34000000"));
+            holder.locBar.setBackgroundColor(Color.parseColor("#ec505e"));
             holder.name.setTextColor(Color.parseColor("#ec505e"));
+            holder.singer.setTextColor(Color.parseColor("#ec505e"));
+            holder.number.setTextColor(Color.parseColor("#ec505e"));
         }
 
         return convertView;
@@ -127,7 +139,9 @@ public class MusicListAdapter extends BaseAdapter {
 
 
     private static final class ViewHolder {
+        LinearLayout cell;
         TextView number,name, singer;
+        View locBar;
         ToggleButton itemMenu;
     }
 

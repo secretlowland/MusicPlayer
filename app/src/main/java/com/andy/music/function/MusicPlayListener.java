@@ -1,10 +1,17 @@
 package com.andy.music.function;
 
+import android.content.Context;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 
 import com.andy.music.R;
+import com.andy.music.entity.TagConstants;
+import com.andy.music.utility.BroadCastHelper;
+import com.andy.music.utility.ContextUtil;
 
 /**
  * 监听音乐播放器的播放，暂停，下一首等操作
@@ -18,21 +25,16 @@ public class MusicPlayListener implements View.OnClickListener, CompoundButton.O
      */
     private MusicPlayService musicPlayService;
 
-    public MusicPlayListener(MusicPlayService service) {
-        // 获取从客户端传来的 MusicPlayService
-        this.musicPlayService = service;
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case (R.id.btn_music_play_pre):
-                // 播放上一首
-                musicPlayService.playPrevious();
+                // 发送播放上一首的广播
+                BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY_PREVIOUS);
                 break;
             case (R.id.btn_music_play_next):
-                // 播放下一首
-                musicPlayService.playNext();
+                // 发送播放下一首的广播
+                BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
                 break;
         }
     }
@@ -42,9 +44,21 @@ public class MusicPlayListener implements View.OnClickListener, CompoundButton.O
         switch (buttonView.getId()) {
             case R.id.tb_music_play_toggle:
                 if (isChecked) {
-                    musicPlayService.start();
+                    // 发送开始播放的广播
+                    BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_START);
+                    // 将播放状态存储到 SharedPreferences
+                    SharedPreferences pref = ContextUtil.getInstance().getSharedPreferences("music_play_status", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putBoolean("playing", true);
+                    editor.commit();
                 } else {
-                    musicPlayService.pause();
+                    // 发送暂停播放的广播
+                    BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PAUSE);
+                    // 将播放状态存储到 SharedPreferences
+                    SharedPreferences pref = ContextUtil.getInstance().getSharedPreferences("music_play_status", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putBoolean("playing", false);
+                    editor.commit();
                 }
                 break;
             default:

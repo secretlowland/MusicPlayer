@@ -15,7 +15,7 @@
 
     <fragment
         android:id="@+id/frag_play_bar"
-        android:name="com.andy.music.widget.PlayBarFragment"
+        android:name="com.andy.music.fragment.PlayBarFragment"
         android:layout_weight="0"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>

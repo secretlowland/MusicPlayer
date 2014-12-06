@@ -6,12 +6,9 @@ import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
 
-import com.andy.music.data.MusicScanner;
 import com.andy.music.entity.Music;
 import com.andy.music.entity.MusicList;
 import com.andy.music.entity.TagConstants;
-import com.andy.music.function.MusicChangedListener;
-import com.andy.music.widget.PlayBarFragment;
 
 /**
  * 定位当前播放的歌曲以及记录上次播放的位置
@@ -19,18 +16,20 @@ import com.andy.music.widget.PlayBarFragment;
  */
 public class MusicLocator {
 
+    private static SharedPreferences pref = ContextUtil.getInstance().getSharedPreferences("music_location", Context.MODE_PRIVATE);
+    private static SharedPreferences.Editor editor = pref.edit();
+
+
     /**
      * 获取上次播放的歌曲的位置信息
      * @return 歌曲的位置信息
      */
     public static Bundle getLocation() {
-        SharedPreferences pref = ContextUtil.getInstance().getSharedPreferences("music_location", Context.MODE_PRIVATE);
+//        SharedPreferences pref = ContextUtil.getInstance().getSharedPreferences("music_location", Context.MODE_PRIVATE);
         Bundle bundle = new Bundle();
         bundle.putString("list_name", pref.getString("list_name", MusicList.MUSIC_LIST_LOCAL));
         bundle.putInt("position", pref.getInt("position", 0));
         bundle.putInt("source_id", pref.getInt("source_id", 0));
-        MusicChangedListener listener = new MusicChangedListener();
-        listener.handler.sendMessage(new Message());
         return bundle;
     }
 
@@ -49,6 +48,8 @@ public class MusicLocator {
 
     public static Music getLocatedMusic() {
         int position = MusicLocator.getLocation().getInt("position", 0);
+        MusicList list = getLocatedList();
+        if (list.getList().size()<=0) return null;
         return getLocatedList().getList().get(position);
     }
 
@@ -59,7 +60,7 @@ public class MusicLocator {
     public static void setLocation(Bundle bundle) {
 
         // 将歌曲位置信息保存到 SharedPreferences
-        SharedPreferences pref = ContextUtil.getInstance().getSharedPreferences("music_location", Context.MODE_PRIVATE);
+//        SharedPreferences pref = ContextUtil.getInstance().getSharedPreferences("music_location", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
 
         String listName = bundle.getString("list_name");
@@ -75,6 +76,10 @@ public class MusicLocator {
 
     }
 
+    /**
+     * 定位当前歌曲下一首
+     * @return 是否成功
+     */
     public static boolean toNext() {
         // 将歌曲位置信息保存到 SharedPreferences
         Log.d(TagConstants.TAG, "toNext()");
@@ -91,6 +96,10 @@ public class MusicLocator {
         return true;
     }
 
+    /**
+     * 定位歌曲到当前歌曲的前一首
+     * @return  是否成功
+     */
     public static boolean toPrevious() {
         // 将歌曲位置信息保存到 SharedPreferences
         SharedPreferences pref = ContextUtil.getInstance().getSharedPreferences("music_location", Context.MODE_PRIVATE);
@@ -109,6 +118,21 @@ public class MusicLocator {
         Message msg = new Message();
         msg.setData(bundle);
 
+        return true;
+    }
+
+    /**
+     * 定位歌曲到一个随机位置
+     */
+    public static boolean toRandom() {
+        // 将歌曲位置信息保存到 SharedPreferences
+        MusicList list = getLocatedList();
+        int listSize = list.getList().size();
+        int randomPos = (int)(Math.random()*listSize);   // 产生歌曲 的一个随机位置
+
+        if (randomPos>listSize-1 || randomPos<0) return false;
+        editor.putInt("position", randomPos);
+        editor.commit();
         return true;
     }
 

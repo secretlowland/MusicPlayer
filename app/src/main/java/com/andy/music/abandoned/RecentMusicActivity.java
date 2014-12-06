@@ -1,14 +1,14 @@
-package com.andy.music.view;
+package com.andy.music.abandoned;
 
 import android.os.Bundle;
 
 import com.andy.music.entity.MusicList;
 
 /**
- * 收藏列表视图
+ * 最近播放列表
  * Created by Andy on 2014/11/21.
  */
-public class FavoriteMusicActivity extends MusicListActivity {
+public class RecentMusicActivity extends MusicListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,6 +16,6 @@ public class FavoriteMusicActivity extends MusicListActivity {
 
     @Override
     public MusicList getMusicList() {
-        return MusicList.getInstance(MusicList.MUSIC_LIST_FAVORITE);
+        return MusicList.getInstance(MusicList.MUSIC_LIST_RECENT);
     }
 }

@@ -1,6 +1,5 @@
 package com.andy.music.data;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -38,7 +37,7 @@ public class CursorAdapter {
      *      Passing null will use the default sort order, which may be unordered.
      *
      * 以下 方法返回媒体库所有音乐文件
-     *  Cursor cursor = conte方法xt.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+     *  Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
      *               null, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
      *
      */
@@ -46,6 +45,7 @@ public class CursorAdapter {
 
     /**
      * 根据 WHERE 语句得到相应的 Cursor
+     *
      * @return 返回 Cursor
      */
 
@@ -56,7 +56,8 @@ public class CursorAdapter {
 
     /**
      * 根据 ID 得到相应的 Cursor
-     * @param srcId  音乐文件的 ID
+     *
+     * @param srcId 音乐文件的 ID
      * @return 返回 Cursor
      */
     public static Cursor get(int srcId) {
@@ -68,7 +69,7 @@ public class CursorAdapter {
      * 将与音乐列表数据库关联的 Cursor 转换成 与系统媒体库关联的 Cursor
      * 注 : 音乐列表中的数据库只有数据文件的原有 ID, 不能查询文件其他信息
      *
-     * @param cursor  与音乐列表数据库关联的 Cursor
+     * @param cursor 与音乐列表数据库关联的 Cursor
      * @return 与系统媒体库关联的 Cursor
      */
     public static Cursor translate(Cursor cursor) {

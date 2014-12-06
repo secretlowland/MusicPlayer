@@ -39,7 +39,7 @@ public class MusicListName {
         Cursor cursor = dbReader.query("_list", null, null, null, null, null, null);
         boolean flag = false;
         while (cursor.moveToNext()) {
-            if (name.hashCode() == cursor.getInt(cursor.getColumnIndexOrThrow("hash_code"))) {
+            if (name!=null && name.hashCode() == cursor.getInt(cursor.getColumnIndexOrThrow("hash_code"))) {
                 flag = true;
             }
         }

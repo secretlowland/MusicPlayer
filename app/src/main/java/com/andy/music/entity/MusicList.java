@@ -6,10 +6,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import com.andy.music.data.MusicScanner;
 import com.andy.music.data.CursorAdapter;
 import com.andy.music.data.MusicDBHelper;
+import com.andy.music.data.MusicScanner;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class MusicList {
                 name.equals(MUSIC_LIST_DOWNLOAD)) {
             this.tabName = name;
         } else {
-            this.tabName = "list_" + name.hashCode();
+            this.tabName = "list_" + name.hashCode();   // 自定义列表在数据库中的表名
         }
 
         this.musicDBHelper = MusicDBHelper.getInstance();
@@ -84,7 +85,7 @@ public class MusicList {
     /**
      * 判断列表在数据库中是否存在
      *
-     * @param name    列表的名字
+     * @param name 列表的名字
      * @return 是否存在
      */
     public static boolean exist(String name) {
@@ -106,6 +107,7 @@ public class MusicList {
         return list;
     }
 
+
     /**
      * 设置列表，向数据库表中批量添加数据
      *
@@ -122,30 +124,6 @@ public class MusicList {
         while (cursor.moveToNext()) {
             ContentValues values = new ContentValues();
             values.put("source_id", cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)));
-            dbWriter.insert(tabName, null, values);
-        }
-        dbWriter.close();
-
-    }
-
-    /**
-     * 设置音乐列表，将其存入数据库
-     *
-     * @param list 本地列表的文件来源
-     */
-    public void setList(List<Music> list) {
-
-        // 如果表不为空则清空
-        if (!isEmpty()) {
-            Log.d(TagConstants.TAG, "表为空");
-            clear();
-        } else {
-            Log.d(TagConstants.TAG, "表不为空");
-        }
-
-        for (Music item : list) {
-            ContentValues values = new ContentValues();
-            values.put("source_id", item.getId());
             dbWriter.insert(tabName, null, values);
         }
         dbWriter.close();
@@ -175,38 +153,64 @@ public class MusicList {
      *
      * @param music 要添加的音乐文件
      */
-    public void add(Music music) {
+    public boolean add(Music music) {
+        if (isMusicExist(music)) return false;  // 判断歌曲是否存在
 
         dbWriter = musicDBHelper.getWritableDatabase();
         try {
             ContentValues values = new ContentValues();
             values.put("source_id", music.getId());
             dbWriter.insert(tabName, null, values);
+            Log.d(TagConstants.TAG, "添加成功");
         } catch (Exception e) {
             Log.d(TagConstants.TAG, "添加失败！");
             e.printStackTrace();
+            return false;
         } finally {
             dbWriter.close();
         }
+        return true;
 
     }
 
     /**
-     * 移除列表中的音乐文件
+     * 向列表中添加音乐文件
      *
-     * @param id 要移除的文件序号
+     * @param music 要添加的音乐文件
      */
-    public void remove(int id) {
-        String whereClause = "_id = " + String.valueOf(id);
+    public boolean remove(Music music) {
+        if (!isMusicExist(music)) return false;
         dbWriter = musicDBHelper.getWritableDatabase();
         try {
+            String whereClause = "source_id = " + music.getId();
             dbWriter.delete(tabName, whereClause, null);
         } catch (Exception e) {
             Log.d(TagConstants.TAG, "移除失败！");
             e.printStackTrace();
+            return false;
         } finally {
             dbWriter.close();
         }
+        return true;
+    }
+
+
+    /**
+     * 判断音乐是否存在
+     * @param music 音乐
+     * @return 是否存在
+     */
+    public boolean isMusicExist(Music music) {
+        String whereClause = "source_id = " + music.getId();
+        dbReader = musicDBHelper.getReadableDatabase();
+        Cursor cursor = dbReader.query(tabName, null, whereClause, null, null, null, null);
+
+        if (cursor!=null && cursor.moveToNext()) {
+            dbReader.close();
+            return true;
+        }
+        dbReader.close();
+        return false;
     }
 
     /**
@@ -224,33 +228,6 @@ public class MusicList {
         return list.indexOf(music);
     }
 
-    /**
-     * 获取指定位置的前一首歌曲
-     *
-     * @param lastPos 指定位置
-     * @return 上一首歌曲
-     */
-    public Music getPrevious(int lastPos) {
-        if (lastPos - 1 > 0) {
-            return list.get(lastPos);
-        }
-        return null;
-    }
-
-    /**
-     * 获取指定位置的下一首歌曲
-     *
-     * @param lastPos 指定位置
-     * @return 下一首歌曲
-     */
-    public Music getNext(int lastPos) {
-        Log.d(TagConstants.TAG, "列表的大小-->" + list.size());
-        if (lastPos + 1 <= list.size()) {
-            Log.d(TagConstants.TAG, "lastPos-->" + lastPos);
-            return list.get(lastPos + 1);
-        }
-        return null;
-    }
 
     public Music getRandom() {
         // TODO 随机获取一首歌曲
@@ -279,7 +256,9 @@ public class MusicList {
     public boolean isEmpty() {
         dbReader = musicDBHelper.getReadableDatabase();
         Cursor cursor = dbReader.rawQuery("SELECT * FROM " + tabName + " LIMIT 1", null);
-        return !cursor.moveToNext();
+        boolean flag = !cursor.moveToNext();
+        cursor.close();
+        return flag;
     }
 
 

@@ -1,4 +1,4 @@
-package com.andy.music.view;
+package com.andy.music.abandoned;
 
 import android.database.Cursor;
 import android.os.Bundle;
