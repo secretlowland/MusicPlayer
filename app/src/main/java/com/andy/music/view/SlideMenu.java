@@ -17,6 +17,7 @@ import com.andy.music.utility.ScreenInfo;
 import com.nineoldandroids.view.ViewHelper;
 
 /**
+ * 侧滑菜单
  * Created by Andy on 2014/11/29.
  */
 public class SlideMenu extends HorizontalScrollView {
@@ -123,7 +124,7 @@ public class SlideMenu extends HorizontalScrollView {
                     this.smoothScrollTo(0, 0);
                     isOpen = true;
                 }
-                return true;
+                return false;
         }
         return super.onTouchEvent(ev);
     }
@@ -141,6 +142,7 @@ public class SlideMenu extends HorizontalScrollView {
         ViewHelper.setScaleX(content, 1-(1-scale)*0.3f);
         ViewHelper.setScaleY(content, 1-(1-scale)*0.3f);
     }
+
 
     public void openMenu() {
         if (isOpen) return;

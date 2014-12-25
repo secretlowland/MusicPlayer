@@ -67,17 +67,38 @@
 
         </LinearLayout>
 
-        <!--进度条-->
-        <TextView
-            android:background="#34bed984"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp" />
-        <!--<SeekBar-->
+        <!--进度条和播放时间-->
+        <!--<TextView-->
+            <!--android:background="#34bed984"-->
+            <!--android:layout_marginLeft="15dp"-->
+            <!--android:layout_marginRight="15dp"-->
             <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/seekBar"/>-->
+            <!--android:layout_height="1dp" />-->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_music_current_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <SeekBar
+                android:id="@+id/sb_music_play_progress"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_music_total_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
 
         <!--播放控制-->
         <LinearLayout

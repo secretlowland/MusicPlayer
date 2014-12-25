@@ -52,6 +52,9 @@ public class MusicScanner {
             // 设置歌曲ID
             music.setId(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)));
 
+            // 设置歌曲总时间
+            music.setDuration(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
+
             // 设置歌曲名称
             music.setName(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)));
 

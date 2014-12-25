@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,21 +18,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andy.music.R;
+import com.andy.music.data.CursorAdapter;
+import com.andy.music.data.MusicScanner;
 import com.andy.music.entity.Music;
 import com.andy.music.entity.MusicList;
 import com.andy.music.entity.TagConstants;
-import com.andy.music.function.MusicListAdapter;
-import com.andy.music.function.MusicPlayService;
+import com.andy.music.adapter.MusicListAdapter;
 import com.andy.music.utility.BroadCastHelper;
 import com.andy.music.utility.MusicLocator;
 
-import org.w3c.dom.Text;
+import java.util.List;
 
 /**
  * 音乐列表模块
  * Created by Andy on 2014/11/28.
  */
-public class MusicListFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class MusicListFragment extends android.support.v4.app.Fragment implements AdapterView.OnItemClickListener {
 
     /**
      * 视图中显示的音乐列表
@@ -43,31 +45,52 @@ public class MusicListFragment extends Fragment implements AdapterView.OnItemCli
      */
     private ListView musicListView;
 
+    /**
+     * 要显示的音乐列表
+     */
+    private List<Music> list;
+
     private MusicListAdapter adapter;
     private TextView title;
+    private View view;
 
     private Receiver receiver;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(TagConstants.TAG, "onCreateView-->MusicListFragment");
+        view = inflater.inflate(R.layout.fragment_music_list, container, false);
         return inflater.inflate(R.layout.fragment_music_list, container, false);
     }
 
     @Override
     public void onStart() {
+        Log.d(TagConstants.TAG, "onStart-->MusicListFragment");
         super.onStart();
         refreshMusicList();   // 刷新列表
     }
 
     @Override
+    public void onDestroyView() {
+        Log.d(TagConstants.TAG, "onStart-->onDestroyView");
+        super.onDestroyView();
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        Log.d(TagConstants.TAG, "onViewCreated-->MusicListFragment");
         super.onViewCreated(view, savedInstanceState);
 
 
         // 获取从 Activity 传递过来的信息
         Bundle bundle = getArguments();
-        String listName = bundle.getString("list_name");
+        String listName = "";
+        String searchContent = "";
+        if (bundle!=null) {
+            listName = bundle.getString("list_name");
+            searchContent = bundle.getString("search_content");
+        }
 
         // 初始化变量
         musicListView = (ListView) getActivity().findViewById(R.id.lv_music_list);
@@ -78,9 +101,18 @@ public class MusicListFragment extends Fragment implements AdapterView.OnItemCli
 
         // 加载音乐列表
         if (musicList != null && !musicList.isEmpty()) {
-            adapter = new MusicListAdapter(getActivity(), musicList.getList(), R.layout.music_list_cell);
+            list = musicList.getList();
+            adapter = new MusicListAdapter(getActivity(), list, R.layout.music_list_cell);
             musicListView.setAdapter(adapter);
-        } else {          // 列表为空
+        } else if (searchContent!=null) {
+            String whereClause = "title LIKE '%"+ searchContent + "%'";
+            Cursor cursor = CursorAdapter.get(whereClause);
+            if (cursor!=null) {
+                list = MusicScanner.scan(cursor);
+            }
+            adapter = new MusicListAdapter(getActivity(), list, R.layout.music_list_cell);
+            musicListView.setAdapter(adapter);
+        } else  {          // 列表为空
             Toast.makeText(getActivity(), "一首歌曲都没有呢~~", Toast.LENGTH_SHORT).show();
         }
 
@@ -90,6 +122,9 @@ public class MusicListFragment extends Fragment implements AdapterView.OnItemCli
         // 注册广播接收
         registerReceiver();
 
+        // 更新列表
+        refreshMusicList();
+
     }
 
     /**
@@ -97,7 +132,7 @@ public class MusicListFragment extends Fragment implements AdapterView.OnItemCli
      */
     private void refreshMusicList() {
 
-        for (int i=0; i<musicListView.getChildCount(); i++) {
+        for (int i = 0; i < musicListView.getChildCount(); i++) {
 
             // 遍历当前的可见部分的 View
             View view = musicListView.getChildAt(i);
@@ -110,10 +145,10 @@ public class MusicListFragment extends Fragment implements AdapterView.OnItemCli
             ((TextView) view.findViewById(R.id.tv_music_number)).setTextColor(Color.parseColor("#78ffffff"));
 
             // 当前歌曲的序号
-            String  musicNum = ((TextView) view.findViewById(R.id.tv_music_number)).getText().toString();
+            String musicNum = ((TextView) view.findViewById(R.id.tv_music_number)).getText().toString();
 
             // 设置当前歌曲的样式
-            if (Integer.parseInt(musicNum)==MusicLocator.getPosition()+1) {
+            if (Integer.parseInt(musicNum) == MusicLocator.getPosition() + 1) {
                 view.setBackgroundColor(Color.parseColor("#34000000"));
                 view.findViewById(R.id.v_locator_bar).setBackgroundColor(Color.parseColor("#ec505e"));
                 ((TextView) view.findViewById(R.id.tv_music_name)).setTextColor(Color.parseColor("#ec505e"));
@@ -132,10 +167,19 @@ public class MusicListFragment extends Fragment implements AdapterView.OnItemCli
         name.setTextColor(Color.parseColor("#ec505e"));
 
         // 定位当前播放歌曲
+        String listName;
+        int sourceId;
+        if (musicList!=null) {
+            listName = musicList.getListName();
+            sourceId = musicList.getList().get(position).getId();
+        } else {
+            listName = MusicLocator.getLocatedList().getListName();
+            sourceId = MusicLocator.getSourceId();
+        }
         Bundle bundle = new Bundle();
-        bundle.putString("list_name", musicList.getListName());
+        bundle.putString("list_name", listName);
         bundle.putInt("position", position);
-        bundle.putInt("source_id", musicList.getList().get(position).getId());
+        bundle.putInt("source_id", sourceId);
         MusicLocator.setLocation(bundle);
 
         // 发送播放音乐的广播

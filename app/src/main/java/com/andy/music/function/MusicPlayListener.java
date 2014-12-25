@@ -20,11 +20,6 @@ import com.andy.music.utility.ContextUtil;
 public class MusicPlayListener implements View.OnClickListener, CompoundButton.OnCheckedChangeListener,
         AdapterView.OnItemClickListener{
 
-    /**
-     * 获取从客户端传来的 MusicPlayService，只有获得了 MusicPlayService 才能调用它的方法
-     */
-    private MusicPlayService musicPlayService;
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

@@ -29,6 +29,9 @@ import com.andy.music.function.MusicPlayListener;
 import com.andy.music.function.MusicPlayService;
 import com.andy.music.utility.BroadCastHelper;
 import com.andy.music.utility.MusicLocator;
+import com.andy.music.utility.TimeHelper;
+
+import org.w3c.dom.Text;
 
 /**
  * 音乐播放界面
@@ -36,7 +39,7 @@ import com.andy.music.utility.MusicLocator;
  */
 public class PlayActivity extends Activity implements GestureDetector.OnGestureListener {
 
-    private TextView musicName, musicSinger;
+    private TextView musicName, musicSinger, currentTime, totalTime;
     private ImageButton playPre, playNext;
     private ToggleButton playToggle, addToFavor;
     private PlayStatusReceiver receiver;
@@ -172,6 +175,8 @@ public class PlayActivity extends Activity implements GestureDetector.OnGestureL
         // 初始化成员变量
         musicName = (TextView) this.findViewById(R.id.tv_music_play_name);
         musicSinger = (TextView) this.findViewById(R.id.tv_music_play_singer);
+        currentTime = (TextView) this.findViewById(R.id.tv_music_current_time);
+        totalTime = (TextView) this.findViewById(R.id.tv_music_total_time);
         playPre = (ImageButton) this.findViewById(R.id.btn_music_play_pre);
         playNext = (ImageButton) this.findViewById(R.id.btn_music_play_next);
         playToggle = (ToggleButton) this.findViewById(R.id.tb_music_play_toggle);
@@ -186,6 +191,7 @@ public class PlayActivity extends Activity implements GestureDetector.OnGestureL
         if (music==null) return;
         musicName.setText(music.getName());
         musicSinger.setText(music.getSinger());
+        totalTime.setText(TimeHelper.timeFormate(music.getDuration()));
         if (favouriteList!=null) {
             if (!favouriteList.isMusicExist(music)) {
                 addToFavor.setChecked(false);
@@ -199,14 +205,14 @@ public class PlayActivity extends Activity implements GestureDetector.OnGestureL
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            boolean tag = false;
+            boolean flag = false;
             if (action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT)) {
-               tag = true;
+               flag = true;
             } else if (action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_PREVIOUS)) {
-                tag = true;
+                flag = true;
             }
 
-            if (tag) {
+            if (flag) {
                 if (!playToggle.isChecked()) {
                     playToggle.setChecked(true);
                 }

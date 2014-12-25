@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.andy.music.function.MusicListAdapter;
+import com.andy.music.adapter.MusicListAdapter;
 import com.andy.music.data.MusicScanner;
 import com.andy.music.R;
 import com.andy.music.data.CursorAdapter;

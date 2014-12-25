@@ -31,7 +31,7 @@ import com.andy.music.view.PlayActivity;
  * 音乐播放控制条
  * Created by Andy on 2014/11/20.
  */
-public class PlayBarFragment extends Fragment {
+public class PlayBarFragment extends android.support.v4.app.Fragment {
 
     private LinearLayout playBar;
     private TextView musicName;

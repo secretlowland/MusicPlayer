@@ -17,7 +17,7 @@ import com.andy.music.entity.TagConstants;
  * 主界面导航模块
  * Created by Andy on 2014/11/27.
  */
-public class NavPanelFragment extends Fragment implements View.OnClickListener {
+public class NavPanelFragment extends android.support.v4.app.Fragment implements View.OnClickListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,17 +47,26 @@ public class NavPanelFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onDestroyView() {
+        Log.d(TagConstants.TAG, "NavPanelFragment-->onDestroyView");
+        super.onDestroyView();
+    }
+
+    @Override
     public void onClick(View v) {
 
         // 模块替换
-        FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
+        android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         MusicListFragment fragment = new MusicListFragment();
-        Log.d(TagConstants.TAG, "替换fragment");
         String listName = MusicList.MUSIC_LIST_LOCAL;
+        boolean flag = true;
 
         switch (v.getId()) {
             case R.id.btn_to_local_music:
-                listName = MusicList.MUSIC_LIST_LOCAL;
+                flag = false;
+                ViewPagerFragment frag = new ViewPagerFragment();
+                transaction.replace(R.id.frag_container_nav_panel, frag);
+                transaction.commit();
                 break;
             case R.id.btn_to_recent_music:
                 listName = MusicList.MUSIC_LIST_RECENT;
@@ -69,12 +78,14 @@ public class NavPanelFragment extends Fragment implements View.OnClickListener {
                 break;
         }
 
-        Bundle bundle = new Bundle();
-        bundle.putString("list_name", listName);
-        fragment.setArguments(bundle);
-        transaction.replace(R.id.frag_container_nav_panel, fragment);
-        transaction.addToBackStack(null);  // 添加到返回栈
-        transaction.commit();  // 提交事务
+        if (flag) {
+            Bundle bundle = new Bundle();
+            bundle.putString("list_name", listName);
+            fragment.setArguments(bundle);
+            transaction.replace(R.id.frag_container_nav_panel, fragment);
+            transaction.addToBackStack(null);  // 添加到返回栈
+            transaction.commit();  // 提交事务
+        }
 
     }
 }

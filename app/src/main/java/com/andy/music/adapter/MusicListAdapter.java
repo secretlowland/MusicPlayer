@@ -1,4 +1,4 @@
-package com.andy.music.function;
+package com.andy.music.adapter;
 
 import android.content.Context;
 import android.graphics.Color;

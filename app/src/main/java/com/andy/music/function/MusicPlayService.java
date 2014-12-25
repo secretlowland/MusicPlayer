@@ -287,6 +287,7 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
                 playPrevious();
             } else if (action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT)) {  // 播放下一首的广播
                 SharedPreferences pref = getSharedPreferences("play_setting", Context.MODE_PRIVATE);
+                // 读取播放模式
                 int playSchema = pref.getInt("play_schema", MusicPlayService.MUSIC_PLAY_SCHEMA_ORDER);
                 if (playSchema!=MUSIC_PLAY_SCHEMA_RANDOM) {
                     playNext();

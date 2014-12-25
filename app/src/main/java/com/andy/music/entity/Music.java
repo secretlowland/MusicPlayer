@@ -6,9 +6,10 @@ import java.io.Serializable;
  * 该类用于描述音乐文件
  * Created by Andy on 2014/11/14.
  */
-public class Music implements Serializable {
+public class Music {
 
     private int id;
+    private int duration;
     private String name;
     private String singer;
     private String path;
@@ -32,6 +33,14 @@ public class Music implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     public String getName() {

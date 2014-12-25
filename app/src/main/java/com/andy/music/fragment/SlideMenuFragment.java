@@ -1,29 +1,41 @@
 package com.andy.music.fragment;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.andy.music.R;
 import com.andy.music.data.CursorAdapter;
 import com.andy.music.entity.MusicList;
+import com.andy.music.entity.TagConstants;
 import com.andy.music.function.MusicPlayService;
+import com.andy.music.view.SettingActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * 侧滑菜单模块
@@ -40,7 +52,7 @@ public class SlideMenuFragment extends Fragment implements AdapterView.OnItemCli
      */
     private String playSchema;
 
-    private static final String[] munuItems = {"扫描歌曲", "列表循环", "更换背景", "睡眠", "设置", "退出"};
+    private static final String[] menuItems = {"扫描歌曲", "列表循环", "更换背景", "睡眠", "设置", "退出"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -102,11 +114,40 @@ public class SlideMenuFragment extends Fragment implements AdapterView.OnItemCli
                 break;
             case 3:
                 // 睡眠
-                Toast.makeText(getActivity(), "睡眠", Toast.LENGTH_SHORT).show();
+                new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        Log.d(TagConstants.TAG, "hourOfDay-->"+hourOfDay+";   minute-->"+minute);
+                        long min = hourOfDay*60+minute;
+                        Toast.makeText(getActivity(), "将在"+min+"分钟后退出！", Toast.LENGTH_SHORT).show();
+                        exitAtTime(min * 60000);
+                    }
+                }, 0, 30, true).show();
+//                final EditText timeToExit = new EditText(getActivity());
+//                new AlertDialog.Builder(getActivity())
+//                        .setTitle("请输入睡眠时间(分)")
+//                        .setView(timeToExit)
+//                        .setNegativeButton("取消",null)
+//                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                String time = timeToExit.getText().toString();
+//                                if (time!=null && !time.equals("") && !time.equals("0")) {
+//                                    exitAtTime(Integer.valueOf(time));
+//                                    Toast.makeText(getActivity(), "将在"+time+"分钟后退出", Toast.LENGTH_SHORT).show();
+//                                } else {
+//                                    Toast.makeText(getActivity(), "输入有误！", Toast.LENGTH_SHORT).show();
+//                                }
+//
+//                            }
+//                        })
+//                        .show();
                 break;
             case 4:
                 // 设置
                 Toast.makeText(getActivity(), "设置", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), SettingActivity.class));
+                // TODO 关闭菜单
                 break;
             case 5:
                 // 退出
@@ -115,6 +156,24 @@ public class SlideMenuFragment extends Fragment implements AdapterView.OnItemCli
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * 在设定时间后退出
+     * @param time  距离退出的时间
+     */
+    private void exitAtTime(long time) {
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                System.exit(0);
+            }
+        };
+        if (time>0) {
+            new Timer().schedule(task, time);
+        } else {
+            Log.d(TagConstants.TAG, "时间小于0");
         }
     }
 
@@ -157,22 +216,22 @@ public class SlideMenuFragment extends Fragment implements AdapterView.OnItemCli
         Map<String, Object> map5 = new HashMap<String, Object>();
         Map<String, Object> map6 = new HashMap<String, Object>();
 
-        map1.put("item", munuItems[0]);
+        map1.put("item", menuItems[0]);
         map1.put("icon", R.drawable.ic_launcher);
 
         map2.put("item", getPlaySchema());
         map2.put("icon", R.drawable.ic_launcher);
 
-        map3.put("item", munuItems[2]);
+        map3.put("item", menuItems[2]);
         map3.put("icon", R.drawable.ic_launcher);
 
-        map4.put("item", munuItems[3]);
+        map4.put("item", menuItems[3]);
         map4.put("icon", R.drawable.ic_launcher);
 
-        map5.put("item", munuItems[4]);
+        map5.put("item", menuItems[4]);
         map5.put("icon", R.drawable.ic_launcher);
 
-        map6.put("item", munuItems[5]);
+        map6.put("item", menuItems[5]);
         map6.put("icon", R.drawable.ic_launcher);
 
         menuList.add(map1);

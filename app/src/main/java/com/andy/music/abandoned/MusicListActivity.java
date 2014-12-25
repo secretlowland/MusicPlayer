@@ -10,7 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.andy.music.function.MusicListAdapter;
+import com.andy.music.adapter.MusicListAdapter;
 import com.andy.music.R;
 import com.andy.music.entity.Music;
 import com.andy.music.entity.MusicList;
