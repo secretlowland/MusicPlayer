@@ -1,10 +1,8 @@
-package com.andy.music.fragment;
+package com.andy.music.abandoned;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -14,8 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -25,7 +21,7 @@ import android.widget.Toast;
 
 import com.andy.music.R;
 import com.andy.music.data.CursorAdapter;
-import com.andy.music.entity.MusicList;
+import com.andy.music.function.MusicListManager;
 import com.andy.music.entity.TagConstants;
 import com.andy.music.function.MusicPlayService;
 import com.andy.music.view.SettingActivity;
@@ -75,7 +71,7 @@ public class SlideMenuFragment extends Fragment implements AdapterView.OnItemCli
         // 初始化菜单
         String[] from = {"icon", "item"};
         int[] to = {R.id.iv_menu_item_icon, R.id.tv_menu_item};
-        adapter = new SimpleAdapter(getActivity(), getData(), R.layout.menu_list_cell, from, to);
+        adapter = new SimpleAdapter(getActivity(), getData(), R.layout.list_cell_menu, from, to);
         menuListView.setAdapter(adapter);
 
         // 设置监听事件
@@ -96,7 +92,7 @@ public class SlideMenuFragment extends Fragment implements AdapterView.OnItemCli
                         Cursor searchCursor = CursorAdapter.get(null);
 
                         // 将游标中的数据存到数据库
-                        MusicList.getInstance(MusicList.MUSIC_LIST_LOCAL).setList(searchCursor);
+                        MusicListManager.getInstance(MusicListManager.MUSIC_LIST_LOCAL).setList(searchCursor);
 
                         // 关闭 Cursor，释放资源
                         searchCursor.close();
@@ -117,9 +113,9 @@ public class SlideMenuFragment extends Fragment implements AdapterView.OnItemCli
                 new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        Log.d(TagConstants.TAG, "hourOfDay-->"+hourOfDay+";   minute-->"+minute);
+                        Log.d(TagConstants.TAG, "hourOfDay-->" + hourOfDay + ";   minute-->" + minute);
                         long min = hourOfDay*60+minute;
-                        Toast.makeText(getActivity(), "将在"+min+"分钟后退出！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "将在" + min + "分钟后退出！", Toast.LENGTH_SHORT).show();
                         exitAtTime(min * 60000);
                     }
                 }, 0, 30, true).show();

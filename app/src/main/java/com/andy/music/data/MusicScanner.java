@@ -3,7 +3,6 @@ package com.andy.music.data;
 import android.database.Cursor;
 import android.provider.MediaStore;
 
-import com.andy.music.data.CursorAdapter;
 import com.andy.music.entity.Music;
 
 import java.util.ArrayList;
@@ -42,27 +41,31 @@ public class MusicScanner {
         return null;
     }
 
-    public static List<Music> scan(Cursor cursor) {
+    public static List<Music> scan(Cursor mediaCursor) {
 
         List<Music> list = new ArrayList<Music>();
+        int id = 0;
 
-        while (cursor != null && cursor.moveToNext()) {
+        while (mediaCursor != null && mediaCursor.moveToNext()) {
             Music music = new Music();
 
-            // 设置歌曲ID
-            music.setId(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)));
+            // 设置歌曲源 ID（可表示歌曲在列表中的位置）
+            music.setId(++id);
+
+            // 设置歌曲源 ID（在媒体库中的 ID）
+            music.setSrcId(mediaCursor.getInt(mediaCursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)));
 
             // 设置歌曲总时间
-            music.setDuration(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
+            music.setDuration(mediaCursor.getInt(mediaCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
 
             // 设置歌曲名称
-            music.setName(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)));
+            music.setName(mediaCursor.getString(mediaCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)));
 
             // 设置歌手
-            music.setSinger(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)));
+            music.setSinger(mediaCursor.getString(mediaCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)));
 
             // 设置歌曲路径
-            music.setPath(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
+            music.setPath(mediaCursor.getString(mediaCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
             list.add(music);
         }
         return list;

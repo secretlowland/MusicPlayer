@@ -1,7 +1,5 @@
 package com.andy.music.entity;
 
-import java.io.Serializable;
-
 /**
  * 该类用于描述音乐文件
  * Created by Andy on 2014/11/14.
@@ -9,6 +7,7 @@ import java.io.Serializable;
 public class Music {
 
     private int id;
+    private int srcId;
     private int duration;
     private String name;
     private String singer;
@@ -35,6 +34,13 @@ public class Music {
         this.id = id;
     }
 
+    public int getSrcId() {
+        return srcId;
+    }
+
+    public void setSrcId(int srcId) {
+        this.srcId = srcId;
+    }
     public int getDuration() {
         return duration;
     }
@@ -72,5 +78,12 @@ public class Music {
     @Override
     public String toString() {
         return "Name : "+this.name + "  Path :  "+this.path +"\n";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Music)) return false;
+        Music music = (Music)o;
+        return path.equals(music.getPath());
     }
 }

@@ -9,10 +9,6 @@
 
     <com.andy.music.view.TitleBar
         android:id="@+id/title_bar"
-        andy:background="#cc00045F"
-        andy:searchIcon="@drawable/ic_launcher"
-        andy:menuIcon="@drawable/ic_launcher"
-        andy:title="我的标题"
         android:layout_width="match_parent"
         android:layout_height="75dp">
 

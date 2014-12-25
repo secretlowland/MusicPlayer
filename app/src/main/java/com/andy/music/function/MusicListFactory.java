@@ -1,8 +1,7 @@
 package com.andy.music.function;
 
 import com.andy.music.data.MusicDBHelper;
-import com.andy.music.entity.MusicList;
-import com.andy.music.entity.MusicListName;
+import com.andy.music.entity.*;
 
 /**
  * 音乐列表制造工厂
@@ -16,19 +15,20 @@ public class MusicListFactory {
      *
      * @param name 要建立的表的名称
      */
-    public static MusicList create(String name) {
+    public static MusicListManager create(String name) {
 
         String tabName;
-        if (name.equals(MusicList.MUSIC_LIST_LOCAL) ||
-                name.equals(MusicList.MUSIC_LIST_RECENT) ||
-                name.equals(MusicList.MUSIC_LIST_FAVORITE) ||
-                name.equals(MusicList.MUSIC_LIST_DOWNLOAD)) {
+        if (name.equals(MusicListManager.MUSIC_LIST_LOCAL) ||
+                name.equals(MusicListManager.MUSIC_LIST_CURRENT) ||
+                name.equals(MusicListManager.MUSIC_LIST_RECENT) ||
+                name.equals(MusicListManager.MUSIC_LIST_FAVORITE) ||
+                name.equals(MusicListManager.MUSIC_LIST_DOWNLOAD)) {
             tabName = name;
         } else {
             tabName = "list_custom_" + name.hashCode();
         }
 
-        if (!MusicList.exist(tabName)) {  // 表不存在
+        if (!MusicListManager.exist(tabName)) {  // 表不存在
             String sql = "CREATE TABLE IF NOT EXISTS " + tabName + " (" +
                     "_id INTEGER PRIMARY KEY," +
                     "source_id INTEGER)";
@@ -37,7 +37,7 @@ public class MusicListFactory {
             MusicListName.add(name, tabName);
         }
 
-        return MusicList.getInstance(name);
+        return MusicListManager.getInstance(name);
 
     }
 

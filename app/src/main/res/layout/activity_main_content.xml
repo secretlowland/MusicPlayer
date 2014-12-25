@@ -1,29 +1,54 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_01"
+    android:background="#34ffffff"
     tools:context=".MainActivity">
 
+    <!--<ImageView-->
+        <!--android:src="@drawable/bg_02"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
+    <!-- 主模块容器-->
     <RelativeLayout
-        android:id="@+id/frag_container_nav_panel"
+        android:id="@+id/frag_container_main_content"
+        android:paddingTop="80dp"
+        android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
     </RelativeLayout>
 
-    <!--<fragment-->
-        <!--android:id="@+id/frag_title_bar"-->
-        <!--android:name="com.andy.music.fragment.TopBarFragment"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"/>-->
 
     <RelativeLayout
-        android:id="@+id/frag_container_play_bar"
-        android:background="#34000000"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-     </RelativeLayout>
 
-</RelativeLayout>
+        <!-- 标题栏容器-->
+        <RelativeLayout
+            android:id="@+id/frag_container_top_bar"
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </RelativeLayout>
+
+        <!-- 播放条容器-->
+        <RelativeLayout
+            android:id="@+id/frag_container_play_bar"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </RelativeLayout>
+
+        <!-- 主菜单容器-->
+        <RelativeLayout
+            android:id="@+id/frag_container_main_menu"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>

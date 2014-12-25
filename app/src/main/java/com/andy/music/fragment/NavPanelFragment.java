@@ -1,7 +1,5 @@
 package com.andy.music.fragment;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.andy.music.R;
-import com.andy.music.entity.MusicList;
+import com.andy.music.abandoned.MusicListFragment;
+import com.andy.music.function.MusicListManager;
 import com.andy.music.entity.TagConstants;
 
 /**
@@ -57,22 +56,23 @@ public class NavPanelFragment extends android.support.v4.app.Fragment implements
 
         // 模块替换
         android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        MusicListFragment fragment = new MusicListFragment();
-        String listName = MusicList.MUSIC_LIST_LOCAL;
+        SongListFragment fragment= new SongListFragment();
+        String listName = MusicListManager.MUSIC_LIST_LOCAL;
         boolean flag = true;
 
         switch (v.getId()) {
             case R.id.btn_to_local_music:
                 flag = false;
-                ViewPagerFragment frag = new ViewPagerFragment();
-                transaction.replace(R.id.frag_container_nav_panel, frag);
+                LocalMusicFragment frag = new LocalMusicFragment();
+                transaction.replace(R.id.frag_container_main_content, frag);
+                transaction.addToBackStack(null);
                 transaction.commit();
                 break;
             case R.id.btn_to_recent_music:
-                listName = MusicList.MUSIC_LIST_RECENT;
+                listName = MusicListManager.MUSIC_LIST_RECENT;
                 break;
             case R.id.btn_to_favorite_music:
-                listName = MusicList.MUSIC_LIST_FAVORITE;
+                listName = MusicListManager.MUSIC_LIST_FAVORITE;
                 break;
             default:
                 break;
@@ -82,7 +82,7 @@ public class NavPanelFragment extends android.support.v4.app.Fragment implements
             Bundle bundle = new Bundle();
             bundle.putString("list_name", listName);
             fragment.setArguments(bundle);
-            transaction.replace(R.id.frag_container_nav_panel, fragment);
+            transaction.replace(R.id.frag_container_main_content, fragment);
             transaction.addToBackStack(null);  // 添加到返回栈
             transaction.commit();  // 提交事务
         }

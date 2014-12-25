@@ -1,69 +1,62 @@
 package com.andy.music.view;
 
-import android.app.Activity;
-import android.app.FragmentTransaction;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.RemoteViews;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andy.music.R;
-import com.andy.music.entity.MusicList;
+import com.andy.music.function.MusicListManager;
 import com.andy.music.entity.TagConstants;
 import com.andy.music.fragment.NavPanelFragment;
 import com.andy.music.fragment.PlayBarFragment;
+import com.andy.music.fragment.TopBarFragment;
 import com.andy.music.function.MusicListFactory;
-import com.andy.music.function.MusicNotification;
-import com.andy.music.utility.MusicLocator;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainActivity extends FragmentActivity {
 
     private static final int NOTIFICATON_ID = 1;
-    private SlideMenu menu;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_content);
 
 
         // 初始化
         init();
 
         // 设置透明状态栏
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);  //透明状态栏
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);   //透明导航栏
-//        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);  //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);   //透明导航栏
+        }
 
         // 加载模块
-        if (findViewById(R.id.frag_container_nav_panel) != null) {
+        if (findViewById(R.id.frag_container_main_content) != null) {
             if (savedInstanceState != null) {
                 return;
             }
 
+            TopBarFragment topBarFragment = new TopBarFragment();
             NavPanelFragment navPanelFragment = new NavPanelFragment();
             PlayBarFragment playBarFragment = new PlayBarFragment();
             navPanelFragment.setArguments(getIntent().getExtras());
             playBarFragment.setArguments(getIntent().getExtras());
 
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.frag_container_nav_panel, navPanelFragment);
+            transaction.add(R.id.frag_container_top_bar, topBarFragment);
+            transaction.add(R.id.frag_container_main_content, navPanelFragment);
             transaction.add(R.id.frag_container_play_bar, playBarFragment);
             transaction.commit();
         }
@@ -112,11 +105,11 @@ public class MainActivity extends FragmentActivity {
         switch (id) {
             case R.id.action_search:
                 //TODO  查找歌曲
-                Toast.makeText(this, "咋找歌曲",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "咋找歌曲", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, SearchActivity.class));
                 break;
             case R.id.action_settings:
-                Toast.makeText(this, "咋找歌曲",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "咋找歌曲", Toast.LENGTH_SHORT).show();
                 break;
             default: break;
 
@@ -127,12 +120,12 @@ public class MainActivity extends FragmentActivity {
     private void init() {
 
         // 创建音乐列表
-        MusicListFactory.create(MusicList.MUSIC_LIST_LOCAL);
-        MusicListFactory.create(MusicList.MUSIC_LIST_RECENT);
-        MusicListFactory.create(MusicList.MUSIC_LIST_FAVORITE);
-        MusicListFactory.create(MusicList.MUSIC_LIST_DOWNLOAD);
+        MusicListFactory.create(MusicListManager.MUSIC_LIST_CURRENT);
+        MusicListFactory.create(MusicListManager.MUSIC_LIST_LOCAL);
+        MusicListFactory.create(MusicListManager.MUSIC_LIST_RECENT);
+        MusicListFactory.create(MusicListManager.MUSIC_LIST_FAVORITE);
+        MusicListFactory.create(MusicListManager.MUSIC_LIST_DOWNLOAD);
 
-        menu = (SlideMenu) findViewById(R.id.slide_menu);
     }
 
 

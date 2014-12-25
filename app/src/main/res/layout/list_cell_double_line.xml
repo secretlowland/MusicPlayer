@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv_cell_double_line_first"
+        android:id="@+id/tv_list_cell_double_line_first"
+        android:textSize="16sp"
+        android:singleLine="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
-        android:id="@+id/tv_cell_double_line_second"
+        android:id="@+id/tv_list_cell_double_line_second"
+        android:textSize="12sp"
+        android:singleLine="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

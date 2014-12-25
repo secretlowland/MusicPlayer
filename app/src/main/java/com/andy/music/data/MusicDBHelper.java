@@ -18,6 +18,7 @@ public class MusicDBHelper extends SQLiteOpenHelper {
             "name TEXT DEFAULT list_custom," +
             "tab_name)";
 
+    private static MusicDBHelper musicDBHelper;
     private MusicDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
@@ -27,6 +28,7 @@ public class MusicDBHelper extends SQLiteOpenHelper {
      * @return 返回一个数据库辅助类的实例
      */
     public static MusicDBHelper getInstance() {
+        if (musicDBHelper!=null) return musicDBHelper;
         return new MusicDBHelper(ContextUtil.getInstance(), "music", null, 1);
     }
 

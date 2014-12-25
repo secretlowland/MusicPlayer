@@ -12,7 +12,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_weight="1"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
     </LinearLayout>
@@ -68,32 +68,36 @@
         </LinearLayout>
 
         <!--进度条和播放时间-->
-        <!--<TextView-->
-            <!--android:background="#34bed984"-->
-            <!--android:layout_marginLeft="15dp"-->
-            <!--android:layout_marginRight="15dp"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="1dp" />-->
         <LinearLayout
             android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:padding="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/tv_music_current_time"
+                android:text="00:00"
+                android:layout_weight="0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <SeekBar
                 android:id="@+id/sb_music_play_progress"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:layout_width="200dp"
+                android:progressDrawable="@drawable/sb_bg_music_play"
+                android:thumb="@drawable/sb_thumb"
+                android:maxHeight="2dp"
+                android:minHeight="2dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/tv_music_total_time"
+                android:text="00:00"
+                android:layout_weight="0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

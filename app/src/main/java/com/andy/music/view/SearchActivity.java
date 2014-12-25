@@ -1,8 +1,5 @@
 package com.andy.music.view;
 
-import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -10,7 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.andy.music.R;
-import com.andy.music.fragment.MusicListFragment;
+import com.andy.music.abandoned.MusicListFragment;
 
 /**
  * 本地音乐查找视图

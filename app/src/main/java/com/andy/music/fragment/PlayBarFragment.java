@@ -1,6 +1,5 @@
 package com.andy.music.fragment;
 
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -9,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +21,7 @@ import android.widget.ToggleButton;
 import com.andy.music.R;
 import com.andy.music.entity.Music;
 import com.andy.music.entity.TagConstants;
-import com.andy.music.function.MusicPlayListener;
+import com.andy.music.listener.MusicPlayListener;
 import com.andy.music.function.MusicPlayService;
 import com.andy.music.utility.BroadCastHelper;
 import com.andy.music.utility.MusicLocator;
@@ -37,35 +37,35 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
     private TextView musicName;
     private TextView musicSinger;
     private ToggleButton playToggle;
-    private ImageButton playNext;
+    private ImageButton playNext, mainMenu;
 
     private PlayStatusReceiver receiver;
 
     private MusicPlayService musicPlayService;
 
 
-    /**
-     * ServiceConnection 对象，用于 Activity 与服务进行连接，连接成功后返回一个服务类实例，通过该实例可以
-     * 访问服务实例的方法
-     */
-    private ServiceConnection conn = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            MusicPlayService.MyBinder binder = (MusicPlayService.MyBinder) service;
-            musicPlayService = binder.getService();
-
-            // 判断是否正在播放
-            if (musicPlayService.isPlaying()) {
-                playToggle.setChecked(true);
-            } else {
-                playToggle.setChecked(false);
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-        }
-    };
+//    /**
+//     * ServiceConnection 对象，用于 Activity 与服务进行连接，连接成功后返回一个服务类实例，通过该实例可以
+//     * 访问服务实例的方法
+//     */
+//    private ServiceConnection conn = new ServiceConnection() {
+//        @Override
+//        public void onServiceConnected(ComponentName name, IBinder service) {
+//            MusicPlayService.MyBinder binder = (MusicPlayService.MyBinder) service;
+//            musicPlayService = binder.getService();
+//
+//            // 判断是否正在播放
+//            if (musicPlayService.isPlaying()) {
+//                playToggle.setChecked(true);
+//            } else {
+//                playToggle.setChecked(false);
+//            }
+//        }
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName name) {
+//        }
+//    };
 
 
     @Override
@@ -74,7 +74,8 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
 
         //  绑定到 MusicPlayService 服务
         Intent intent = new Intent(getActivity(), MusicPlayService.class);
-        getActivity().bindService(intent, conn, Context.BIND_AUTO_CREATE);
+        getActivity().startService(intent);
+//        getActivity().bindService(intent, conn, Context.BIND_AUTO_CREATE);
         super.onCreate(savedInstanceState);
 
     }
@@ -97,6 +98,7 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
         musicSinger = (TextView) view.findViewById(R.id.tv_music_play_singer);
         playToggle = (ToggleButton) view.findViewById(R.id.tb_music_play_toggle);
         playNext = (ImageButton) view.findViewById(R.id.btn_music_play_next);
+        mainMenu = (ImageButton) view.findViewById(R.id.btn_main_menu);
         receiver = new PlayStatusReceiver();
 
         refreshPlayBar();
@@ -105,12 +107,24 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
         MusicPlayListener listener = new MusicPlayListener();
         playToggle.setOnCheckedChangeListener(listener);
         playNext.setOnClickListener(listener);
+        mainMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO 加载菜单模块
+                MainMenuFragment fragment = new MainMenuFragment();
+                fragment.setCancelable(true);
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.anim.bottom_to_top, R.anim.fade_out, R.anim.fade_out, R.anim.fade_out);
+                transaction.add(R.id.frag_container_main_menu, fragment);
+                transaction.addToBackStack(null).commit();
+
+            }
+        });
         playBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TagConstants.TAG, "跳转到播放界面");
                 startActivity(new Intent(getActivity(), PlayActivity.class));
-                getActivity().overridePendingTransition(R.anim.top_to_bottom, R.anim.fade_out);   // 设置 activity动画
+                getActivity().overridePendingTransition(R.anim.bottom_to_top, R.anim.fade_out);   // 设置 activity动画
             }
         });
 
@@ -136,7 +150,7 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
         Log.d(TagConstants.TAG, "Fragment--->onDestroy()");
         super.onDestroyView();
         getActivity().unregisterReceiver(receiver);  // 注销广播
-        getActivity().unbindService(conn);  // 解绑服务
+//        getActivity().unbindService(conn);  // 解绑服务
     }
 
 
@@ -144,8 +158,7 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
      * 更新播放控制条
      */
     public void refreshPlayBar() {
-        Log.d(TagConstants.TAG, "refreshPlayBar()");
-        Music music = MusicLocator.getLocatedMusic();
+        Music music = MusicLocator.getCurrentMusic();
         if (music != null) {
             musicName.setText(music.getName());
             musicSinger.setText(music.getSinger());
@@ -153,27 +166,22 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
     }
 
     /**
-     * 接收播放和播放下一首的广播
+     * 接收播放和播放下一首的广播，更新播放条
      */
     public class PlayStatusReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            boolean tag = false;
-            if (action.equals(BroadCastHelper.ACTION_MUSIC_PLAY)) {
-                tag = true;
-            } else if (action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT)) {
-                tag = true;
-            } else if(action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_RANDOM)) {
-                tag = true;
-            }
-
-            if (tag) {
+            if (action.equals(BroadCastHelper.ACTION_MUSIC_PLAY) ||
+                    action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT) ||
+                    action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_PREVIOUS) ||
+                    action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_RANDOM)) {
                 if (!playToggle.isChecked()) {
                     playToggle.setChecked(true);
                 }
                 refreshPlayBar();  // 更新音乐播放控制条
             }
+
         }
     }
 

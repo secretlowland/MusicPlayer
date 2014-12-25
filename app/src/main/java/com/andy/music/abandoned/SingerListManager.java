@@ -1,21 +1,21 @@
-package com.andy.music.function;
+package com.andy.music.abandoned;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CursorAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
 
 import com.andy.music.R;
 
+import java.io.Serializable;
+
 /**
  * Created by Andy on 2014/12/14.
  */
-public class SingerListManager {
+public class SingerListManager implements Serializable {
 
     private ListView listView;
 
@@ -29,8 +29,8 @@ public class SingerListManager {
         listView = (ListView)inflater.inflate(R.layout.singer_list, null).findViewById(R.id.lv_singer_list);
         Cursor cursor = com.andy.music.data.CursorAdapter.getMediaLibCursor();
         String[] from = { MediaStore.Audio.Media.ARTIST } ;
-        int[] to = { R.id.tv_singer_list_singer };
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(context, R.layout.singer_list_cell, cursor, from, to, 0);
+        int[] to = { R.id.tv_list_cell_double_line_first };
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(context, R.layout.fragment_list_common, cursor, from, to, 0);
         listView.setAdapter(adapter);
     }
 }

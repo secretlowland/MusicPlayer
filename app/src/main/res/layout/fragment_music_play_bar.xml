@@ -9,7 +9,7 @@
         android:id="@+id/ll_music_control_bar"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:background="#cc00045F"
+        android:background="#729939"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
@@ -66,6 +66,11 @@
             android:layout_marginRight="25dp"
             android:layout_width="30dp"
             android:layout_height="30dp" />
+        <ImageButton
+            android:id="@+id/btn_main_menu"
+            android:background="#34ffffff"
+            android:layout_width="50dp"
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 

@@ -7,31 +7,35 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.gesture.GestureOverlayView;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.andy.music.R;
 import com.andy.music.entity.Music;
-import com.andy.music.entity.MusicList;
+import com.andy.music.function.MusicListManager;
 import com.andy.music.entity.TagConstants;
-import com.andy.music.function.MusicPlayListener;
+import com.andy.music.function.MusicProgressManager;
+import com.andy.music.listener.MusicPlayListener;
 import com.andy.music.function.MusicPlayService;
 import com.andy.music.utility.BroadCastHelper;
 import com.andy.music.utility.MusicLocator;
 import com.andy.music.utility.TimeHelper;
 
-import org.w3c.dom.Text;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * 音乐播放界面
@@ -42,29 +46,11 @@ public class PlayActivity extends Activity implements GestureDetector.OnGestureL
     private TextView musicName, musicSinger, currentTime, totalTime;
     private ImageButton playPre, playNext;
     private ToggleButton playToggle, addToFavor;
+    private SeekBar seekBar;
     private PlayStatusReceiver receiver;
 
-    private ServiceConnection conn = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            Log.d(TagConstants.TAG, "MusicListActivity-->onServiceConnected()");
-            MusicPlayService.MyBinder binder = (MusicPlayService.MyBinder) service;
-            MusicPlayService musicPlayService = binder.getService();
-
-            // 判断是否正在播放
-            if (musicPlayService.isPlaying()) {
-                playToggle.setChecked(true);
-            } else {
-                playToggle.setChecked(false);
-            }
-
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            Log.d(TagConstants.TAG, "MusicListActivity-->onServiceDisconnected()");
-        }
-    };
+    private PlayProgressThread playProgressThread;
+    private PlayProgressHandler playProgressHandler;
 
 
     @Override
@@ -86,7 +72,7 @@ public class PlayActivity extends Activity implements GestureDetector.OnGestureL
 
         // 绑定到 MusicPlayService 服务
         Intent intent = new Intent(this, MusicPlayService.class);
-        this.bindService(intent, conn, Context.BIND_AUTO_CREATE);
+//        this.bindService(intent, conn, Context.BIND_AUTO_CREATE);
         this.startService(intent);
 
         // 设置监听事件（监听歌曲位置是否改变）
@@ -108,16 +94,14 @@ public class PlayActivity extends Activity implements GestureDetector.OnGestureL
         addToFavor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                MusicList list = MusicList.getInstance(MusicList.MUSIC_LIST_FAVORITE);
+                MusicListManager list = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_FAVORITE);
                 Music music = MusicLocator.getLocatedMusic();
                 if (isChecked) {
                     if (list.isMusicExist(music)) return;
                     list.add(music);
-                    Toast.makeText(getApplicationContext(), "已添加到收藏！", Toast.LENGTH_SHORT).show();
                 } else {
                     if (!list.isMusicExist(music)) return;
                     list.remove(music);
-                    Toast.makeText(getApplicationContext(), "已取消收藏！", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -129,6 +113,17 @@ public class PlayActivity extends Activity implements GestureDetector.OnGestureL
         super.onStart();
         // 更新播放控制区域
         refreshPlayPanel();
+
+        // 开始更新音乐播放进度的线程
+        playProgressThread.start(1000);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // 停止更新音乐播放进度的线程
+        playProgressThread.stop();
     }
 
     @Override
@@ -136,7 +131,7 @@ public class PlayActivity extends Activity implements GestureDetector.OnGestureL
         Log.d(TagConstants.TAG, "PlayActivity-->onDestroy()");
         super.onDestroy();
         // 解绑服务
-        unbindService(conn);
+//        unbindService(conn);
         unregisterReceiver(receiver);
     }
 
@@ -181,17 +176,27 @@ public class PlayActivity extends Activity implements GestureDetector.OnGestureL
         playNext = (ImageButton) this.findViewById(R.id.btn_music_play_next);
         playToggle = (ToggleButton) this.findViewById(R.id.tb_music_play_toggle);
         addToFavor = (ToggleButton) this.findViewById(R.id.tb_add_to_favorite_toggle);
+        seekBar = (SeekBar) this.findViewById(R.id.sb_music_play_progress);
+
         receiver = new PlayStatusReceiver();
+        playProgressThread = new PlayProgressThread();
+        playProgressHandler = new PlayProgressHandler();
 
     }
 
     public void refreshPlayPanel() {
-        Music music = MusicLocator.getLocatedMusic();
-        MusicList favouriteList = MusicList.getInstance(MusicList.MUSIC_LIST_FAVORITE);
+
+        Music music = MusicLocator.getCurrentMusic();
+        MusicListManager favouriteList = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_FAVORITE);
         if (music==null) return;
+        if (!playToggle.isChecked()) playToggle.setChecked(true);
         musicName.setText(music.getName());
         musicSinger.setText(music.getSinger());
-        totalTime.setText(TimeHelper.timeFormate(music.getDuration()));
+        seekBar.setMax(music.getDuration());
+        seekBar.setProgress(MusicProgressManager.getProgress());
+        currentTime.setText(TimeHelper.timeFormat(MusicProgressManager.getProgress()));
+        totalTime.setText(TimeHelper.timeFormat(music.getDuration()));
+
         if (favouriteList!=null) {
             if (!favouriteList.isMusicExist(music)) {
                 addToFavor.setChecked(false);
@@ -205,21 +210,62 @@ public class PlayActivity extends Activity implements GestureDetector.OnGestureL
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            boolean flag = false;
-            if (action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT)) {
-               flag = true;
-            } else if (action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_PREVIOUS)) {
-                flag = true;
-            }
-
-            if (flag) {
-                if (!playToggle.isChecked()) {
-                    playToggle.setChecked(true);
-                }
+            if (action.equals(BroadCastHelper.ACTION_MUSIC_PLAY) ||
+                    action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT) ||
+                    action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_PREVIOUS) ||
+                    action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_RANDOM)) {
                 refreshPlayPanel();
             }
         }
     }
 
+    public class PlayProgressHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            // 此处更新 UI（当前播放时间）
+            if (msg.what==0) {
+                int progress = MusicProgressManager.getProgress();
+                seekBar.setProgress(progress);
+                currentTime.setText(TimeHelper.timeFormat(progress));
+            }
+        }
+    }
+
+    public class PlayProgressThread  {
+
+        Timer timer;
+        TimerTask task;
+
+        public void start(int interval) {
+
+            if (task!=null) task = null;
+            if (timer!=null) {
+                timer.cancel();
+                timer.purge();
+                timer = null;
+            }
+
+            timer = new Timer();
+            task = new TimerTask() {
+                @Override
+                public void run() {
+                    // 发送一次更新播放时间的消息
+                    playProgressHandler.sendEmptyMessage(0);
+                }
+            };
+
+            timer.schedule(task, 0, interval);
+        }
+
+        public void stop() {
+            if (task!=null) task = null;
+            if (timer!=null) {
+                timer.cancel();
+                timer.purge();
+                timer = null;
+            }
+        }
+    }
 
 }

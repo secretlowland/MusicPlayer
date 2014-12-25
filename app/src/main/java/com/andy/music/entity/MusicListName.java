@@ -34,7 +34,7 @@ public class MusicListName {
      * @param name 表的名字
      * @return 是否存在
      */
-    public static boolean exsist(String name) {
+    public static boolean exist(String name) {
         SQLiteDatabase dbReader = MusicDBHelper.getInstance().getReadableDatabase();
         Cursor cursor = dbReader.query("_list", null, null, null, null, null, null);
         boolean flag = false;
