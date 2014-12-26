@@ -2,11 +2,13 @@ package com.andy.music.listener;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 
 import com.andy.music.R;
+import com.andy.music.entity.TagConstants;
 import com.andy.music.function.MusicPlayService;
 import com.andy.music.utility.BroadCastHelper;
 import com.andy.music.utility.ContextUtil;
@@ -56,20 +58,15 @@ public class MusicPlayListener implements View.OnClickListener, CompoundButton.O
             case R.id.tb_music_play_toggle:
                 if (isChecked) {
                     // 发送开始播放的广播
-                    BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_START);
-//                    // 将播放状态存储到 SharedPreferences
-//                    SharedPreferences pref = ContextUtil.getInstance().getSharedPreferences("music_play_status", Context.MODE_PRIVATE);
-//                    SharedPreferences.Editor editor = pref.edit();
-//                    editor.putBoolean("playing", true);
-//                    editor.commit();
+                    if (!MusicPlayService.isPlaying) {
+                        BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_START);
+                    }
+
                 } else {
                     // 发送暂停播放的广播
-                    BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PAUSE);
-//                    // 将播放状态存储到 SharedPreferences
-//                    SharedPreferences pref = ContextUtil.getInstance().getSharedPreferences("music_play_status", Context.MODE_PRIVATE);
-//                    SharedPreferences.Editor editor = pref.edit();
-//                    editor.putBoolean("playing", false);
-//                    editor.commit();
+                    if (MusicPlayService.isPlaying) {
+                        BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PAUSE);
+                    }
                 }
                 break;
             default:

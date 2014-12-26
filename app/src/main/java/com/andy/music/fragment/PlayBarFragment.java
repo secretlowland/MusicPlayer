@@ -1,13 +1,10 @@
 package com.andy.music.fragment;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,8 +18,8 @@ import android.widget.ToggleButton;
 import com.andy.music.R;
 import com.andy.music.entity.Music;
 import com.andy.music.entity.TagConstants;
-import com.andy.music.listener.MusicPlayListener;
 import com.andy.music.function.MusicPlayService;
+import com.andy.music.listener.MusicPlayListener;
 import com.andy.music.utility.BroadCastHelper;
 import com.andy.music.utility.MusicLocator;
 import com.andy.music.view.PlayActivity;
@@ -41,33 +38,6 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
 
     private PlayStatusReceiver receiver;
 
-    private MusicPlayService musicPlayService;
-
-
-//    /**
-//     * ServiceConnection 对象，用于 Activity 与服务进行连接，连接成功后返回一个服务类实例，通过该实例可以
-//     * 访问服务实例的方法
-//     */
-//    private ServiceConnection conn = new ServiceConnection() {
-//        @Override
-//        public void onServiceConnected(ComponentName name, IBinder service) {
-//            MusicPlayService.MyBinder binder = (MusicPlayService.MyBinder) service;
-//            musicPlayService = binder.getService();
-//
-//            // 判断是否正在播放
-//            if (musicPlayService.isPlaying()) {
-//                playToggle.setChecked(true);
-//            } else {
-//                playToggle.setChecked(false);
-//            }
-//        }
-//
-//        @Override
-//        public void onServiceDisconnected(ComponentName name) {
-//        }
-//    };
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TagConstants.TAG, "Fragment-->onCreate()");
@@ -75,7 +45,6 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
         //  绑定到 MusicPlayService 服务
         Intent intent = new Intent(getActivity(), MusicPlayService.class);
         getActivity().startService(intent);
-//        getActivity().bindService(intent, conn, Context.BIND_AUTO_CREATE);
         super.onCreate(savedInstanceState);
 
     }
@@ -150,7 +119,6 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
         Log.d(TagConstants.TAG, "Fragment--->onDestroy()");
         super.onDestroyView();
         getActivity().unregisterReceiver(receiver);  // 注销广播
-//        getActivity().unbindService(conn);  // 解绑服务
     }
 
 
@@ -163,6 +131,12 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
             musicName.setText(music.getName());
             musicSinger.setText(music.getSinger());
         }
+        if (MusicPlayService.isPlaying) {
+            playToggle.setChecked(true);
+        } else {
+            playToggle.setChecked(false);
+        }
+
     }
 
     /**
@@ -176,9 +150,6 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
                     action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT) ||
                     action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_PREVIOUS) ||
                     action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_RANDOM)) {
-                if (!playToggle.isChecked()) {
-                    playToggle.setChecked(true);
-                }
                 refreshPlayBar();  // 更新音乐播放控制条
             }
 
