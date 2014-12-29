@@ -225,7 +225,7 @@ public class PlayActivity extends Activity {
                 }
             };
 
-            timer.schedule(task, 2000, interval);
+            timer.schedule(task, 0, interval);
         }
 
         public void stop() {

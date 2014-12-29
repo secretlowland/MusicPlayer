@@ -49,16 +49,18 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
         // 注册广播接收器
         registerReceiver();
+
+        // 设置歌曲播放完成的监听事件
+        mediaPlayer.setOnCompletionListener(this);
         super.onCreate();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // 做好播放的准备
-        prepare();
+//        prepare();
+        Log.d(TagConstants.TAG, "onStartCommand");
 
-        // 设置歌曲播放完成的监听事件
-        mediaPlayer.setOnCompletionListener(this);
         return super.onStartCommand(intent, flags, startId);
     }
 
