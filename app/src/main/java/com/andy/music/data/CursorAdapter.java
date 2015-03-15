@@ -3,7 +3,9 @@ package com.andy.music.data;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 
+import com.andy.music.entity.TagConstants;
 import com.andy.music.utility.ContextUtil;
 
 /**

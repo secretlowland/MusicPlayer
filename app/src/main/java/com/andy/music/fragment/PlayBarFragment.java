@@ -83,7 +83,8 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
                 MainMenuFragment fragment = new MainMenuFragment();
                 fragment.setCancelable(true);
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.setCustomAnimations(R.anim.bottom_to_top, R.anim.fade_out, R.anim.fade_out, R.anim.fade_out);
+//                transaction.setCustomAnimations(R.anim.bottom_to_top, R.anim.fade_out, R.anim.fade_out, R.anim.fade_out);
+                transaction.setCustomAnimations(R.anim.bottom_to_top, 0, 0, R.anim.fade_out);
                 transaction.add(R.id.frag_container_main_menu, fragment);
                 transaction.addToBackStack(null).commit();
 
@@ -131,7 +132,7 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
             musicName.setText(music.getName());
             musicSinger.setText(music.getSinger());
         }
-        if (MusicPlayService.isPlaying) {
+        if (MusicPlayService.isPlaying()) {
             playToggle.setChecked(true);
         } else {
             playToggle.setChecked(false);

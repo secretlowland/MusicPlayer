@@ -7,12 +7,7 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -20,103 +15,25 @@ import android.widget.TextView;
 
 import com.andy.music.R;
 import com.andy.music.adapter.MusicListAdapter;
-import com.andy.music.data.CursorAdapter;
-import com.andy.music.data.MusicScanner;
 import com.andy.music.entity.Music;
-import com.andy.music.entity.TagConstants;
 import com.andy.music.utility.BroadCastHelper;
 import com.andy.music.utility.MusicLocator;
 
 import java.util.List;
 
 /**
- * 歌曲列表模块
- * Created by Andy on 2014/12/17.
+ * Created by Andy on 2015/1/11.
  */
-public class SongListFragment extends Fragment {
+public abstract class BaseSongList extends ListFragment {
 
-    private View mainView;
     private ListView listView;
     private Cursor searchCursor;
     private List<Music> musicList;
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//        Log.d(TagConstants.TAG, "SongList-->onActivityCreated");
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-//        Log.d(TagConstants.TAG, "SongList-->onViewStateRestored");
-        super.onViewStateRestored(savedInstanceState);
-    }
-
-    @Override
-    public void onResume() {
-//        Log.d(TagConstants.TAG, "SongList-->onResume");
-        super.onResume();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-//        Log.d(TagConstants.TAG, "SongList-->onSaveInstanceState");
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onPause() {
-//        Log.d(TagConstants.TAG, "SongList-->onPause");
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-//        Log.d(TagConstants.TAG, "SongList-->onStop");
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroyView() {
-//        Log.d(TagConstants.TAG, "SongList-->onDestroyView");
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-//        Log.d(TagConstants.TAG, "SongList-->onDestroy");
-        super.onDestroy();
-    }
-
-    @Override
-    public void onDetach() {
-//        Log.d(TagConstants.TAG, "SongList-->onDetach");
-        super.onDetach();
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-//        Log.d(TagConstants.TAG, "SongList-->onCreate");
-        super.onCreate(savedInstanceState);
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        mainView = inflater.inflate(R.layout.fragment_list_common, (ViewGroup)getActivity().findViewById(R.id.view_pager_local_music), false);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,  Bundle savedInstanceState) {
-//        Log.d(TagConstants.TAG, "SongList-->onCreateView");
-        // 移除已存在的 view
-        ViewGroup group = ((ViewGroup) mainView.getParent());
-        if (group!=null) {
-            group.removeAllViewsInLayout();
-//            Log.d(TagConstants.TAG, "已移除已存在的view");
-        }
-        return mainView;
-    }
+    abstract List<Music> getList();
 
     @Override
     public void onViewCreated(View view,  Bundle savedInstanceState) {
-//        Log.d(TagConstants.TAG, "SongList-->onViewCreated");
         super.onViewCreated(view, savedInstanceState);
 
         // 获取 ListView 对象
@@ -134,39 +51,22 @@ public class SongListFragment extends Fragment {
 
     @Override
     public void onStart() {
-//        Log.d(TagConstants.TAG, "SongList-->");
         super.onStart();
         refreshMusicList(listView);
     }
-
+    @Override
     public BaseAdapter getAdapter() {
-
-        // 获取传递进来的内容（查询语句）
-        Bundle bundle = getArguments();
-        String whereClause = "";
-        if (bundle != null) {
-            whereClause = bundle.getString("where_clause");
-        }
-
-        if (whereClause != null) {
-            searchCursor = CursorAdapter.get(whereClause);
-        }
-        if (searchCursor != null) {
-            musicList = MusicScanner.scan(searchCursor);
-            searchCursor.close();
-        }
-
-        return new MusicListAdapter(getActivity(), musicList, R.layout.music_list_cell);
+        return new MusicListAdapter(getActivity().getApplicationContext(), getList(), R.layout.music_list_cell);
     }
 
+    @Override
     public AdapterView.OnItemClickListener getOnItemClickListener() {
-
         return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 // 定位当前歌曲列表和位置
-                MusicLocator.setCurrentMusicList(musicList);
+                MusicLocator.setCurrentMusicList(getList());
                 MusicLocator.setCurrentPosition(position);
 
                 // 发送播放歌曲的广播
@@ -239,5 +139,4 @@ public class SongListFragment extends Fragment {
 
         }
     }
-
 }

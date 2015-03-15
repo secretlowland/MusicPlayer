@@ -1,30 +1,40 @@
 package com.andy.music.view;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.andy.music.R;
+import com.andy.music.fragment.LocalMusicFragment;
 import com.andy.music.function.MusicListManager;
 import com.andy.music.entity.TagConstants;
 import com.andy.music.fragment.NavPanelFragment;
 import com.andy.music.fragment.PlayBarFragment;
 import com.andy.music.fragment.TopBarFragment;
 import com.andy.music.function.MusicListFactory;
+import com.andy.music.utility.MusicLocator;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements View.OnTouchListener, GestureDetector.OnGestureListener {
 
     private static final int NOTIFICATON_ID = 1;
+    private RelativeLayout layout;
+    private GestureDetector detector;
 
 
     @Override
@@ -87,6 +97,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onDestroy() {
         Log.d(TagConstants.TAG, "MusicListActivity-->onDestroy()");
+        MusicLocator.saveMusicLocation();
         super.onDestroy();
     }
 
@@ -105,16 +116,60 @@ public class MainActivity extends FragmentActivity {
         switch (id) {
             case R.id.action_search:
                 //TODO  查找歌曲
-                Toast.makeText(this, "咋找歌曲", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, SearchActivity.class));
                 break;
             case R.id.action_settings:
-                Toast.makeText(this, "咋找歌曲", Toast.LENGTH_SHORT).show();
                 break;
             default: break;
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        Log.d(TagConstants.TAG, "onFling()");
+        if (velocityX<0) {
+            // 左滑，切换到下一页
+            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            LocalMusicFragment fragment = new LocalMusicFragment();
+            transaction.setCustomAnimations(R.anim.frag_in, R.anim.frag_out);
+            transaction.replace(R.id.frag_container_main_content, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        Log.d(TagConstants.TAG, "onTouch()");
+        return detector.onTouchEvent(event);
     }
 
     private void init() {
@@ -126,7 +181,20 @@ public class MainActivity extends FragmentActivity {
         MusicListFactory.create(MusicListManager.MUSIC_LIST_FAVORITE);
         MusicListFactory.create(MusicListManager.MUSIC_LIST_DOWNLOAD);
 
+        // 初始化变量
+        layout = (RelativeLayout) this.findViewById(R.id.frag_container_main_content);
+        detector = new GestureDetector(this,this);
+
+        layout.setOnTouchListener(this);
+        layout.setLongClickable(true);
+        detector.setIsLongpressEnabled(true);
+
+        // 获取上次的音乐位置
+        MusicLocator.getMusicLocation();
+
     }
+
+
 
 
 }

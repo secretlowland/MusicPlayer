@@ -56,8 +56,8 @@ public class MusicNotification {
         Intent nextBtnIntent = new Intent(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
 
         // 在通知栏显示歌曲名称和歌手名
-        views.setTextViewText(R.id.tv_music_name, MusicLocator.getLocatedMusic().getName());
-        views.setTextViewText(R.id.tv_music_singer, MusicLocator.getLocatedMusic().getSinger());
+        views.setTextViewText(R.id.tv_music_name, MusicLocator.getCurrentMusic().getName());
+        views.setTextViewText(R.id.tv_music_singer, MusicLocator.getCurrentMusic().getSinger());
 
 
 //        Intent fillInIntent = new Intent(BroadCastHelper.ACTION_MUSIC_PLAY);
@@ -72,8 +72,8 @@ public class MusicNotification {
 
     public void refreshNotification() {
         builder.setTicker("哈哈。换了一首歌哦~~~~~~~~");
-        builder.setContentTitle(MusicLocator.getLocatedMusic().getName());
-        builder.setContentText(MusicLocator.getLocatedMusic().getSinger());
+        builder.setContentTitle(MusicLocator.getCurrentMusic().getName());
+        builder.setContentText(MusicLocator.getCurrentMusic().getSinger());
     }
 
     class Receiver extends BroadcastReceiver {

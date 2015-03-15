@@ -10,6 +10,7 @@
 
     <!--上半部分，歌词，图片-->
     <LinearLayout
+        android:id="@+id/ll_up"
         android:orientation="vertical"
         android:layout_weight="1"
         android:layout_width="match_parent"

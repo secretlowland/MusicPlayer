@@ -1,12 +1,10 @@
-package com.andy.music.adapter;
+package com.andy.music.adapter;//package com.andy.music.abandoned;
 
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.andy.music.entity.TagConstants;
@@ -14,8 +12,8 @@ import com.andy.music.entity.TagConstants;
 import java.util.List;
 
 /**
- * Created by Andy on 2014/12/15.
- */
+* Created by Andy on 2014/12/15.
+*/
 public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private static final String TAG = "FragmentPagerAdapter";
@@ -51,21 +49,32 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
         final long itemId = getItemId(position);
 
         // Do we already have this fragment?
-        String name = makeFragmentName(container.getId(), itemId);
-        Fragment fragment = mFragmentManager.findFragmentByTag(name);
-        if (fragment != null) {
-            Log.d(TagConstants.TAG, "fragment已经存在啦！"+itemId);
-            if (DEBUG) Log.v(TAG, "Attaching item #" + itemId + ": f=" + fragment);
-            mCurTransaction.attach(fragment);
-        } else {
-            fragment = getItem(position);
-            if (DEBUG) Log.v(TAG, "Adding item #" + itemId + ": f=" + fragment);
-            mCurTransaction.add(container.getId(), fragment,
-                    makeFragmentName(container.getId(), itemId));
-        }
+//        String name = makeFragmentName(container.getId(), itemId);
+//        Fragment fragment = mFragmentManager.findFragmentByTag(name);
+//        if (fragment != null) {
+//            Log.d(TagConstants.TAG, "fragment已经存在啦！"+itemId);
+//            mCurTransaction.remove(fragment);
+////            mCurTransaction.detach(fragment);
+//            fragment = getItem(position);
+//            Log.d(TagConstants.TAG, "重新获取fragment"+itemId);
+//            if (DEBUG) Log.v(TAG, "Attaching item #" + itemId + ": f=" + fragment);
+////            mCurTransaction.attach(fragment);
+//            mCurTransaction.add(container.getId(), fragment,
+//                    makeFragmentName(container.getId(), itemId));
+//        } else {
+//            fragment = getItem(position);
+//            if (DEBUG) Log.v(TAG, "Adding item #" + itemId + ": f=" + fragment);
+//            mCurTransaction.add(container.getId(), fragment,
+//                    makeFragmentName(container.getId(), itemId));
+//        }
+
+        Fragment fragment = getItem(position);
+        mCurTransaction.add(container.getId(), fragment,
+                makeFragmentName(container.getId(), itemId));
+
         if (fragment != mCurrentPrimaryItem) {
-            fragment.setMenuVisibility(false);
-            fragment.setUserVisibleHint(false);
+            fragment.setMenuVisibility(true);
+            fragment.setUserVisibleHint(true);
         }
 
         return fragment;

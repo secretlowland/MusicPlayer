@@ -34,7 +34,7 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
     public static final int MUSIC_PLAY_SCHEMA_RANDOM = 1;    // 随机播放
     public static final int MUSIC_PLAY_SCHEMA_LIST_CIRCULATE = 2;    // 列表循环
     public static final int MUSIC_PLAY_SCHEMA_SINGLE_CIRCULATE = 3;    // 单曲循环
-    public static boolean isPlaying = false;
+    private static boolean isPlaying = false;
 
     private Music music;
     private MediaPlayer mediaPlayer;
@@ -172,6 +172,10 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
         return isPlaying;
     }
 
+    public static void setIsPlaying(boolean playing) {
+        isPlaying = playing;
+    }
+
     /**
      * 动态注册广播接收器
      */
@@ -190,9 +194,13 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     }
 
+    /**
+     * 将播放的歌曲添加到最近播放
+     * @param music 正在播放的歌曲
+     */
     private void addToRecent(Music music) {
         MusicListManager recentList = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_RECENT);   // 获取最近列表
-        if (recentList != null) {
+        if (recentList != null && !recentList.isMusicExist(music)) {
             recentList.add(music);
         }
     }
@@ -211,33 +219,39 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
             switch (action) {
                 case BroadCastHelper.ACTION_MUSIC_START:
                     // 开始播放音乐的广播（从断点开始）
-                    start();
-                    isPlaying = true;
+                    if (MusicLocator.getCurrentMusic()!=null) {
+                        start();
+                        setIsPlaying(true);
+                    } else {
+                        BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PAUSE);
+                        setIsPlaying(false);
+                    }
+
                     break;
                 case BroadCastHelper.ACTION_MUSIC_PAUSE:
                     // 暂停音乐的广播
                     pause();
-                    isPlaying = false;
+                    setIsPlaying(false);
                     break;
                 case BroadCastHelper.ACTION_MUSIC_PLAY:
                     // 播放音乐的广播（从头开始）
                     play();
-                    isPlaying = true;
+                    setIsPlaying(true);
                     break;
                 case BroadCastHelper.ACTION_MUSIC_PLAY_NEXT:
                     // 播放下一首的广播
                     play();
-                    isPlaying = true;
+                    setIsPlaying(true);
                     break;
                 case BroadCastHelper.ACTION_MUSIC_PLAY_PREVIOUS:
                     // 播放上一首的广播
                     play();
-                    isPlaying = true;
+                    setIsPlaying(true);
                     break;
                 case BroadCastHelper.ACTION_MUSIC_PLAY_RANDOM:
                     // 随机播放的广播
                     play();
-                    isPlaying = true;
+                    setIsPlaying(true);
                 default: break;
             }
 

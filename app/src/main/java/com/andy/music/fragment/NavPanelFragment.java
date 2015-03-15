@@ -8,9 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.andy.music.R;
-import com.andy.music.abandoned.MusicListFragment;
-import com.andy.music.function.MusicListManager;
 import com.andy.music.entity.TagConstants;
+import com.andy.music.function.MusicListManager;
 
 /**
  * 主界面导航模块
@@ -64,16 +63,26 @@ public class NavPanelFragment extends android.support.v4.app.Fragment implements
             case R.id.btn_to_local_music:
                 flag = false;
                 LocalMusicFragment frag = new LocalMusicFragment();
-                transaction.setCustomAnimations(R.anim.frag_in, R.anim.frag_out, 0, 0);  // 必须在 replace() 等方法之前调用
+//                transaction.setCustomAnimations(R.anim.frag_in, R.anim.frag_out, 0, 0);  // 必须在 replace() 等方法之前调用
                 transaction.replace(R.id.frag_container_main_content, frag);
                 transaction.addToBackStack(null);
                 transaction.commit();
                 break;
             case R.id.btn_to_recent_music:
-                listName = MusicListManager.MUSIC_LIST_RECENT;
+                flag = false;
+                RecentSongList recentSongList = new RecentSongList();
+//                transaction.setCustomAnimations(R.anim.frag_in, R.anim.frag_out, 0, 0);  // 必须在 replace() 等方法之前调用
+                transaction.replace(R.id.frag_container_main_content, recentSongList);
+                transaction.addToBackStack(null);
+                transaction.commit();
                 break;
             case R.id.btn_to_favorite_music:
-                listName = MusicListManager.MUSIC_LIST_FAVORITE;
+                flag = false;
+                FavoriteSongList favoriteSongList = new FavoriteSongList();
+//                transaction.setCustomAnimations(R.anim.frag_in, R.anim.frag_out, 0, 0);  // 必须在 replace() 等方法之前调用
+                transaction.replace(R.id.frag_container_main_content, favoriteSongList);
+                transaction.addToBackStack(null);
+                transaction.commit();
                 break;
             default:
                 break;

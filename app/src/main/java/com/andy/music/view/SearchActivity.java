@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.andy.music.R;
-import com.andy.music.abandoned.MusicListFragment;
+import com.andy.music.fragment.SongListFragment;
 
 /**
  * 本地音乐查找视图
@@ -32,7 +32,7 @@ public class SearchActivity extends FragmentActivity {
             public void onClick(View v) {
                 // 添加列表模块
                 android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                MusicListFragment fragment = new MusicListFragment();
+                SongListFragment fragment = new SongListFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("search_content", searchContent.getText().toString());
                 fragment.setArguments(bundle);

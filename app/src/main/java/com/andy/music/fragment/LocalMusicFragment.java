@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.andy.music.R;
+import com.andy.music.adapter.MFragmentPagerAdapter;
 import com.andy.music.adapter.MyFragmentPagerAdapter;
 import com.andy.music.entity.TagConstants;
 
@@ -26,8 +27,16 @@ import java.util.List;
  */
 public class LocalMusicFragment extends Fragment {
 
+    private View mainview;
     private ViewPager musicPager;
 
+    private List<Fragment> fragmentList;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        Log.d(TagConstants.TAG, "LocalMusicFragment-->onCreate()");
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,11 +47,11 @@ public class LocalMusicFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TagConstants.TAG, "LocalMusicFragment-->onCreateView()");
+        Log.d(TagConstants.TAG, "LocalMusicFragment-->onViewCreated()");
         musicPager = (ViewPager)getActivity().findViewById(R.id.view_pager_local_music);
 
         // 要加载的页面
-        final List<Fragment> fragmentList = new ArrayList<>();
+        fragmentList = new ArrayList<>();
 
         fragmentList.add(new SongListFragment());
         fragmentList.add(new SingerListFragment());
@@ -55,20 +64,29 @@ public class LocalMusicFragment extends Fragment {
         titles.add("专辑");
 
         // 设置适配器
-        musicPager.setAdapter(new MyFragmentPagerAdapter(getFragmentManager(), fragmentList, titles));
+        musicPager.setAdapter(new FragmentPagerAdapter(getFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return fragmentList.get(position);
+            }
+
+            @Override
+            public int getCount() {
+                return fragmentList.size();
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return titles.get(position);
+            }
+        });
+//        musicPager.setAdapter(new MyFragmentPagerAdapter(getFragmentManager(), fragmentList, titles));
+//        musicPager.setAdapter(new MFragmentPagerAdapter(getFragmentManager(), fragmentList, titles));
+//        musicPager.setAlwaysDrawnWithCacheEnabled(false);
+//        musicPager.setDuplicateParentStateEnabled(true);
+//        musicPager.setOffscreenPageLimit(3);
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        Log.d(TagConstants.TAG, "LocalMusicFragment-->onHiddenChanged()");
-        super.onHiddenChanged(hidden);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TagConstants.TAG, "LocalMusicFragment-->onActivityResult()");
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -76,18 +94,9 @@ public class LocalMusicFragment extends Fragment {
         super.onAttach(activity);
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        Log.d(TagConstants.TAG, "LocalMusicFragment-->onCreate()");
-        super.onCreate(savedInstanceState);
-    }
 
-    @Nullable
-    @Override
-    public View getView() {
-        Log.d(TagConstants.TAG, "LocalMusicFragment-->getView()");
-        return super.getView();
-    }
+
+
 
     @Override
     public void onStart() {
@@ -116,6 +125,13 @@ public class LocalMusicFragment extends Fragment {
     @Override
     public void onDestroyView() {
         Log.d(TagConstants.TAG, "LocalMusicFragment-->onDestroyView()");
+
+        Log.d(TagConstants.TAG, "fragsize--->"+fragmentList.size());
+        for(int i=0; i<fragmentList.size(); i++) {
+            fragmentList.remove(i);
+        }
+        Log.d(TagConstants.TAG, "fragsize--->"+fragmentList.size());
+
         super.onDestroyView();
     }
 
@@ -128,6 +144,8 @@ public class LocalMusicFragment extends Fragment {
     @Override
     public void onDetach() {
         Log.d(TagConstants.TAG, "LocalMusicFragment-->onDetach()");
+        Log.d(TagConstants.TAG, "fragsize--->"+fragmentList.size());
+        Log.d(TagConstants.TAG, "frag--->"+fragmentList.toString());
         super.onDetach();
     }
 }

@@ -112,9 +112,14 @@ public class MusicListManager {
      * @return 返回音乐列表 List<Music>
      */
     public List<Music> getList() {
+        return getList(null, null, null, null, null, null);
+    }
+
+    public List<Music> getList(String[] columns, String selection, String[] selectionArgs,
+                               String groupBy, String having, String orderBy) {
         dbReader = musicDBHelper.getReadableDatabase();
         if (!exist(tabName)) return null;
-        Cursor cursor = dbReader.query(tabName, null, null, null, null, null, null);
+        Cursor cursor = dbReader.query(tabName, columns, selection, selectionArgs, groupBy, having, orderBy);
 
         // 通过CursorHelper.translate() 方法将音乐列表数据库中的 Cursor  转换成查询系统媒体库的 Cursor
         list = MusicScanner.scan(CursorAdapter.translate(cursor));
@@ -124,8 +129,7 @@ public class MusicListManager {
 
 
     /**
-     * 设置列表，向数据库表中批量添加数据
-     *
+     * 设置列表，向数据库表中批量添加数据     *
      * @param cursor 数据来源的游标
      */
     public void setList(Cursor cursor) {
@@ -145,9 +149,27 @@ public class MusicListManager {
 
     }
 
+    public void setList(List<Music> list) {
+
+        if (list==null) return;
+        // 如果表不为空则清空
+        if (!isEmpty()) {
+            clear();
+        }
+
+        dbWriter = musicDBHelper.getWritableDatabase();
+
+        for (int i=0; i<list.size(); i++) {
+            ContentValues values = new ContentValues();
+            values.put("source_id", list.get(i).getSrcId());
+            dbWriter.insert(tabName, null, values);
+        }
+
+        dbWriter.close();
+    }
+
     /**
-     * 获取音乐列表的列表名
-     *
+     * 获取音乐列表的列表名     *
      * @return 返回列表名
      */
     public String getListName() {
@@ -174,7 +196,7 @@ public class MusicListManager {
         dbWriter = musicDBHelper.getWritableDatabase();
         try {
             ContentValues values = new ContentValues();
-            values.put("source_id", music.getId());
+            values.put("source_id", music.getSrcId());
             dbWriter.insert(tabName, null, values);
             Log.d(TagConstants.TAG, "添加成功");
         } catch (Exception e) {
@@ -216,7 +238,8 @@ public class MusicListManager {
      * @return 是否存在
      */
     public boolean isMusicExist(Music music) {
-        String whereClause = "source_id = " + music.getId();
+        if (music==null) return false;
+        String whereClause = "source_id = " + music.getSrcId();
         dbReader = musicDBHelper.getReadableDatabase();
         Cursor cursor = dbReader.query(tabName, null, whereClause, null, null, null, null);
 

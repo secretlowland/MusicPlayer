@@ -58,13 +58,13 @@ public class MusicPlayListener implements View.OnClickListener, CompoundButton.O
             case R.id.tb_music_play_toggle:
                 if (isChecked) {
                     // 发送开始播放的广播
-                    if (!MusicPlayService.isPlaying) {
+                    if (!MusicPlayService.isPlaying()) {
                         BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_START);
                     }
 
                 } else {
                     // 发送暂停播放的广播
-                    if (MusicPlayService.isPlaying) {
+                    if (MusicPlayService.isPlaying()) {
                         BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PAUSE);
                     }
                 }

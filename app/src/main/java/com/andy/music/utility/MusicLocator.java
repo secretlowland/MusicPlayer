@@ -4,8 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.andy.music.entity.Music;
+import com.andy.music.entity.TagConstants;
 import com.andy.music.function.MusicListManager;
 
 import java.util.List;
@@ -21,14 +23,6 @@ public class MusicLocator {
 
     private static List<Music> currentMusicList;
     private static int currentPosition;
-
-    public static int getId() {
-        return pref.getInt("id", 0);
-    }
-
-    public static int getSourceId() {
-        return pref.getInt("source_id", 0);
-    }
 
     public static List<Music> getCurrentMusicList() {
         return currentMusicList;
@@ -51,37 +45,7 @@ public class MusicLocator {
         return currentMusicList.get(currentPosition);
     }
 
-    public static Music getNextMusic() {
-        if (isPosOutOfBound(currentPosition+1)) return null;
-        return currentMusicList.get(currentPosition+1);
-    }
 
-    public static Music getPreviousMusic() {
-        if (isPosOutOfBound(currentPosition-1)) return null;
-        return currentMusicList.get(currentPosition-1);
-    }
-
-    public static Music getRandomMusic() {
-        int newPos = (int) (Math.random() * currentMusicList.size());
-        if (isPosOutOfBound(newPos)) return null;
-        return currentMusicList.get(newPos);
-    }
-
-    public static Music getLocatedMusic() {
-        List<Music> list = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_LOCAL).getList();
-        Music music = null;
-        int pos = getId() - 1;
-        if (list != null) {
-            if (pos >= 0 && pos < list.size()) music = list.get(pos);
-        }
-        return music;
-    }
-
-//    public static void setLocatedMusic(Music music) {
-//        MusicLocator.setCurrentMusic(music);
-//        editor.putInt("id", music.getId());
-//        editor.putInt("source_id", music.getSrcId()).apply();
-//    }
 
     public static boolean toFirst() {
         currentPosition = 0;
@@ -129,6 +93,8 @@ public class MusicLocator {
      */
     public static boolean toRandom() {
 
+        // 判断歌曲列表是否存在
+        if (currentMusicList==null) return false;
 
         // 新的位置 （获取列表大小范围内的随机数）
         int newPos = (int)(Math.random()*currentMusicList.size());
@@ -147,27 +113,55 @@ public class MusicLocator {
     }
 
 
-    /**
-     * 接受播放音乐，播放下一首，上一首等广播，对歌曲进行重定位
-     */
-    class Receiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            switch (action) {
-                case BroadCastHelper.ACTION_MUSIC_PLAY:
-                    break;
-                case BroadCastHelper.ACTION_MUSIC_PLAY_NEXT:
-                    break;
-                case BroadCastHelper.ACTION_MUSIC_PLAY_PREVIOUS:
-                    break;
-                case BroadCastHelper.ACTION_MUSIC_PLAY_RANDOM:
-                    break;
-                default:
-                    break;
+    public static void saveMusicLocation() {
+        new Runnable() {
+            @Override
+            public void run() {
+                MusicListManager manager = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_CURRENT);
+                manager.setList(currentMusicList);
+                editor.putInt("position", currentPosition).apply();
+               Log.d(TagConstants.TAG, "播放列表已保存");
             }
-        }
+        }.run();
     }
+
+
+
+    public static void  getMusicLocation() {
+        MusicListManager manager = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_CURRENT);
+        currentMusicList = manager.getList();
+        currentPosition = pref.getInt("position", 0);
+    }
+
+
+    public static int getLocatedPosition() {
+        currentPosition = pref.getInt("position", 0);
+        return currentPosition;
+    }
+
+//        public static Music getLocatedMusic() {
+//        List<Music> list = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_LOCAL).getList();
+//        Music music = null;
+//        int pos = getId() - 1;
+//        if (list != null) {
+//            if (pos >= 0 && pos < list.size()) music = list.get(pos);
+//        }
+//        return music;
+//    }
+
+//    public static void setLocatedMusic(Music music) {
+//        MusicLocator.setCurrentMusic(music);
+//        editor.putInt("id", music.getId());
+//        editor.putInt("source_id", music.getSrcId()).apply();
+//    }
+
+    //    public static int getId() {
+//        return pref.getInt("id", 0);
+//    }
+
+//    public static int getSourceId() {
+//        return pref.getInt("source_id", 0);
+//    }
 
 //    /**
 //     * 获取上次播放的歌曲的位置信息

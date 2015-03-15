@@ -11,15 +11,14 @@
     <ScrollView
         android:overScrollMode="always"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
                 android:id="@+id/btn_to_local_music"
-
-                android:background="#34000000"
+                android:background="@drawable/btn_normal"
                 android:layout_weight="1"
                 android:layout_margin="5dp"
                 android:layout_width="wrap_content"
@@ -29,7 +28,7 @@
 
             <Button
                 android:id="@+id/btn_to_favorite_music"
-                android:background="#34000000"
+                android:background="@drawable/btn_normal"
                 android:textColor="#ccffffff"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
@@ -42,7 +41,7 @@
                 android:text="最近播放"
                 android:layout_weight="1"
                 android:textColor="#ccffffff"
-                android:background="#34000000"
+                android:background="@drawable/btn_normal"
                 android:layout_margin="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp" />

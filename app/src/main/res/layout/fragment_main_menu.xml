@@ -13,6 +13,7 @@
         <Button
             android:id="@+id/btn_menu_item_scan_music"
             android:text="扫描音乐"
+            android:clickable="true"
             android:background="@drawable/btn_normal"
             android:layout_weight="1"
             android:padding="15dp"

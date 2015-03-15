@@ -6,6 +6,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import com.andy.music.R;
+import com.andy.music.entity.TagConstants;
 
 /**
  * 专辑列表模块
@@ -23,13 +25,26 @@ import com.andy.music.R;
  */
 public class AlbumListFragment extends Fragment {
 
+    private View mainView;
     private ListView listView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_list_common, container, false);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        mainView = inflater.inflate(R.layout.fragment_list_common, (ViewGroup)getActivity().findViewById(R.id.view_pager_local_music), false);
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,  Bundle savedInstanceState) {
+        // 移除已存在的 view
+        ViewGroup group = ((ViewGroup) mainView.getParent());
+        if (group!=null) {
+            group.removeAllViewsInLayout();
+//            Log.d(TagConstants.TAG, "已移除已存在的view");
+        }
+        return mainView;
+    }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
