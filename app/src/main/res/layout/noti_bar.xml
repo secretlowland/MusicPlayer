@@ -7,7 +7,6 @@
     <ImageView
         android:id="@+id/iv_music_image"
         android:src="@drawable/ic_launcher"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -43,7 +42,6 @@
         android:id="@+id/btn_music_play_next"
         android:text="下一首"
         android:layout_marginTop="2dp"
-        android:layout_marginEnd="10dp"
         android:layout_gravity="center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

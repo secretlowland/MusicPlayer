@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <ListView
-        android:id="@+id/lv_list_common"
+        android:id="@+id/lv_song"
         android:clipToPadding="false"
         android:clipChildren="false"
         android:paddingBottom="50dp"

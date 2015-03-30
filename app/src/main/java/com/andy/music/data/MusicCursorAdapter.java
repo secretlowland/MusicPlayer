@@ -12,7 +12,7 @@ import com.andy.music.utility.ContextUtil;
  * 根据指定条件创建用于查询媒体库的 Cursor
  * Created by Andy on 2014/11/17.
  */
-public class CursorAdapter {
+public class MusicCursorAdapter {
 
     // 查询系统媒体库的参数申明
     private static Uri uri = null;
@@ -44,6 +44,11 @@ public class CursorAdapter {
      *
      */
 
+    public static Cursor getArtists() {
+        String pro[] = {MediaStore.Audio.Media.ARTIST};
+        projection = pro;
+        return getMediaLibCursor();
+    }
 
     /**
      * 根据 WHERE 语句得到相应的 Cursor
@@ -97,6 +102,12 @@ public class CursorAdapter {
         return getMediaLibCursor();
     }
 
+    /**
+     * 获取媒体库中的所有的音频
+     * 通过 context.getConentResolver() 获得 ContentResolver 对象
+     * 再通过 ContentResolver 的 query() 方法查询数据库
+     * @return 媒体库中的音频的结果集
+     */
     public static Cursor getMediaLibCursor() {
         uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         order = MediaStore.Audio.Media.DEFAULT_SORT_ORDER;

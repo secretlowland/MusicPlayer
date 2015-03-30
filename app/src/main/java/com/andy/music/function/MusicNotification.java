@@ -56,18 +56,18 @@ public class MusicNotification {
         Intent nextBtnIntent = new Intent(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
 
         // 在通知栏显示歌曲名称和歌手名
-        views.setTextViewText(R.id.tv_music_name, MusicLocator.getCurrentMusic().getName());
-        views.setTextViewText(R.id.tv_music_singer, MusicLocator.getCurrentMusic().getSinger());
+//        views.setTextViewText(R.id.tv_music_name, MusicLocator.getCurrentMusic().getName());
+//        views.setTextViewText(R.id.tv_music_singer, MusicLocator.getCurrentMusic().getSinger());
 
 
-//        Intent fillInIntent = new Intent(BroadCastHelper.ACTION_MUSIC_PLAY);
-//        PendingIntent pendButtonIntent = PendingIntent.getBroadcast(context, 0, fillInIntent, 0);
-//        views.setOnClickPendingIntent(R.id.btn_music_toggle, pendButtonIntent);
+        Intent fillInIntent = new Intent(BroadCastHelper.ACTION_MUSIC_PLAY);
+        PendingIntent pendButtonIntent = PendingIntent.getBroadcast(context, 0, fillInIntent, 0);
+        views.setOnClickPendingIntent(R.id.btn_music_toggle, pendButtonIntent);
         builder.setContent(views);
         builder.setContentIntent(pendingIntent);
         builder.setTicker("Hello, I'm Andy!");
         builder.setOngoing(true);
-        notificationManager.notify(NOTIFICATION_ID, builder.build());   // 发送通知
+
     }
 
     public void refreshNotification() {

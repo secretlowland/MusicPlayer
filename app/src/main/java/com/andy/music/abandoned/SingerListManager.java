@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 import com.andy.music.R;
+import com.andy.music.data.MusicCursorAdapter;
 
 import java.io.Serializable;
 
@@ -27,10 +28,10 @@ public class SingerListManager implements Serializable {
     public void initView(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
         listView = (ListView)inflater.inflate(R.layout.singer_list, null).findViewById(R.id.lv_singer_list);
-        Cursor cursor = com.andy.music.data.CursorAdapter.getMediaLibCursor();
+        Cursor cursor = MusicCursorAdapter.getMediaLibCursor();
         String[] from = { MediaStore.Audio.Media.ARTIST } ;
         int[] to = { R.id.tv_list_cell_double_line_first };
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(context, R.layout.fragment_list_common, cursor, from, to, 0);
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(context, R.layout.fragment_song, cursor, from, to, 0);
         listView.setAdapter(adapter);
     }
 }

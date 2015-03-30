@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:clipChildren="false"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/flag"
+        android:background="#eeeeee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:id="@+id/ll_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:background="#f3f3f3">
+        <TextView
+            android:id="@+id/indicator_song"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="#cbd6ae"
+            android:textSize="16sp"
+            android:textColor="#70ae95"
+            android:text="歌曲"/>
+        <TextView
+            android:id="@+id/indicator_singer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:text="歌手"/>
+        <TextView
+            android:id="@+id/indicator_album"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:text="专辑"/>
+    </LinearLayout>
+    <View
+        android:id="@+id/v_slider"
+        android:background="#00ff00"
+        android:layout_width="100dp"
+        android:layout_height="5dp"/>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager_local_music"
+        android:clipToPadding="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </android.support.v4.view.ViewPager>
+
+</LinearLayout>

@@ -40,7 +40,6 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(TagConstants.TAG, "Fragment-->onCreate()");
 
         //  绑定到 MusicPlayService 服务
         Intent intent = new Intent(getActivity(), MusicPlayService.class);
@@ -52,13 +51,11 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TagConstants.TAG, "Fragment-->onCreateView()");
         return inflater.inflate(R.layout.fragment_music_play_bar, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        Log.d(TagConstants.TAG, "Fragment-->onViewCreated()");
         super.onViewCreated(view, savedInstanceState);
 
         // 初始化成员变量
@@ -117,7 +114,6 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onDestroyView() {
-        Log.d(TagConstants.TAG, "Fragment--->onDestroy()");
         super.onDestroyView();
         getActivity().unregisterReceiver(receiver);  // 注销广播
     }

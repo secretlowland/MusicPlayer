@@ -37,7 +37,7 @@ public abstract class BaseSongList extends ListFragment {
         super.onViewCreated(view, savedInstanceState);
 
         // 获取 ListView 对象
-        listView = (ListView) getActivity().findViewById(R.id.lv_list_common);
+        listView = (ListView) getActivity().findViewById(R.id.lv_song);
 
         // 为 ListView 对象设置适配器
         listView.setAdapter(getAdapter());
@@ -56,7 +56,7 @@ public abstract class BaseSongList extends ListFragment {
     }
     @Override
     public BaseAdapter getAdapter() {
-        return new MusicListAdapter(getActivity().getApplicationContext(), getList(), R.layout.music_list_cell);
+        return new MusicListAdapter(getActivity().getApplicationContext(), getList(), R.layout.song_list_cell);
     }
 
     @Override

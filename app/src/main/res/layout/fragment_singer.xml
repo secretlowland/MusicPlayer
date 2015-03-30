@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:text="我是一个Fragment"
+
+
+    <ListView
+        android:id="@+id/lv_singer"
+        android:clipToPadding="false"
+        android:clipChildren="false"
+        android:paddingBottom="50dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <Button
-        android:text="Fragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
+
+    </ListView>
 
 </LinearLayout>
