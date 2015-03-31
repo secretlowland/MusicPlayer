@@ -18,7 +18,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.andy.music.R;
-import com.andy.music.data.MusicCursorAdapter;
+import com.andy.music.data.CursorAdapter;
 import com.andy.music.function.MusicListManager;
 import com.andy.music.entity.TagConstants;
 import com.andy.music.function.MusicPlayService;
@@ -80,7 +80,7 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
                     public void run() {
                         // 由于在数据库中建立列表的的时间比较长，故单独放在一个线程中
                         // 获得查询游标
-                        Cursor searchCursor = MusicCursorAdapter.get(null);
+                        Cursor searchCursor = CursorAdapter.get(null);
 
                         // 将游标中的数据存到数据库
                         MusicListManager localMusic = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_LOCAL);

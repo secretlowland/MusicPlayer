@@ -33,7 +33,7 @@ public class MusicScanner {
      */
 
     public static Music scan(int id) {
-        Cursor cursor = MusicCursorAdapter.get(id);
+        Cursor cursor = CursorAdapter.get(id);
         List<Music> list = scan(cursor);
         if (!list.isEmpty()) {
             return list.get(0);

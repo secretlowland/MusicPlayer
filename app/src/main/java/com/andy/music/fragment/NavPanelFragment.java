@@ -24,26 +24,14 @@ public class NavPanelFragment extends android.support.v4.app.Fragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TagConstants.TAG, "NavPanelFragment-->onCreateView");
         return inflater.inflate(R.layout.fragment_nav_panel, container, false);
     }
 
-    @Override
-    public void onPause() {
-        Log.d(TagConstants.TAG, "NavPanelFragment-->onPause");
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        Log.d(TagConstants.TAG, "NavPanelFragment-->onResume");
-        super.onResume();
-    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TagConstants.TAG, "NavPanelFragment-->onViewCreated");
+
         // 初始化成员变量
         Button toLocalMusic = (Button) view.findViewById(R.id.btn_to_local_music);
         Button toFavorMusic = (Button) view.findViewById(R.id.btn_to_favorite_music);

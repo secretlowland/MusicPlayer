@@ -20,7 +20,7 @@ public abstract class ListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_song, container, false);
+        return inflater.inflate(R.layout.fragment_list_common, container, false);
     }
 
     @Override
@@ -30,7 +30,7 @@ public abstract class ListFragment extends Fragment {
         ListView listView;
 
         // 获取 ListView 对象
-        listView = (ListView) getActivity().findViewById(R.id.lv_song);
+        listView = (ListView) getActivity().findViewById(R.id.lv_list_common);
 
         // 为 ListView 对象设置适配器
         listView.setAdapter(getAdapter());

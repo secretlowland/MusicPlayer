@@ -1,17 +1,19 @@
 package com.andy.music.fragment;
 
-import android.graphics.Color;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.andy.music.R;
+import com.andy.music.adapter.MFragmentPagerAdapter;
 import com.andy.music.adapter.MyFragmentPagerAdapter;
 import com.andy.music.entity.TagConstants;
 
@@ -23,18 +25,23 @@ import java.util.List;
  * 整体为一个ViewPager，由歌曲，歌手，专辑，文件夹四个页面构成
  * Created by Andy on 2014/12/13.
  */
-public class LocalMusicFragment extends Fragment implements ViewPager.OnPageChangeListener {
+public class LocalMusicFragment extends Fragment {
 
     private View mainview;
     private ViewPager musicPager;
 
     private List<Fragment> fragmentList;
-    private List<TextView> indicator;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        Log.d(TagConstants.TAG, "LocalMusicFragment-->onCreate()");
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TagConstants.TAG, "LocalMusicFragment-->onCreateView()");
-        return inflater.inflate(R.layout.fragment_local_music, container, false);
+        return inflater.inflate(R.layout.fragment_view_pager, container, false);
     }
 
     @Override
@@ -45,28 +52,86 @@ public class LocalMusicFragment extends Fragment implements ViewPager.OnPageChan
 
         // 要加载的页面
         fragmentList = new ArrayList<>();
+
         fragmentList.add(new SongListFragment());
         fragmentList.add(new SingerListFragment());
         fragmentList.add(new AlbumListFragment());
 
         // 页面标题
-        indicator = new ArrayList<>();
-        indicator.add((TextView)getActivity().findViewById(R.id.indicator_song));
-        indicator.add((TextView)getActivity().findViewById(R.id.indicator_singer));
-        indicator.add((TextView)getActivity().findViewById(R.id.indicator_album));
         final ArrayList<String> titles = new ArrayList<String>();
         titles.add("歌曲");
         titles.add("歌手");
         titles.add("专辑");
 
         // 设置适配器
-        musicPager.setAdapter(new MyFragmentPagerAdapter(getFragmentManager(), fragmentList, titles));
-        musicPager.setOnPageChangeListener(this);
+        musicPager.setAdapter(new FragmentPagerAdapter(getFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return fragmentList.get(position);
+            }
+
+            @Override
+            public int getCount() {
+                return fragmentList.size();
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return titles.get(position);
+            }
+        });
+//        musicPager.setAdapter(new MyFragmentPagerAdapter(getFragmentManager(), fragmentList, titles));
+//        musicPager.setAdapter(new MFragmentPagerAdapter(getFragmentManager(), fragmentList, titles));
+//        musicPager.setAlwaysDrawnWithCacheEnabled(false);
+//        musicPager.setDuplicateParentStateEnabled(true);
+//        musicPager.setOffscreenPageLimit(3);
+    }
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        Log.d(TagConstants.TAG, "LocalMusicFragment-->onAttach()");
+        super.onAttach(activity);
+    }
+
+
+
+
+
+    @Override
+    public void onStart() {
+        Log.d(TagConstants.TAG, "LocalMusicFragment-->onStart()");
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        Log.d(TagConstants.TAG, "LocalMusicFragment-->onResume()");
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        Log.d(TagConstants.TAG, "LocalMusicFragment-->onPause()");
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        Log.d(TagConstants.TAG, "LocalMusicFragment-->onStop()");
+        super.onStop();
     }
 
     @Override
     public void onDestroyView() {
         Log.d(TagConstants.TAG, "LocalMusicFragment-->onDestroyView()");
+
+        Log.d(TagConstants.TAG, "fragsize--->"+fragmentList.size());
+        for(int i=0; i<fragmentList.size(); i++) {
+            fragmentList.remove(i);
+        }
+        Log.d(TagConstants.TAG, "fragsize--->"+fragmentList.size());
+
         super.onDestroyView();
     }
 
@@ -74,61 +139,13 @@ public class LocalMusicFragment extends Fragment implements ViewPager.OnPageChan
     public void onDestroy() {
         Log.d(TagConstants.TAG, "LocalMusicFragment-->onDestroy()");
         super.onDestroy();
-//        for (int i=0; i<fragmentList.size(); i++) {
-//            Fragment fragment = fragmentList.get(i);
-//            if (fragment.isInLayout()) {
-//                Log.d(TagConstants.TAG, "frag "+ (i+1)+ " is destroyed.");
-//                fragment.onDestroyView();
-//                fragment.onDestroy();
-//                fragment.onDetach();
-//                fragmentList.clear();
-//            }
-//        }
     }
 
     @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        LinearLayout layout = (LinearLayout)getActivity().findViewById(R.id.ll_indicator);
-        TextView tv =(TextView) getActivity().findViewById(R.id.flag);
-        View slider = (View)getActivity().findViewById(R.id.v_slider);
-        tv.setText("pos:" + position + "   posOffset:" + positionOffset + "   posOffsetPix:" + positionOffsetPixels);
-        tv.setTextColor(Color.parseColor("#ff00ff"));
-
-        int x = (int)(100*positionOffset);
-        slider.scrollTo(x, 0);
-        int columWidth = layout.getWidth()/6;
-        for (int i=0; i<layout.getChildCount(); i++) {
-            View view = layout.getChildAt(i);
-
-
-        }
-
+    public void onDetach() {
+        Log.d(TagConstants.TAG, "LocalMusicFragment-->onDetach()");
+        Log.d(TagConstants.TAG, "fragsize--->"+fragmentList.size());
+        Log.d(TagConstants.TAG, "frag--->"+fragmentList.toString());
+        super.onDetach();
     }
-
-    private void indicate(View view, int lastPos, int offset) {
-        int temp = lastPos;
-
-    }
-
-
-    @Override
-    public void onPageSelected(int position) {
-        initIndicator();
-        TextView textView = indicator.get(position);
-        textView.setTextColor(Color.parseColor("#70ae95"));
-        textView.setBackgroundColor(Color.parseColor("#cbd6ae"));
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
-    }
-
-    private void initIndicator() {
-        for (TextView tv: indicator) {
-            tv.setTextColor(Color.parseColor("#2d3526"));
-            tv.setBackgroundColor(Color.parseColor("#ffffff"));
-        }
-    }
-
 }

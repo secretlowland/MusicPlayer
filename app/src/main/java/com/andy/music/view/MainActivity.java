@@ -1,15 +1,10 @@
 package com.andy.music.view;
 
 import android.app.FragmentTransaction;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -19,7 +14,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.andy.music.R;
@@ -30,7 +24,6 @@ import com.andy.music.fragment.NavPanelFragment;
 import com.andy.music.fragment.PlayBarFragment;
 import com.andy.music.fragment.TopBarFragment;
 import com.andy.music.function.MusicListFactory;
-import com.andy.music.function.MusicNotification;
 import com.andy.music.utility.MusicLocator;
 
 import java.util.Timer;
@@ -79,30 +72,31 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
         }
 
         // 加载通知栏
-        MusicNotification notify = MusicNotification.getInstance(this);
-        notify.sendNotification(this);
+//        MusicNotification notify = MusicNotification.getInstance(this);
+//        notify.sendNotification(this);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        Intent intent = new Intent(this, PlayActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-        builder.setContentIntent(pendingIntent);
-        builder.setSmallIcon(R.drawable.ic_launcher);
-        builder.setTicker("Hello, I'm Andy!");
-        builder.setWhen(System.currentTimeMillis());
-//        builder.setStyle(new Notification.InboxStyle());
+//        Notification.Builder builder = new Notification.Builder(this);
+//        Intent intent = new Intent(this, PlayActivity.class);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+//        builder.setContentIntent(pendingIntent);
+//        builder.setSmallIcon(R.drawable.ic_launcher);
+//        builder.setTicker("Hello, I'm Andy!");
+//        builder.setWhen(System.currentTimeMillis());
+////        builder.setStyle(new Notification.InboxStyle());
 //        builder.setContentTitle(MusicLocator.getLocatedMusic().getName());
 //        builder.setContentText(MusicLocator.getLocatedMusic().getSinger());
-        RemoteViews views = new RemoteViews(this.getPackageName(), R.layout.noti_bar);
-        builder.setContent(views);
-
-        builder.setOngoing(true);
-        NotificationManager manager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(NOTIFICATON_ID, builder.build());   // 发送通知
+//        RemoteViews views = new RemoteViews(this.getPackageName(), R.layout.noti_bar);
+//        builder.setContent(views);
+//
+//        builder.setOngoing(true);
+//        NotificationManager manager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+//        manager.notify(NOTIFICATON_ID, builder.build());   // 发送通知
 
     }
 
     @Override
     protected void onDestroy() {
+        Log.d(TagConstants.TAG, "MusicListActivity-->onDestroy()");
         MusicLocator.saveMusicLocation();
         super.onDestroy();
     }
