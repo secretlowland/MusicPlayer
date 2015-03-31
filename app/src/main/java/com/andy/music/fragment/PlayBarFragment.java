@@ -81,7 +81,8 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
                 fragment.setCancelable(true);
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
 //                transaction.setCustomAnimations(R.anim.bottom_to_top, R.anim.fade_out, R.anim.fade_out, R.anim.fade_out);
-                transaction.setCustomAnimations(R.anim.bottom_to_top, 0, 0, R.anim.fade_out);
+//                transaction.setCustomAnimations(R.animator.fragment_slide_left_enter,
+//                        R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter,R.animator.fragment_slide_right_exit);
                 transaction.add(R.id.frag_container_main_menu, fragment);
                 transaction.addToBackStack(null).commit();
 

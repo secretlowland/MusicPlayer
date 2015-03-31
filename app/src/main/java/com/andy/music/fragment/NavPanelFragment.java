@@ -75,7 +75,7 @@ public class NavPanelFragment extends android.support.v4.app.Fragment implements
             case R.id.btn_to_local_music:
                 flag = false;
                 LocalMusicFragment frag = new LocalMusicFragment();
-//                transaction.setCustomAnimations(R.anim.frag_in, R.anim.frag_out, 0, 0);  // 必须在 replace() 等方法之前调用
+                transaction.setCustomAnimations(R.anim.frag_in, R.anim.frag_out, R.anim.frag_out, R.anim.frag_in);  // 必须在 replace() 等方法之前调用
                 transaction.replace(R.id.frag_container_main_content, frag);
                 transaction.addToBackStack(null);
                 transaction.commit();
