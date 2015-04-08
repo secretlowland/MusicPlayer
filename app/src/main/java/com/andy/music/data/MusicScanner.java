@@ -66,6 +66,9 @@ public class MusicScanner {
 
             // 设置歌曲路径
             music.setPath(mediaCursor.getString(mediaCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
+
+            // 设置歌曲专辑
+            music.setAlbum(mediaCursor.getString(mediaCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)));
             list.add(music);
         }
         return list;

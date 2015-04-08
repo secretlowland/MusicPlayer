@@ -1,9 +1,17 @@
 package com.andy.music.view;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.Cursor;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -24,6 +32,7 @@ import com.andy.music.fragment.NavPanelFragment;
 import com.andy.music.fragment.PlayBarFragment;
 import com.andy.music.fragment.TopBarFragment;
 import com.andy.music.function.MusicListFactory;
+import com.andy.music.utility.ContextUtil;
 import com.andy.music.utility.MusicLocator;
 
 import java.util.Timer;
@@ -42,15 +51,39 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_content);
 
+//        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+//        String selection = MediaStore.Audio.Media.TITLE+"=?";
+//        String[] arg = {"慢慢"};
+//        Cursor cursor = ContextUtil.getInstance().getContentResolver().query(uri, null, selection, arg, null);
+//        int i=0;
+//        String name = "";
+//        while(cursor.moveToNext()) {
+//            i++;
+//            name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
+//        }
+//        System.out.println("i-->"+i);
+//        Toast.makeText(this, "名字-->"+name, Toast.LENGTH_SHORT).show();
+
 
         // 初始化
         init();
 
-        // 设置透明状态栏
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);  //透明状态栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);   //透明导航栏
+        // 更新媒体库
+        updateMediaStore();
+
+        // 设置 ActionBar
+        ActionBar actionbar = getActionBar();
+        if (actionbar!=null) {
+            actionbar.setTitle("音乐");
+            actionbar.setDisplayShowHomeEnabled(false);  // 是否显示图标 默认true
+            actionbar.setDisplayShowTitleEnabled(true);  // 是否显示标题 默认true
         }
+
+        // 设置透明状态栏
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);  //透明状态栏
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);   //透明导航栏
+//        }
 
         // 加载模块
         if (findViewById(R.id.frag_container_main_content) != null) {
@@ -65,7 +98,7 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
             playBarFragment.setArguments(getIntent().getExtras());
 
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.frag_container_top_bar, topBarFragment);
+//            transaction.add(R.id.frag_container_top_bar, topBarFragment);
             transaction.add(R.id.frag_container_main_content, navPanelFragment);
             transaction.add(R.id.frag_container_play_bar, playBarFragment);
             transaction.commit();
@@ -114,6 +147,9 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         switch (id) {
+            case android.R.id.home:  // ActionBar返回键
+                onBackPressed();  // 调用系统返回方法
+                break;
             case R.id.action_search:
                 //TODO  查找歌曲
                 startActivity(new Intent(this, SearchActivity.class));
@@ -192,6 +228,16 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
         // 获取上次的音乐位置
         MusicLocator.getMusicLocation();
 
+        // 设置标题
+        this.setTitle("音乐");
+
+    }
+
+    // 更新媒体库
+    private void  updateMediaStore() {
+        // 通知系统扫描媒体库
+        MediaScannerConnection.scanFile(this, new String[]{Environment
+                .getExternalStorageDirectory().getAbsolutePath()}, null, null);
     }
 
 

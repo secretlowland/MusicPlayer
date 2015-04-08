@@ -2,10 +2,8 @@ package com.andy.music.fragment;
 
 import android.app.Activity;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.AttributeSet;
@@ -18,12 +16,10 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.andy.music.R;
 import com.andy.music.data.CursorAdapter;
 import com.andy.music.entity.TagConstants;
-import com.andy.music.utility.MusicLocator;
 
 /**
  * 歌曲列表模块
@@ -39,11 +35,11 @@ public class SingerListFragment extends Fragment {
         Log.d(TagConstants.TAG, "SingerList--> onCreate");
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        mainView = inflater.inflate(R.layout.fragment_list_common, (ViewGroup)getActivity().findViewById(R.id.view_pager_local_music), false);
+        mainView = inflater.inflate(R.layout.fragment_list_singer, (ViewGroup)getActivity().findViewById(R.id.view_pager_local_music), false);
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated( Bundle savedInstanceState) {
         Log.d(TagConstants.TAG, "SingerList--> onActivityCreated");
         super.onActivityCreated(savedInstanceState);
     }
@@ -123,12 +119,12 @@ public class SingerListFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view,  Bundle savedInstanceState) {
         Log.d(TagConstants.TAG, "SingerList--> onViewCreated");
         super.onViewCreated(view, savedInstanceState);
 
         // 获取 ListView
-        listView =(ListView) view.findViewById(R.id.lv_list_common);
+        listView =(ListView) view.findViewById(R.id.lv_list_singer);
 
         // 为 ListView 设置适配器
         listView.setAdapter(getAdapter());

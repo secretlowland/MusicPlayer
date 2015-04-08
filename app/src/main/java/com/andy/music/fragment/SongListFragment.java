@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,17 +39,9 @@ public class SongListFragment extends Fragment {
     private Cursor searchCursor;
     private List<Music> musicList;
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//        Log.d(TagConstants.TAG, "SongList-->onActivityCreated");
-        super.onActivityCreated(savedInstanceState);
-    }
 
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-//        Log.d(TagConstants.TAG, "SongList-->onViewStateRestored");
-        super.onViewStateRestored(savedInstanceState);
-    }
+
+
 
     @Override
     public void onResume() {
@@ -99,7 +90,7 @@ public class SongListFragment extends Fragment {
 //        Log.d(TagConstants.TAG, "SongList-->onCreate");
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        mainView = inflater.inflate(R.layout.fragment_list_common, (ViewGroup)getActivity().findViewById(R.id.view_pager_local_music), false);
+        mainView = inflater.inflate(R.layout.fragment_list_song, (ViewGroup)getActivity().findViewById(R.id.view_pager_local_music), false);
     }
 
     @Override
@@ -120,7 +111,7 @@ public class SongListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // 获取 ListView 对象
-        listView = (ListView) getActivity().findViewById(R.id.lv_list_common);
+        listView = (ListView) getActivity().findViewById(R.id.lv_list_song);
 
         // 为 ListView 对象设置适配器
         listView.setAdapter(getAdapter());
@@ -150,9 +141,16 @@ public class SongListFragment extends Fragment {
 
         if (whereClause != null) {
             searchCursor = CursorAdapter.get(whereClause);
+//            searchCursor = CursorAdapter.getMediaLibCursor();
+            int i=0;
+//            while(searchCursor.moveToNext()) {
+//                i++;
+//            }
+//            Log.d(TagConstants.TAG, "i---------------------->"+i);
         }
         if (searchCursor != null) {
             musicList = MusicScanner.scan(searchCursor);
+            Log.d(TagConstants.TAG, "list size-->"+musicList.size());
             searchCursor.close();
         }
 

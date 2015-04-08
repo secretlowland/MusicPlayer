@@ -1,5 +1,6 @@
 package com.andy.music.fragment;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,6 +46,17 @@ public class NavPanelFragment extends android.support.v4.app.Fragment implements
     }
 
     @Override
+    public void onResume() {
+        ActionBar actionBar = getActivity().getActionBar();
+        if(actionBar!=null) {
+            actionBar.setTitle("音乐");
+            actionBar.setDisplayHomeAsUpEnabled(false);
+            actionBar.setHomeButtonEnabled(true);
+        }
+        super.onResume();
+    }
+
+    @Override
     public void onDestroyView() {
         Log.d(TagConstants.TAG, "NavPanelFragment-->onDestroyView");
         super.onDestroyView();
@@ -70,19 +82,11 @@ public class NavPanelFragment extends android.support.v4.app.Fragment implements
                 break;
             case R.id.btn_to_recent_music:
                 flag = false;
-                RecentSongList recentSongList = new RecentSongList();
-//                transaction.setCustomAnimations(R.anim.frag_in, R.anim.frag_out, 0, 0);  // 必须在 replace() 等方法之前调用
-                transaction.replace(R.id.frag_container_main_content, recentSongList);
-                transaction.addToBackStack(null);
                 transaction.commit();
                 break;
             case R.id.btn_to_favorite_music:
                 flag = false;
-                FavoriteSongList favoriteSongList = new FavoriteSongList();
-//                transaction.setCustomAnimations(R.anim.frag_in, R.anim.frag_out, 0, 0);  // 必须在 replace() 等方法之前调用
-                transaction.replace(R.id.frag_container_main_content, favoriteSongList);
-                transaction.addToBackStack(null);
-                transaction.commit();
+
                 break;
             default:
                 break;

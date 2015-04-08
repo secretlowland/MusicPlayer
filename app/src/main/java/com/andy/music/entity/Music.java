@@ -12,6 +12,7 @@ public class Music {
     private String name;
     private String singer;
     private String path;
+    private String album;
 
     public Music() {}
     public Music(int id) {
@@ -72,6 +73,15 @@ public class Music {
     public void setPath(String path) {
         this.path = path;
     }
+
+    public String getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(String album) {
+        this.album = album;
+    }
+
 
 
 

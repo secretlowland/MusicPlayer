@@ -1,9 +1,9 @@
 package com.andy.music.fragment;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.andy.music.R;
-import com.andy.music.adapter.MFragmentPagerAdapter;
 import com.andy.music.adapter.MyFragmentPagerAdapter;
 import com.andy.music.entity.TagConstants;
 
@@ -34,20 +33,26 @@ public class LocalMusicFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(TagConstants.TAG, "LocalMusicFragment-->onCreate()");
+//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onCreate()");
+        ActionBar actionBar = getActivity().getActionBar();
+        if(actionBar!=null) {
+            actionBar.setTitle("本地音乐");
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+        }
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TagConstants.TAG, "LocalMusicFragment-->onCreateView()");
+//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onCreateView()");
         return inflater.inflate(R.layout.fragment_view_pager, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TagConstants.TAG, "LocalMusicFragment-->onViewCreated()");
+//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onViewCreated()");
         musicPager = (ViewPager)getActivity().findViewById(R.id.view_pager_local_music);
 
         // 要加载的页面
@@ -64,33 +69,14 @@ public class LocalMusicFragment extends Fragment {
         titles.add("专辑");
 
         // 设置适配器
-        musicPager.setAdapter(new FragmentPagerAdapter(getFragmentManager()) {
-            @Override
-            public Fragment getItem(int position) {
-                return fragmentList.get(position);
-            }
+        musicPager.setAdapter(new MyFragmentPagerAdapter(getFragmentManager(), fragmentList, titles));
 
-            @Override
-            public int getCount() {
-                return fragmentList.size();
-            }
-
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return titles.get(position);
-            }
-        });
-//        musicPager.setAdapter(new MyFragmentPagerAdapter(getFragmentManager(), fragmentList, titles));
-//        musicPager.setAdapter(new MFragmentPagerAdapter(getFragmentManager(), fragmentList, titles));
-//        musicPager.setAlwaysDrawnWithCacheEnabled(false);
-//        musicPager.setDuplicateParentStateEnabled(true);
-//        musicPager.setOffscreenPageLimit(3);
     }
 
 
     @Override
     public void onAttach(Activity activity) {
-        Log.d(TagConstants.TAG, "LocalMusicFragment-->onAttach()");
+//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onAttach()");
         super.onAttach(activity);
     }
 
@@ -100,52 +86,42 @@ public class LocalMusicFragment extends Fragment {
 
     @Override
     public void onStart() {
-        Log.d(TagConstants.TAG, "LocalMusicFragment-->onStart()");
+//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onStart()");
         super.onStart();
     }
 
     @Override
     public void onResume() {
-        Log.d(TagConstants.TAG, "LocalMusicFragment-->onResume()");
+//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onResume()");
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        Log.d(TagConstants.TAG, "LocalMusicFragment-->onPause()");
+//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onPause()");
         super.onPause();
     }
 
     @Override
     public void onStop() {
-        Log.d(TagConstants.TAG, "LocalMusicFragment-->onStop()");
+//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onStop()");
         super.onStop();
     }
 
     @Override
     public void onDestroyView() {
-        Log.d(TagConstants.TAG, "LocalMusicFragment-->onDestroyView()");
-
-        Log.d(TagConstants.TAG, "fragsize--->"+fragmentList.size());
-        for(int i=0; i<fragmentList.size(); i++) {
-            fragmentList.remove(i);
-        }
-        Log.d(TagConstants.TAG, "fragsize--->"+fragmentList.size());
-
+//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onDestroyView()");
         super.onDestroyView();
     }
 
     @Override
     public void onDestroy() {
-        Log.d(TagConstants.TAG, "LocalMusicFragment-->onDestroy()");
+//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onDestroy()");
         super.onDestroy();
     }
 
     @Override
     public void onDetach() {
-        Log.d(TagConstants.TAG, "LocalMusicFragment-->onDetach()");
-        Log.d(TagConstants.TAG, "fragsize--->"+fragmentList.size());
-        Log.d(TagConstants.TAG, "frag--->"+fragmentList.toString());
         super.onDetach();
     }
 }

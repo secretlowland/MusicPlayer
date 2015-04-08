@@ -34,13 +34,13 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Log.d(TagConstants.TAG, "MFPA-->getItem()-->"+position);
+//        Log.d(TagConstants.TAG, "MFPA-->getItem()-->"+position);
         return list.get(position);
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        Log.d(TagConstants.TAG, "MFPA-->instantiateItem()-->"+position);
+//        Log.d(TagConstants.TAG, "MFPA-->instantiateItem()-->"+position);
 
         if (mCurTransaction == null) {
             mCurTransaction = mFragmentManager.beginTransaction();
@@ -49,29 +49,30 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
         final long itemId = getItemId(position);
 
         // Do we already have this fragment?
-//        String name = makeFragmentName(container.getId(), itemId);
-//        Fragment fragment = mFragmentManager.findFragmentByTag(name);
-//        if (fragment != null) {
-//            Log.d(TagConstants.TAG, "fragment已经存在啦！"+itemId);
-//            mCurTransaction.remove(fragment);
-////            mCurTransaction.detach(fragment);
-//            fragment = getItem(position);
-//            Log.d(TagConstants.TAG, "重新获取fragment"+itemId);
-//            if (DEBUG) Log.v(TAG, "Attaching item #" + itemId + ": f=" + fragment);
-////            mCurTransaction.attach(fragment);
-//            mCurTransaction.add(container.getId(), fragment,
-//                    makeFragmentName(container.getId(), itemId));
-//        } else {
-//            fragment = getItem(position);
-//            if (DEBUG) Log.v(TAG, "Adding item #" + itemId + ": f=" + fragment);
-//            mCurTransaction.add(container.getId(), fragment,
-//                    makeFragmentName(container.getId(), itemId));
-//        }
-
-        Fragment fragment = getItem(position);
-        mCurTransaction.add(container.getId(), fragment,
-                makeFragmentName(container.getId(), itemId));
-
+        String name = makeFragmentName(container.getId(), itemId);
+        Fragment fragment = mFragmentManager.findFragmentByTag(name);
+        if (fragment != null) {
+            if (DEBUG) Log.v(TAG, "Attaching item #" + itemId + ": f=" + fragment);
+            /**
+             * 如果 fragment已经存在，则先移除，然后再添加，目的在于避免以下问题 :
+             * 当在 Fragment 中使用 ViewPager+Fragments 时，如果装载 ViewPager 的 Fragment被销毁
+             * 时， ViewPager 中的 Fragment并不会执行 onPause() 等一系列生命周期方法。当再次进入
+             * ViewPager 时，已经 added 的 fragment 不显示。
+             */
+            if (fragment.isAdded()) {
+                mCurTransaction.detach(fragment);
+                fragment = getItem(position);
+                if (DEBUG) Log.v(TAG, "Adding item #" + itemId + ": f=" + fragment);
+                mCurTransaction.add(container.getId(), fragment,
+                        makeFragmentName(container.getId(), itemId));
+            }
+            mCurTransaction.attach(fragment);
+        } else {
+            fragment = getItem(position);
+            if (DEBUG) Log.v(TAG, "Adding item #" + itemId + ": f=" + fragment);
+            mCurTransaction.add(container.getId(), fragment,
+                    makeFragmentName(container.getId(), itemId));
+        }
         if (fragment != mCurrentPrimaryItem) {
             fragment.setMenuVisibility(true);
             fragment.setUserVisibleHint(true);
@@ -82,7 +83,7 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        Log.d(TagConstants.TAG, "MFPA-->destroyItem()-->"+position);
+//        Log.d(TagConstants.TAG, "MFPA-->destroyItem()-->"+position);
         if (mCurTransaction == null) {
             mCurTransaction = mFragmentManager.beginTransaction();
         }
@@ -93,7 +94,7 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
-        Log.d(TagConstants.TAG, "MFPA-->setPrimaryItem()-->"+position);
+//        Log.d(TagConstants.TAG, "MFPA-->setPrimaryItem()-->"+position);
         Fragment fragment = (Fragment)object;
         if (fragment != mCurrentPrimaryItem) {
             if (mCurrentPrimaryItem != null) {
@@ -110,7 +111,7 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public void finishUpdate(ViewGroup container) {
-        Log.d(TagConstants.TAG, "MFPA-->finishUpdate()");
+//        Log.d(TagConstants.TAG, "MFPA-->finishUpdate()");
         if (mCurTransaction != null) {
             mCurTransaction.commitAllowingStateLoss();
             mCurTransaction = null;
@@ -121,7 +122,7 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public long getItemId(int position) {
-        Log.d(TagConstants.TAG, "MFPA-->getItemId()-->"+position);
+//        Log.d(TagConstants.TAG, "MFPA-->getItemId()-->"+position);
         return position;
     }
 

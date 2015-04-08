@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.andy.music.entity.TagConstants;
 import com.andy.music.utility.ContextUtil;
@@ -15,11 +16,16 @@ import com.andy.music.utility.ContextUtil;
 public class CursorAdapter {
 
     // 查询系统媒体库的参数申明
-    private static Uri uri = null;
-    private static String[] projection = null;
-    private static String selection = null;
-    private static String[] selectionArg = null;
-    private static String order = null;
+    private static Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+    private static String[] projection = {MediaStore.Audio.Media._ID,
+            MediaStore.Audio.Media.DURATION,
+            MediaStore.Audio.Media.TITLE,
+            MediaStore.Audio.Media.ARTIST,
+            MediaStore.Audio.Media.DATA,
+            MediaStore.Audio.Media.ALBUM};
+    private static String selection =null;
+    private static String[] selectionArgs =null;
+    private static String order = MediaStore.Audio.Media.DEFAULT_SORT_ORDER;
 
     /**
      * query()方法参数说明 :
@@ -98,9 +104,17 @@ public class CursorAdapter {
     }
 
     public static Cursor getMediaLibCursor() {
-        uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        order = MediaStore.Audio.Media.DEFAULT_SORT_ORDER;
-        return ContextUtil.getInstance().getContentResolver().query(uri, projection, selection, selectionArg, order);
+//        String selection = MediaStore.Audio.Media.TITLE+"=?";
+//        String[] selectionArgs = {"慢慢"};
+//        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+//        String selection = MediaStore.Audio.Media.TITLE+"=?";
+//        String[] arg = {"慢慢"};
+
+        return ContextUtil.getInstance().getContentResolver().query(uri, projection,selection, selectionArgs, order);
+    }
+
+    public static Cursor getMediaLibCursor(Uri uri,String[] projection, String selection, String[] selectionArgs, String order) {
+        return ContextUtil.getInstance().getContentResolver().query(uri, projection, selection, selectionArgs, order);
     }
 
 }

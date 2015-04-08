@@ -3,10 +3,8 @@ package com.andy.music.fragment;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,6 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import com.andy.music.R;
-import com.andy.music.entity.TagConstants;
 
 /**
  * 专辑列表模块
@@ -32,7 +29,7 @@ public class AlbumListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        mainView = inflater.inflate(R.layout.fragment_list_common, (ViewGroup)getActivity().findViewById(R.id.view_pager_local_music), false);
+        mainView = inflater.inflate(R.layout.fragment_list_album, (ViewGroup)getActivity().findViewById(R.id.view_pager_local_music), false);
     }
 
     @Override
@@ -46,11 +43,11 @@ public class AlbumListFragment extends Fragment {
         return mainView;
     }
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // 获取 ListView
-        listView =(ListView) view.findViewById(R.id.lv_list_common);
+        listView =(ListView) view.findViewById(R.id.lv_list_album);
 
         // 为 ListView 设置适配器
         listView.setAdapter(getAdapter());

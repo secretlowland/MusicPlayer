@@ -42,6 +42,7 @@ public class MusicLocator {
 
     public static Music getCurrentMusic() {
         if (currentMusicList==null) return null;
+        if(currentMusicList.size()==0) return null;
         return currentMusicList.get(currentPosition);
     }
 
