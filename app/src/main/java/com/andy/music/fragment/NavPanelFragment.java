@@ -2,6 +2,7 @@ package com.andy.music.fragment;
 
 import android.app.ActionBar;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,7 +59,7 @@ public class NavPanelFragment extends android.support.v4.app.Fragment implements
 
     @Override
     public void onDestroyView() {
-        Log.d(TagConstants.TAG, "NavPanelFragment-->onDestroyView");
+//        Log.d(TagConstants.TAG, "NavPanelFragment-->onDestroyView");
         super.onDestroyView();
     }
 
@@ -67,14 +68,14 @@ public class NavPanelFragment extends android.support.v4.app.Fragment implements
 
         // 模块替换
         android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        SongListFragment fragment= new SongListFragment();
+        Fragment frag= new Fragment();
         String listName = MusicListManager.MUSIC_LIST_LOCAL;
         boolean flag = true;
 
         switch (v.getId()) {
             case R.id.btn_to_local_music:
                 flag = false;
-                LocalMusicFragment frag = new LocalMusicFragment();
+                frag = new LocalMusicFragment();
 //                transaction.setCustomAnimations(R.anim.frag_in, R.anim.frag_out, 0, 0);  // 必须在 replace() 等方法之前调用
                 transaction.replace(R.id.frag_container_main_content, frag);
                 transaction.addToBackStack(null);
@@ -82,24 +83,31 @@ public class NavPanelFragment extends android.support.v4.app.Fragment implements
                 break;
             case R.id.btn_to_recent_music:
                 flag = false;
+                frag = new RecentSongList();
+                transaction.replace(R.id.frag_container_main_content, frag);
+                transaction.addToBackStack(null);
                 transaction.commit();
                 break;
             case R.id.btn_to_favorite_music:
                 flag = false;
-
+                frag = new FavouriteSongList();
+                transaction.replace(R.id.frag_container_main_content, frag);
+                transaction.addToBackStack(null);
+                transaction.commit();
+                listName = MusicListManager.MUSIC_LIST_FAVORITE;
                 break;
             default:
                 break;
         }
-
-        if (flag) {
-            Bundle bundle = new Bundle();
-            bundle.putString("list_name", listName);
-            fragment.setArguments(bundle);
-            transaction.replace(R.id.frag_container_main_content, fragment);
-            transaction.addToBackStack(null);  // 添加到返回栈
-            transaction.commit();  // 提交事务
-        }
+//
+//        if (flag) {
+//            Bundle bundle = new Bundle();
+//            bundle.putString("list_name", listName);
+//            fragment.setArguments(bundle);
+//            transaction.replace(R.id.frag_container_main_content, fragment);
+//            transaction.addToBackStack(null);  // 添加到返回栈
+//            transaction.commit();  // 提交事务
+//        }
 
     }
 }

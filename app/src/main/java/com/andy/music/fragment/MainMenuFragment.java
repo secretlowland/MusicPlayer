@@ -20,8 +20,8 @@ import android.widget.Toast;
 
 import com.andy.music.R;
 import com.andy.music.data.CursorAdapter;
-import com.andy.music.function.MusicListManager;
 import com.andy.music.entity.TagConstants;
+import com.andy.music.function.MusicListManager;
 import com.andy.music.function.MusicPlayService;
 import com.andy.music.view.SettingActivity;
 

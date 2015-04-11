@@ -5,16 +5,23 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.andy.music.R;
+import com.andy.music.data.CursorAdapter;
+import com.andy.music.entity.TagConstants;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * 专辑列表模块
@@ -57,10 +64,42 @@ public class AlbumListFragment extends Fragment {
     }
 
     public BaseAdapter getAdapter() {
-        Cursor cursor = com.andy.music.data.CursorAdapter.getMediaLibCursor();
-        String[] from = {MediaStore.Audio.Media.ALBUM};
-        int[] to = {R.id.tv_list_cell_double_line_first};
-        return new SimpleCursorAdapter(getActivity(), R.layout.list_cell_double_line, cursor, from, to, 0);
+        Cursor cursor = CursorAdapter.getMediaLibCursor();
+        int resource = R.layout.list_cell_double_line;
+        String[] from = {"name", "num"};
+        int[] to = {R.id.tv_list_cell_double_line_first, R.id.tv_list_cell_double_line_second};
+
+        List<HashMap<String, Object>> data = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));
+            HashMap<String, Object> map = null;
+            HashMap<String, Object> pre = null;
+            if (!data.isEmpty()) {  // 列表不为空,则遍历 data 中已存在的数据
+                int num = 0;  // 该歌手出现的次数
+                for (int i=0; i<data.size(); i++) {
+                    pre = data.get(i);
+                    if (name.equals(pre.get("name"))) {
+                        String str = (String)pre.get("num");
+                        num = getInt(str);
+                        data.remove(pre);
+                    }
+                }
+                map = new HashMap<>();
+                map.put("name", name);
+                map.put("num", ++num+"首歌曲");
+                data.add(map);
+            } else {  // 列表为空
+                Log.d(TagConstants.TAG, "列表为空");
+                map = new HashMap<>();
+                map.put("name", name);
+                map.put("num", 1+"首歌曲");
+                data.add(map);
+            }
+
+        }
+        cursor.close();
+        SimpleAdapter adapter =new SimpleAdapter(getActivity(), data, resource, from, to);
+        return adapter;
     }
 
     public AdapterView.OnItemClickListener getOnItemClickListener() {
@@ -83,6 +122,13 @@ public class AlbumListFragment extends Fragment {
             }
         };
     }
-
+    private int getInt(String str) {
+        int index = 0;
+        for (int i=0; i<str.length(); i++) {
+            char c = str.charAt(i);
+            if (c<=57) index ++;
+        }
+        return Integer.parseInt(str.substring(0, index));
+    }
 
 }
