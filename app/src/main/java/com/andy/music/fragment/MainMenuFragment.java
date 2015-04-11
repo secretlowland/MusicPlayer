@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -38,6 +39,7 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
      */
     private String playSchema;
 
+    private RelativeLayout menuLayout;
     private Button scanMusicBtn;
     private Button playSchemaBtn;
     private Button changeThemeBtn;
@@ -54,6 +56,7 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        menuLayout = (RelativeLayout) view.findViewById(R.id.rl_menu);
         scanMusicBtn = (Button) view.findViewById(R.id.btn_menu_item_scan_music);
         playSchemaBtn = (Button) view.findViewById(R.id.btn_menu_item_play_schema);
         changeThemeBtn = (Button) view.findViewById(R.id.btn_menu_item_change_theme);
@@ -61,6 +64,7 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
         settingBtn = (Button) view.findViewById(R.id.btn_menu_item_setting);
         exitBtn = (Button) view.findViewById(R.id.btn_menu_item_exit);
 
+        menuLayout.setOnClickListener(this);
         scanMusicBtn.setOnClickListener(this);
         playSchemaBtn.setOnClickListener(this);
         changeThemeBtn.setOnClickListener(this);
@@ -80,7 +84,7 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
                     public void run() {
                         // 由于在数据库中建立列表的的时间比较长，故单独放在一个线程中
                         // 获得查询游标
-                        Cursor searchCursor = CursorAdapter.get(null);
+                        Cursor searchCursor = CursorAdapter.get(null,null);
 
                         // 将游标中的数据存到数据库
                         MusicListManager localMusic = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_LOCAL);
@@ -112,6 +116,7 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
                         Toast.makeText(getActivity(), "将在" + min + "分钟后退出！", Toast.LENGTH_SHORT).show();
                         exitAtTime(min * 60000);
                     }
+
                 }, 0, 30, true).show();
 //                final EditText timeToExit = new EditText(getActivity());
 //                new AlertDialog.Builder(getActivity())
@@ -143,6 +148,9 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
                 // 退出
                 Toast.makeText(getActivity(), "退出", Toast.LENGTH_SHORT).show();
                 System.exit(0);
+                break;
+            case R.id.rl_menu:
+                getActivity().onBackPressed();
                 break;
             default:
                 break;

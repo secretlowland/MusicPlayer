@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -134,23 +135,15 @@ public class SongListFragment extends Fragment {
 
         // 获取传递进来的内容（查询语句）
         Bundle bundle = getArguments();
-        String whereClause = "";
+        String selection = null;
+        String selectionArgs[] = null;
         if (bundle != null) {
-            whereClause = bundle.getString("where_clause");
+            selection = bundle.getString("selection");
+            selectionArgs = bundle.getStringArray("selection_args");
         }
-
-        if (whereClause != null) {
-            searchCursor = CursorAdapter.get(whereClause);
-//            searchCursor = CursorAdapter.getMediaLibCursor();
-            int i=0;
-//            while(searchCursor.moveToNext()) {
-//                i++;
-//            }
-//            Log.d(TagConstants.TAG, "i---------------------->"+i);
-        }
+        searchCursor = CursorAdapter.get(selection, selectionArgs);
         if (searchCursor != null) {
             musicList = MusicScanner.scan(searchCursor);
-            Log.d(TagConstants.TAG, "list size-->"+musicList.size());
             searchCursor.close();
         }
 

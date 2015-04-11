@@ -16,16 +16,16 @@ import com.andy.music.utility.ContextUtil;
 public class CursorAdapter {
 
     // 查询系统媒体库的参数申明
-    private static Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-    private static String[] projection = {MediaStore.Audio.Media._ID,
+    private static final Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+    private static final String[] projection = {MediaStore.Audio.Media._ID,
             MediaStore.Audio.Media.DURATION,
             MediaStore.Audio.Media.TITLE,
             MediaStore.Audio.Media.ARTIST,
             MediaStore.Audio.Media.DATA,
             MediaStore.Audio.Media.ALBUM};
-    private static String selection =null;
-    private static String[] selectionArgs =null;
-    private static String order = MediaStore.Audio.Media.DEFAULT_SORT_ORDER;
+    private static final String selection =MediaStore.Audio.Media.DURATION+">60000";
+    private static final String[] selectionArgs =null;
+    private static final String order = MediaStore.Audio.Media.DEFAULT_SORT_ORDER;
 
     /**
      * query()方法参数说明 :
@@ -57,9 +57,8 @@ public class CursorAdapter {
      * @return 返回 Cursor
      */
 
-    public static Cursor get(String whereClause) {
-        selection = whereClause;
-        return getMediaLibCursor();
+    public static Cursor get(String selection, String[] selectionArgs) {
+        return getMediaLibCursor(uri, projection,selection, selectionArgs, order);
     }
 
     /**
@@ -69,8 +68,8 @@ public class CursorAdapter {
      * @return 返回 Cursor
      */
     public static Cursor get(int srcId) {
-        selection = "_id = " + srcId;
-        return getMediaLibCursor();
+        String selection = "_id = " + srcId;
+        return getMediaLibCursor(uri, projection,selection, selectionArgs, order);
     }
 
     /**
@@ -95,22 +94,22 @@ public class CursorAdapter {
             cursor.close();  // 关闭 Cursor ，释放资源
         }
 
+        String selection = null;
         if (idString.toString().equals("")) {
             selection = "_id IN()";
         } else {
             selection = "_id IN(" + idString.toString().substring(0, idString.length() - 1) + ")";
         }
-        return getMediaLibCursor();
+        return getMediaLibCursor(uri, projection,selection, selectionArgs, order);
     }
 
     public static Cursor getMediaLibCursor() {
 //        String selection = MediaStore.Audio.Media.TITLE+"=?";
-//        String[] selectionArgs = {"慢慢"};
+//        String[] selectionArgs = {};
 //        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 //        String selection = MediaStore.Audio.Media.TITLE+"=?";
-//        String[] arg = {"慢慢"};
-
-        return ContextUtil.getInstance().getContentResolver().query(uri, projection,selection, selectionArgs, order);
+//        String[] selectionArgs = {"李白"};
+        return getMediaLibCursor(uri, projection,selection, selectionArgs, order);
     }
 
     public static Cursor getMediaLibCursor(Uri uri,String[] projection, String selection, String[] selectionArgs, String order) {

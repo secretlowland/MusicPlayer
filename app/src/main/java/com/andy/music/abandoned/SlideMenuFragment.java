@@ -89,7 +89,7 @@ public class SlideMenuFragment extends Fragment implements AdapterView.OnItemCli
                     public void run() {
                         // 由于在数据库中建立列表的的时间比较长，故单独放在一个线程中
                         // 获得查询游标
-                        Cursor searchCursor = CursorAdapter.get(null);
+                        Cursor searchCursor = CursorAdapter.get(null,null);
 
                         // 将游标中的数据存到数据库
                         MusicListManager.getInstance(MusicListManager.MUSIC_LIST_LOCAL).setList(searchCursor);

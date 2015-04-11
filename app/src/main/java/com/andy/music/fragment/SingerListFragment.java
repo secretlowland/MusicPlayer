@@ -154,8 +154,10 @@ public class SingerListFragment extends Fragment {
                 // 将主体部分替换成 songListFragment
                 SongListFragment fragment = new SongListFragment();
                 Bundle bundle = new Bundle();
-                String whereClause = MediaStore.Audio.Media.ARTIST + "='" + singerName + "'";
-                bundle.putString("where_clause", whereClause);    // 将查询语句传递到 fragment
+                String selection = MediaStore.Audio.Media.ARTIST + "=?";
+                String[] selectionArgs = {singerName};
+                bundle.putString("selection", selection);    // 将查询语句传递到 fragment
+                bundle.putStringArray("selection_args", selectionArgs);
                 fragment.setArguments(bundle);
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.frag_container_main_content, fragment).addToBackStack(null).commit();

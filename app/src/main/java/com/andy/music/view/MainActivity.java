@@ -154,8 +154,6 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
                 //TODO  查找歌曲
                 startActivity(new Intent(this, SearchActivity.class));
                 break;
-            case R.id.action_settings:
-                break;
             default: break;
 
         }
