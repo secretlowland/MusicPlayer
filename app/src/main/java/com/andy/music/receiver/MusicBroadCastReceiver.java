@@ -1,4 +1,4 @@
-package com.andy.music.function;
+package com.andy.music.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.andy.music.entity.TagConstants;
+import com.andy.music.function.MusicNotification;
+import com.andy.music.function.MusicProgressManager;
 import com.andy.music.utility.BroadCastHelper;
 
 /**

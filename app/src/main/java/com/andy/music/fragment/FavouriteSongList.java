@@ -1,5 +1,8 @@
 package com.andy.music.fragment;
 
+import android.app.ActionBar;
+import android.os.Bundle;
+
 import com.andy.music.entity.Music;
 import com.andy.music.function.MusicListManager;
 
@@ -14,5 +17,14 @@ public class FavouriteSongList extends BaseSongList {
         MusicListManager manager = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_FAVORITE);
         List<Music> list = manager.getList();
         return list;
+    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        ActionBar actionBar = getActivity().getActionBar();
+        if(actionBar!=null) {
+            actionBar.setTitle("我的最爱");
+            actionBar.setDisplayHomeAsUpEnabled(true);  // 是否显示返回图标
+        }
+        super.onCreate(savedInstanceState);
     }
 }

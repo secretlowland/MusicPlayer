@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.andy.music.R;
+import com.andy.music.entity.Music;
 import com.andy.music.entity.TagConstants;
 import com.andy.music.utility.BroadCastHelper;
 import com.andy.music.utility.MusicLocator;
@@ -23,67 +24,81 @@ import com.andy.music.view.PlayActivity;
 public class MusicNotification {
 
     private static final int NOTIFICATION_ID = 1;
+    private static MusicNotification musicNotification;
+    private Context context;
     private NotificationManager notificationManager;
     private Notification.Builder builder;
     private Notification notification;
     private Receiver receiver;
 
+    private RemoteViews views;
+
     private MusicNotification(Context context) {
-        notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        builder = new Notification.Builder(context);
-        notification = builder.build();
-        receiver = new Receiver();
+        this.context = context;
+        this.notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        this.builder = new Notification.Builder(context);
+        this.notification = builder.build();
+        this.receiver = new Receiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
         context.registerReceiver(receiver, filter);
     }
 
     public static MusicNotification getInstance(Context context) {
-        return new MusicNotification(context);
-    }
-
-    public void sendNotification(Context context) {
-
-        // 通知栏要加载的视图
-        RemoteViews views = new RemoteViews(context.getApplicationContext().getPackageName(), R.layout.noti_bar);
-
-        // 点击通知栏的意图
-        Intent contentIntent = new Intent(context, PlayActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, contentIntent, 0);
-
-        // 点击暂停/播放按钮和下一首按钮
-        Intent toggleBtnIntent = new Intent(BroadCastHelper.ACTION_MUSIC_START);
-        Intent nextBtnIntent = new Intent(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
-
-        // 在通知栏显示歌曲名称和歌手名
-        views.setTextViewText(R.id.tv_music_name, MusicLocator.getCurrentMusic().getName());
-        views.setTextViewText(R.id.tv_music_singer, MusicLocator.getCurrentMusic().getSinger());
-
-
-//        Intent fillInIntent = new Intent(BroadCastHelper.ACTION_MUSIC_PLAY);
-//        PendingIntent pendButtonIntent = PendingIntent.getBroadcast(context, 0, fillInIntent, 0);
-//        views.setOnClickPendingIntent(R.id.btn_music_toggle, pendButtonIntent);
-        builder.setContent(views);
-        builder.setContentIntent(pendingIntent);
-        builder.setTicker("Hello, I'm Andy!");
-        builder.setOngoing(true);
-        notificationManager.notify(NOTIFICATION_ID, builder.build());   // 发送通知
+        if(musicNotification==null) {
+            Log.d(TagConstants.TAG, "musicNotification is null");
+            musicNotification = new MusicNotification(context);
+        } else {
+            Log.d(TagConstants.TAG, "musicNotification is not null");
+        }
+        return musicNotification;
     }
 
     public void refreshNotification() {
         builder.setTicker("哈哈。换了一首歌哦~~~~~~~~");
-        builder.setContentTitle(MusicLocator.getCurrentMusic().getName());
-        builder.setContentText(MusicLocator.getCurrentMusic().getSinger());
+        views.setTextViewText(R.id.tv_music_name, MusicLocator.getCurrentMusic().getName());
+        views.setTextViewText(R.id.tv_music_singer, MusicLocator.getCurrentMusic().getSinger());
     }
+
+    public  void sendNotification () {
+
+        // 点击通知栏的意图
+        Intent intent = new Intent(context, PlayActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+
+        // 在通知栏显示歌曲名称和歌手名
+        views = new RemoteViews(context.getPackageName(), R.layout.noti_bar);
+        Music music = MusicLocator.getCurrentMusic();
+        if(music!=null) {
+            views.setTextViewText(R.id.tv_music_name, music.getName());
+            views.setTextViewText(R.id.tv_music_singer, music.getSinger());
+        }
+
+        // 设置通知栏属性
+        builder.setContent(views);
+        builder.setContentIntent(pendingIntent);
+        builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setTicker("Hello, I'm Andy!");
+        builder.setWhen(System.currentTimeMillis());
+        builder.setOngoing(true);
+
+        // 发送通知
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
+    }
+
 
     class Receiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TagConstants.TAG, "我收到了通知，更新通知栏");
             String action = intent.getAction();
-            if (action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT)) {
+            if (action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT) ||
+                    action.equals(BroadCastHelper.ACTION_MUSIC_PLAY) ||
+                    action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_RANDOM) ||
+                    action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_PREVIOUS)) {
                 // TODO 更新通知栏
-                notificationManager.notify(NOTIFICATION_ID, notification);
+                musicNotification.refreshNotification();
+                notificationManager.notify(NOTIFICATION_ID, builder.build());
             }
         }
     }

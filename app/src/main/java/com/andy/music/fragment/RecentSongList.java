@@ -1,6 +1,8 @@
 package com.andy.music.fragment;
 
 
+import android.app.ActionBar;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.andy.music.entity.Music;
@@ -17,6 +19,15 @@ public class RecentSongList extends BaseSongList {
         MusicListManager manager = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_RECENT);
         List<Music> list = manager.getList();
         return list;
+    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        ActionBar actionBar = getActivity().getActionBar();
+        if(actionBar!=null) {
+            actionBar.setTitle("最近播放");
+            actionBar.setDisplayHomeAsUpEnabled(true);  // 是否显示返回图标
+        }
+        super.onCreate(savedInstanceState);
     }
 
 }

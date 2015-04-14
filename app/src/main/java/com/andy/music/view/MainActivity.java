@@ -3,6 +3,11 @@ package com.andy.music.view;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
@@ -20,18 +25,24 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.RemoteViews;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.andy.music.R;
 import com.andy.music.fragment.LocalMusicFragment;
+import com.andy.music.fragment.SearchSongList;
+import com.andy.music.fragment.SongListFragment;
 import com.andy.music.function.MusicListManager;
 import com.andy.music.entity.TagConstants;
 import com.andy.music.fragment.NavPanelFragment;
 import com.andy.music.fragment.PlayBarFragment;
 import com.andy.music.fragment.TopBarFragment;
 import com.andy.music.function.MusicListFactory;
+import com.andy.music.function.MusicNotification;
 import com.andy.music.utility.ContextUtil;
 import com.andy.music.utility.MusicLocator;
 
@@ -43,6 +54,8 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
 
     private static final int NOTIFICATON_ID = 1;
     private RelativeLayout layout;
+    private SearchView searchView;
+    private SearchManager searchManager;
     private GestureDetector detector;
 
 
@@ -51,33 +64,21 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_content);
 
-//        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-//        String selection = MediaStore.Audio.Media.TITLE+"=?";
-//        String[] arg = {"慢慢"};
-//        Cursor cursor = ContextUtil.getInstance().getContentResolver().query(uri, null, selection, arg, null);
-//        int i=0;
-//        String name = "";
-//        while(cursor.moveToNext()) {
-//            i++;
-//            name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
-//        }
-//        System.out.println("i-->"+i);
-//        Toast.makeText(this, "名字-->"+name, Toast.LENGTH_SHORT).show();
-
-
-        // 初始化
-        init();
-
-        // 更新媒体库
-        updateMediaStore();
-
         // 设置 ActionBar
         ActionBar actionbar = getActionBar();
         if (actionbar!=null) {
             actionbar.setTitle("音乐");
             actionbar.setDisplayShowHomeEnabled(false);  // 是否显示图标 默认true
             actionbar.setDisplayShowTitleEnabled(true);  // 是否显示标题 默认true
+            actionbar.setDisplayHomeAsUpEnabled(false);  // 是否显示返回图标
+            actionbar.setHomeButtonEnabled(false);  // 标题是否可点击
         }
+
+        // 初始化
+        init();
+
+        // 更新媒体库
+        updateMediaStore();
 
         // 设置透明状态栏
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -105,31 +106,21 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
         }
 
         // 加载通知栏
-//        MusicNotification notify = MusicNotification.getInstance(this);
-//        notify.sendNotification(this);
+//        initNotification();
+//        MusicNotification.showNofi(this);
+        MusicNotification notification = MusicNotification.getInstance(this);
+        notification.sendNotification();
+    }
 
-//        Notification.Builder builder = new Notification.Builder(this);
-//        Intent intent = new Intent(this, PlayActivity.class);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-//        builder.setContentIntent(pendingIntent);
-//        builder.setSmallIcon(R.drawable.ic_launcher);
-//        builder.setTicker("Hello, I'm Andy!");
-//        builder.setWhen(System.currentTimeMillis());
-////        builder.setStyle(new Notification.InboxStyle());
-//        builder.setContentTitle(MusicLocator.getLocatedMusic().getName());
-//        builder.setContentText(MusicLocator.getLocatedMusic().getSinger());
-//        RemoteViews views = new RemoteViews(this.getPackageName(), R.layout.noti_bar);
-//        builder.setContent(views);
-//
-//        builder.setOngoing(true);
-//        NotificationManager manager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-//        manager.notify(NOTIFICATON_ID, builder.build());   // 发送通知
+    @Override
+    protected void onResume() {
 
+        super.onResume();
     }
 
     @Override
     protected void onDestroy() {
-        Log.d(TagConstants.TAG, "MusicListActivity-->onDestroy()");
+//        Log.d(TagConstants.TAG, "MusicListActivity-->onDestroy()");
         MusicLocator.saveMusicLocation();
         super.onDestroy();
     }
@@ -137,6 +128,11 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView)menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setQueryHint("歌曲");
+        searchView.setOnQueryTextListener(searchViewChangedListener);
         return true;
     }
 
@@ -231,6 +227,30 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
 
     }
 
+    private void initNotification() {
+        Notification.Builder builder = new Notification.Builder(this);
+        Intent intent = new Intent(this, PlayActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        builder.setContentIntent(pendingIntent);
+        builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setTicker("Hello, I'm Andy!");
+        builder.setWhen(System.currentTimeMillis());
+//        builder.setStyle(new Notification.InboxStyle());
+        builder.setContentTitle("Title");
+        builder.setContentText("text");
+        RemoteViews views = new RemoteViews(this.getPackageName(), R.layout.noti_bar);
+
+        // 在通知栏显示歌曲名称和歌手名
+        views.setTextViewText(R.id.tv_music_name, MusicLocator.getCurrentMusic().getName());
+        views.setTextViewText(R.id.tv_music_singer, MusicLocator.getCurrentMusic().getSinger());
+        builder.setContent(views);
+
+        builder.setOngoing(true);
+        NotificationManager manager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(NOTIFICATON_ID, builder.build());   // 发送通知
+    }
+
+
     // 更新媒体库
     private void  updateMediaStore() {
         // 通知系统扫描媒体库
@@ -238,7 +258,33 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
                 .getExternalStorageDirectory().getAbsolutePath()}, null, null);
     }
 
+    // SearchView 的监听
+    private SearchView.OnQueryTextListener searchViewChangedListener = new SearchView.OnQueryTextListener() {
 
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            SearchSongList fragment = new SearchSongList();
+            Bundle bundle = new Bundle();
+            String[] args = {query};
+            bundle.putStringArray("selection_args", args);
+            fragment.setArguments(bundle);
+            transaction.replace(R.id.frag_container_main_content, fragment);
+            transaction.commit();
+            searchView.clearFocus();
+            searchManager.stopSearch();
+            // 隐藏系统软键盘
+//            InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//            inputMethodManager.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+//            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+            return true;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            return true;
+        }
+    };
 
 
 }

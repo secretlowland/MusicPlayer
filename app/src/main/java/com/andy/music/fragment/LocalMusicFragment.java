@@ -29,12 +29,10 @@ public class LocalMusicFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onCreate()");
         ActionBar actionBar = getActivity().getActionBar();
         if(actionBar!=null) {
             actionBar.setTitle("本地音乐");
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);  // 是否显示返回图标
         }
         super.onCreate(savedInstanceState);
     }

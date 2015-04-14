@@ -1,78 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:id="@+id/ll_music_control_bar"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="#ee729939"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:src="@drawable/ic_launcher"
+        android:contentDescription="专辑图片"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp" />
+
     <LinearLayout
-        android:id="@+id/ll_music_control_bar"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:background="#729939"
-        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:layout_width="0dp"
         android:layout_height="wrap_content">
-
-        <ImageView
-            android:src="@drawable/ic_launcher"
-            android:contentDescription="专辑图片"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/tv_music_play_name"
-                android:text="歌曲名"
-                android:textSize="14sp"
-                android:textColor="#ccffffff"
-                android:singleLine="true"
-                android:paddingTop="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/tv_music_play_singer"
-                android:text="歌手"
-                android:textSize="12sp"
-                android:textColor="#80ffffff"
-                android:singleLine="true"
-                android:paddingBottom="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-        <ToggleButton
-            android:id="@+id/tb_music_play_toggle"
-            android:background="@drawable/btn_play_bar_toggle"
-            android:textOn=""
-            android:textOff=""
-            android:layout_weight="0"
-            android:scaleX="1.0"
-            android:scaleY="1.0"
-            android:layout_marginRight="15dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
-        <ImageButton
-            android:id="@+id/btn_music_play_next"
-            android:src="@drawable/btn_play_bar_next"
-            android:background="#00000000"
-            android:layout_weight="0"
-            android:layout_marginRight="25dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
-        <ImageButton
-            android:id="@+id/btn_main_menu"
-            android:background="#34ffffff"
-            android:layout_width="50dp"
-            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/tv_music_play_name"
+            android:text="歌曲名"
+            android:textSize="14sp"
+            android:textColor="#ccffffff"
+            android:singleLine="true"
+            android:paddingTop="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_music_play_singer"
+            android:text="歌手"
+            android:textSize="12sp"
+            android:textColor="#80ffffff"
+            android:singleLine="true"
+            android:paddingBottom="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
+    <ToggleButton
+        android:id="@+id/tb_music_play_toggle"
+        android:background="@drawable/btn_play_bar_toggle"
+        android:textOn=""
+        android:textOff=""
+        android:layout_weight="0"
+        android:scaleX="1.0"
+        android:scaleY="1.0"
+        android:layout_marginRight="15dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp" />
+    <ImageButton
+        android:id="@+id/btn_music_play_next"
+        android:src="@drawable/btn_play_bar_next"
+        android:background="#00000000"
+        android:layout_weight="0"
+        android:layout_marginRight="25dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp" />
+    <ImageButton
+        android:id="@+id/btn_main_menu"
+        android:background="#f0ffffff"
+        android:layout_width="50dp"
+        android:layout_height="match_parent" />
 
 </LinearLayout>
