@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content" />
             <Button
                 android:id="@+id/btn_menu_item_play_schema"
-                android:text="顺序播放"
+                android:text=""
                 android:background="@drawable/btn_normal"
                 android:layout_weight="1"
                 android:padding="15dp"

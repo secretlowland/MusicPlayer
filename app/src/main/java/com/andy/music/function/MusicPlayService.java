@@ -101,33 +101,9 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-
         // 歌曲播放完成，自动播放下一首
-        SharedPreferences pref = getSharedPreferences("play_setting", Context.MODE_PRIVATE);
-        int playSchema = pref.getInt("play_schema", MusicPlayService.MUSIC_PLAY_SCHEMA_ORDER);
-        switch (playSchema) {
-            case MusicPlayService.MUSIC_PLAY_SCHEMA_ORDER:
-                //  顺序播放
-                MusicLocator.toNext();
-                BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
-                break;
-            case MusicPlayService.MUSIC_PLAY_SCHEMA_RANDOM:
-                // 随机播放
-                MusicLocator.toRandom();
-                BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY_RANDOM);
-                break;
-            case MusicPlayService.MUSIC_PLAY_SCHEMA_LIST_CIRCULATE:
-                //  循环播放
-                if (!MusicLocator.toNext()) MusicLocator.toFirst();
-                BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
-                break;
-            case MusicPlayService.MUSIC_PLAY_SCHEMA_SINGLE_CIRCULATE:
-                // 单曲循环
-                BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY);
-                break;
-            default:
-                break;
-        }
+        MusicLocator.toNext();
+        BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
     }
 
     /**
@@ -226,8 +202,6 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
         public void onReceive(Context context, Intent intent) {
 
             String action = intent.getAction();
-            Log.d(TagConstants.TAG, "播放服务"+action);
-
             switch (action) {
                 case BroadCastHelper.ACTION_MUSIC_START:
                     // 开始播放音乐的广播（从断点开始）

@@ -169,7 +169,7 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
                 schema = "随机播放";
                 break;
             case MusicPlayService.MUSIC_PLAY_SCHEMA_LIST_CIRCULATE:
-                schema = "列表播放";
+                schema = "循环播放";
                 break;
             case MusicPlayService.MUSIC_PLAY_SCHEMA_SINGLE_CIRCULATE:
                 schema = "单曲循环";

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import com.andy.music.R;
 import com.andy.music.entity.TagConstants;
@@ -24,30 +25,18 @@ public class MusicPlayListener implements View.OnClickListener, CompoundButton.O
     @Override
     public void onClick(View v) {
 
-        // 读取播放模式
-        SharedPreferences pref = ContextUtil.getInstance().getSharedPreferences("play_setting", Context.MODE_PRIVATE);
-        int playSchema = pref.getInt("play_schema", MusicPlayService.MUSIC_PLAY_SCHEMA_ORDER);
-
         switch (v.getId()) {
             case (R.id.btn_music_play_next):
-                // 定位到下一首
-                if (playSchema!=MusicPlayService.MUSIC_PLAY_SCHEMA_RANDOM) {
-                    MusicLocator.toNext();
-                } else {
-                    MusicLocator.toRandom();
-                }
-                // 发送播放下一首的广播
-                BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
+                if (!MusicLocator.toNext())
+                    Toast.makeText(ContextUtil.getInstance(), "已经到最后一首了", Toast.LENGTH_SHORT).show();
+                else
+                    BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
                 break;
             case (R.id.btn_music_play_pre):
-                // 定位到上一首
-                if (playSchema!=MusicPlayService.MUSIC_PLAY_SCHEMA_RANDOM) {
-                    MusicLocator.toPrevious();
-                } else {
-                    MusicLocator.toRandom();
-                }
-                // 发送播放上一首的广播
-                BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY_PREVIOUS);
+                if (!MusicLocator.toPrevious())
+                    Toast.makeText(ContextUtil.getInstance(), "已经到第一首了", Toast.LENGTH_SHORT).show();
+                else
+                    BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY_PREVIOUS);
                 break;
         }
     }
