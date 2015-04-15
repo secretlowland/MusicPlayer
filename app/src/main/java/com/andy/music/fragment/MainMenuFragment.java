@@ -72,6 +72,7 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
         settingBtn.setOnClickListener(this);
         exitBtn.setOnClickListener(this);
 
+        init();
     }
 
     @Override
@@ -142,7 +143,6 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
                 // 设置
                 Toast.makeText(getActivity(), "设置", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getActivity(), SettingActivity.class));
-                // TODO 关闭菜单
                 break;
             case R.id.btn_menu_item_exit:
                 // 退出
@@ -156,6 +156,28 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
                 break;
         }
     }
+
+    private void init() {
+        SharedPreferences pref = getActivity().getSharedPreferences("play_setting", Context.MODE_PRIVATE);
+        int lastSchema = pref.getInt("play_schema", MusicPlayService.MUSIC_PLAY_SCHEMA_ORDER);
+        String schema = null;
+        switch (lastSchema) {
+            case MusicPlayService.MUSIC_PLAY_SCHEMA_ORDER:
+                schema = "顺序播放";
+                break;
+            case MusicPlayService.MUSIC_PLAY_SCHEMA_RANDOM:
+                schema = "随机播放";
+                break;
+            case MusicPlayService.MUSIC_PLAY_SCHEMA_LIST_CIRCULATE:
+                schema = "列表播放";
+                break;
+            case MusicPlayService.MUSIC_PLAY_SCHEMA_SINGLE_CIRCULATE:
+                schema = "单曲循环";
+                break;
+        }
+        playSchemaBtn.setText(schema);
+    }
+
     /**
      * 在设定时间后退出
      * @param time  距离退出的时间
@@ -201,6 +223,6 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
         ((TextView) view.findViewById(R.id.btn_menu_item_play_schema)).setText(playSchema);
         SharedPreferences.Editor  editor = pref.edit();
         editor.putInt("play_schema", currentSchema);
-        editor.commit();
+        editor.apply();
     }
 }
