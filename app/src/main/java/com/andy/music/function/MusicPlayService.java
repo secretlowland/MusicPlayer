@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
@@ -60,6 +61,26 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
         // 做好播放的准备
 //        prepare();
         Log.d(TagConstants.TAG, "onStartCommand");
+        String playAction = null;
+        if (intent!=null) {
+            playAction = intent.getStringExtra("play_action");
+        }
+        if (playAction!=null) {
+            Log.d(TagConstants.TAG, "next-->"+playAction);
+            switch (playAction) {
+                case "next":
+                    MusicLocator.toNext();
+                    BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
+                    break;
+                case "pause":
+                    BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PAUSE);
+                    break;
+                case "start":
+                    BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_START);
+                    break;
+                default:break;
+            }
+        }
 
         return super.onStartCommand(intent, flags, startId);
     }

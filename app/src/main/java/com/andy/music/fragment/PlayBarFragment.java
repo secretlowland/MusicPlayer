@@ -79,7 +79,6 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
         mainMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO 加载菜单模块
                 MainMenuFragment fragment = new MainMenuFragment();
                 fragment.setCancelable(true);
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -103,7 +102,10 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
         filter.setPriority(0);
         filter.addAction(BroadCastHelper.ACTION_MUSIC_PLAY);
         filter.addAction(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
+        filter.addAction(BroadCastHelper.ACTION_MUSIC_PLAY_PREVIOUS);
         filter.addAction(BroadCastHelper.ACTION_MUSIC_PLAY_RANDOM);
+        filter.addAction(BroadCastHelper.ACTION_MUSIC_PAUSE);
+        filter.addAction(BroadCastHelper.ACTION_MUSIC_START);
         getActivity().registerReceiver(receiver, filter);
 
     }
@@ -117,7 +119,7 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onDestroyView() {
-        Log.d(TagConstants.TAG, "Fragment--->onDestroy()");
+//        Log.d(TagConstants.TAG, "Fragment--->onDestroy()");
         super.onDestroyView();
         getActivity().unregisterReceiver(receiver);  // 注销广播
     }
@@ -150,7 +152,9 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
             if (action.equals(BroadCastHelper.ACTION_MUSIC_PLAY) ||
                     action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT) ||
                     action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_PREVIOUS) ||
-                    action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_RANDOM)) {
+                    action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_RANDOM) ||
+                    action.equals(BroadCastHelper.ACTION_MUSIC_PAUSE) ||
+                    action.equals(BroadCastHelper.ACTION_MUSIC_START)) {
                 refreshPlayBar();  // 更新音乐播放控制条
             }
 

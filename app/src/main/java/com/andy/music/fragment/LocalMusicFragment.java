@@ -40,7 +40,7 @@ public class LocalMusicFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //        Log.d(TagConstants.TAG, "LocalMusicFragment-->onCreateView()");
-        return inflater.inflate(R.layout.fragment_view_pager, container, false);
+        return inflater.inflate(R.layout.fragment_local_music, container, false);
     }
 
     @Override

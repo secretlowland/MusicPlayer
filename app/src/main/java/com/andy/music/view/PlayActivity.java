@@ -228,12 +228,12 @@ public class PlayActivity extends Activity implements View.OnTouchListener, Gest
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        Log.d(TagConstants.TAG, "onFling()-->"+velocityX);
-        if (velocityY>0) {
-            Intent intent = new Intent(PlayActivity.this, MainActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.fade_in, R.anim.top_to_bottom);
-        }
+//        Log.d(TagConstants.TAG, "onFling()-->"+velocityX);
+//        if (velocityY>0) {
+//            Intent intent = new Intent(PlayActivity.this, MainActivity.class);
+//            startActivity(intent);
+//            overridePendingTransition(R.anim.fade_in, R.anim.top_to_bottom);
+//        }
         return true;
     }
 

@@ -183,22 +183,22 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        Log.d(TagConstants.TAG, "onFling()");
-        if (velocityX<0) {
-            // 左滑，切换到下一页
-            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            LocalMusicFragment fragment = new LocalMusicFragment();
-            transaction.setCustomAnimations(R.anim.frag_in, R.anim.frag_out);
-            transaction.replace(R.id.frag_container_main_content, fragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
-        }
+//        Log.d(TagConstants.TAG, "onFling()");
+//        if (velocityX<0) {
+//            // 左滑，切换到下一页
+//            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//            LocalMusicFragment fragment = new LocalMusicFragment();
+//            transaction.setCustomAnimations(R.anim.frag_in, R.anim.frag_out);
+//            transaction.replace(R.id.frag_container_main_content, fragment);
+//            transaction.addToBackStack(null);
+//            transaction.commit();
+//        }
         return true;
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        Log.d(TagConstants.TAG, "onTouch()");
+//        Log.d(TagConstants.TAG, "onTouch()");
         return detector.onTouchEvent(event);
     }
 
