@@ -43,7 +43,6 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public void onCreate() {
-        Log.d(TagConstants.TAG, "MusicService-->onCreate()");
         // 创建 MediaPlayer 对象
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
@@ -58,9 +57,6 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // 做好播放的准备
-//        prepare();
-        Log.d(TagConstants.TAG, "onStartCommand");
         String playAction = null;
         if (intent!=null) {
             playAction = intent.getStringExtra("play_action");
@@ -105,8 +101,8 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public void onCompletion(MediaPlayer mp) {
+
         // 歌曲播放完成，自动播放下一首
-        Log.d(TagConstants.TAG, "歌曲播放完成");
         SharedPreferences pref = getSharedPreferences("play_setting", Context.MODE_PRIVATE);
         int playSchema = pref.getInt("play_schema", MusicPlayService.MUSIC_PLAY_SCHEMA_ORDER);
         switch (playSchema) {
@@ -117,19 +113,16 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
                 break;
             case MusicPlayService.MUSIC_PLAY_SCHEMA_RANDOM:
                 // 随机播放
-                Log.d(TagConstants.TAG, "随机播放");
                 MusicLocator.toRandom();
                 BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY_RANDOM);
                 break;
             case MusicPlayService.MUSIC_PLAY_SCHEMA_LIST_CIRCULATE:
                 //  循环播放
-                Log.d(TagConstants.TAG, "循环播放");
                 if (!MusicLocator.toNext()) MusicLocator.toFirst();
                 BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
                 break;
             case MusicPlayService.MUSIC_PLAY_SCHEMA_SINGLE_CIRCULATE:
                 // 单曲循环
-                Log.d(TagConstants.TAG, "单曲循环");
                 BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY);
                 break;
             default:
@@ -169,7 +162,6 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
      * 开始播放（从上次停止的地方开始）
      */
     public void start() {
-        Log.d(TagConstants.TAG, "play");
         if (!mediaPlayer.isPlaying()) {
             mediaPlayer.start();
         }
@@ -179,7 +171,6 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
      * 暂停播放
      */
     public void pause() {
-        Log.d(TagConstants.TAG, "pause");
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
         }

@@ -21,25 +21,45 @@ public class MusicLocator {
     private static SharedPreferences pref = ContextUtil.getInstance().getSharedPreferences("music_location", Context.MODE_PRIVATE);
     private static SharedPreferences.Editor editor = pref.edit();
 
-    private static List<Music> currentMusicList;
-    private static int currentPosition;
+    private static List<Music> currentMusicList = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_LOCAL).getList();
+    private static int currentPosition = 0;
 
+    /**
+     * 获取当前播放列表
+     * @return 当前播放的歌曲列表
+     */
     public static List<Music> getCurrentMusicList() {
         return currentMusicList;
     }
 
+    /**
+     * 设置当前播放列表
+     * @param list 当前播放列表
+     */
     public static void setCurrentMusicList(List<Music> list) {
         currentMusicList = list;
     }
 
+    /**
+     * 获取当前播放的歌曲在当前列表中的位置
+     * @return 歌曲在列表中的位置
+     */
     public static int getCurrentPosition() {
         return currentPosition;
     }
 
+    /**
+     * 设置当前播放的歌曲在列表中的位置
+     * @param position 当前播放的歌曲在列表中的位置
+     */
     public static void setCurrentPosition(int position) {
         currentPosition = position;
     }
 
+    /**
+     * 获取当前播放的歌曲对象
+     * @return 当前播放的歌曲对象（准确的说是最后一次播放的歌曲）
+     */
     public static Music getCurrentMusic() {
         if (currentMusicList==null) return null;
         if(currentMusicList.size()<=currentPosition) return null;
@@ -76,8 +96,6 @@ public class MusicLocator {
      * @return 是否定位成功
      */
     public static boolean toPrevious() {
-
-
         // 新的位置
         int newPos = currentPosition - 1;
 
@@ -109,11 +127,19 @@ public class MusicLocator {
 
     }
 
+    /**
+     * 歌曲下标是否越界
+     * @param position 新的歌曲位置
+     * @return 是否越界
+     */
     private static boolean isPosOutOfBound(int position) {
-        return (position<0 || currentMusicList==null ||  position>currentMusicList.size()-1);
+        return (position<0 || currentMusicList==null ||  position>=currentMusicList.size());
     }
 
 
+    /**
+     * 保存当前歌曲的位置信息
+     */
     public static void saveMusicLocation() {
         new Runnable() {
             @Override
@@ -126,8 +152,9 @@ public class MusicLocator {
         }.run();
     }
 
-
-
+    /**
+     * 获取当前歌曲的位置信息
+     */
     public static void  getMusicLocation() {
         MusicListManager manager = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_CURRENT);
         currentMusicList = manager.getList();
@@ -135,10 +162,10 @@ public class MusicLocator {
     }
 
 
-    public static int getLocatedPosition() {
-        currentPosition = pref.getInt("position", 0);
-        return currentPosition;
-    }
+//    public static int getLocatedPosition() {
+//        currentPosition = pref.getInt("position", 0);
+//        return currentPosition;
+//    }
 
 //        public static Music getLocatedMusic() {
 //        List<Music> list = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_LOCAL).getList();

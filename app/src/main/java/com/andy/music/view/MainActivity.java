@@ -52,7 +52,6 @@ import java.util.TimerTask;
 
 public class MainActivity extends FragmentActivity implements View.OnTouchListener, GestureDetector.OnGestureListener {
 
-    private static final int NOTIFICATON_ID = 1;
     private RelativeLayout layout;
     private SearchView searchView;
     private SearchManager searchManager;
@@ -63,16 +62,6 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_content);
-
-        // 设置 ActionBar
-        ActionBar actionbar = getActionBar();
-        if (actionbar!=null) {
-            actionbar.setTitle("音乐");
-            actionbar.setDisplayShowHomeEnabled(false);  // 是否显示图标 默认true
-            actionbar.setDisplayShowTitleEnabled(true);  // 是否显示标题 默认true
-            actionbar.setDisplayHomeAsUpEnabled(false);  // 是否显示返回图标
-            actionbar.setHomeButtonEnabled(false);  // 标题是否可点击
-        }
 
         // 初始化
         init();
@@ -105,22 +94,16 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
             transaction.commit();
         }
 
-        // 加载通知栏
-//        initNotification();
-//        MusicNotification.showNofi(this);
-        MusicNotification notification = MusicNotification.getInstance(this);
-        notification.sendNotification();
+
     }
 
     @Override
     protected void onResume() {
-
         super.onResume();
     }
 
     @Override
     protected void onDestroy() {
-//        Log.d(TagConstants.TAG, "MusicListActivity-->onDestroy()");
         MusicLocator.saveMusicLocation();
         super.onDestroy();
     }
@@ -145,10 +128,6 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
         switch (id) {
             case android.R.id.home:  // ActionBar返回键
                 onBackPressed();  // 调用系统返回方法
-                break;
-            case R.id.action_search:
-                //TODO  查找歌曲
-                startActivity(new Intent(this, SearchActivity.class));
                 break;
             default: break;
 
@@ -219,36 +198,25 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
         layout.setLongClickable(true);
         detector.setIsLongpressEnabled(true);
 
+        // 设置 ActionBar
+        ActionBar actionbar = getActionBar();
+        if (actionbar!=null) {
+            actionbar.setTitle("音乐");
+            actionbar.setDisplayShowHomeEnabled(false);  // 是否显示图标 默认true
+            actionbar.setDisplayShowTitleEnabled(true);  // 是否显示标题 默认true
+            actionbar.setDisplayHomeAsUpEnabled(false);  // 是否显示返回图标
+            actionbar.setHomeButtonEnabled(false);  // 标题是否可点击
+        }
+
+        // 加载通知栏
+        MusicNotification notification = MusicNotification.getInstance(this);
+        notification.sendNotification();
+
         // 获取上次的音乐位置
         MusicLocator.getMusicLocation();
 
-        // 设置标题
-        this.setTitle("音乐");
-
     }
 
-    private void initNotification() {
-        Notification.Builder builder = new Notification.Builder(this);
-        Intent intent = new Intent(this, PlayActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-        builder.setContentIntent(pendingIntent);
-        builder.setSmallIcon(R.drawable.ic_launcher);
-        builder.setTicker("Hello, I'm Andy!");
-        builder.setWhen(System.currentTimeMillis());
-//        builder.setStyle(new Notification.InboxStyle());
-        builder.setContentTitle("Title");
-        builder.setContentText("text");
-        RemoteViews views = new RemoteViews(this.getPackageName(), R.layout.noti_bar);
-
-        // 在通知栏显示歌曲名称和歌手名
-        views.setTextViewText(R.id.tv_music_name, MusicLocator.getCurrentMusic().getName());
-        views.setTextViewText(R.id.tv_music_singer, MusicLocator.getCurrentMusic().getSinger());
-        builder.setContent(views);
-
-        builder.setOngoing(true);
-        NotificationManager manager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(NOTIFICATON_ID, builder.build());   // 发送通知
-    }
 
 
     // 更新媒体库
@@ -258,7 +226,7 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
                 .getExternalStorageDirectory().getAbsolutePath()}, null, null);
     }
 
-    // SearchView 的监听
+    // SearchView 的事件监听
     private SearchView.OnQueryTextListener searchViewChangedListener = new SearchView.OnQueryTextListener() {
 
         @Override

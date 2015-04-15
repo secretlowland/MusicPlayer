@@ -244,7 +244,9 @@ public class PlayActivity extends Activity implements View.OnTouchListener, Gest
             if (action.equals(BroadCastHelper.ACTION_MUSIC_PLAY) ||
                     action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT) ||
                     action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_PREVIOUS) ||
-                    action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_RANDOM)) {
+                    action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_RANDOM) ||
+                    action.equals(BroadCastHelper.ACTION_MUSIC_PAUSE) ||
+                    action.equals(BroadCastHelper.ACTION_MUSIC_START)) {
                 refreshPlayPanel();
             }
         }
