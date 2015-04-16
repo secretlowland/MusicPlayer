@@ -2,6 +2,7 @@ package com.andy.music.fragment;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -12,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -47,6 +50,8 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
     private Button settingBtn;
     private Button exitBtn;
 
+    private boolean sleeping;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_main_menu, container, false);
@@ -72,7 +77,7 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
         settingBtn.setOnClickListener(this);
         exitBtn.setOnClickListener(this);
 
-        init();
+        initPlaySchema();
     }
 
     @Override
@@ -80,24 +85,8 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
         switch (v.getId()) {
             case R.id.btn_menu_item_scan_music:
                 // 扫描歌曲
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // 由于在数据库中建立列表的的时间比较长，故单独放在一个线程中
-                        // 获得查询游标
-                        Cursor searchCursor = CursorAdapter.get(null,null);
-
-                        // 将游标中的数据存到数据库
-                        MusicListManager localMusic = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_LOCAL);
-                        if (localMusic!=null) {
-                            localMusic.setList(searchCursor);
-                        }
-
-                        // 关闭 Cursor，释放资源
-                        searchCursor.close();
-                    }
-                }).start();
-                Toast.makeText(getActivity(), "扫描完成！", Toast.LENGTH_SHORT).show();
+                scanMusic();
+                getActivity().onBackPressed();
                 break;
             case R.id.btn_menu_item_play_schema:
                 // 播放方式
@@ -106,47 +95,22 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
             case R.id.btn_menu_item_change_theme:
                 // 更换背景
                 Toast.makeText(getActivity(), "更换背景", Toast.LENGTH_SHORT).show();
+                getActivity().onBackPressed();
                 break;
             case R.id.btn_menu_item_sleep_time:
                 // 睡眠
-                new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        Log.d(TagConstants.TAG, "hourOfDay-->" + hourOfDay + ";   minute-->" + minute);
-                        long min = hourOfDay * 60 + minute;
-                        Toast.makeText(getActivity(), "将在" + min + "分钟后退出！", Toast.LENGTH_SHORT).show();
-                        exitAtTime(min * 60000);
-                    }
-
-                }, 0, 30, true).show();
-//                final EditText timeToExit = new EditText(getActivity());
-//                new AlertDialog.Builder(getActivity())
-//                        .setTitle("请输入睡眠时间(分)")
-//                        .setView(timeToExit)
-//                        .setNegativeButton("取消",null)
-//                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                String time = timeToExit.getText().toString();
-//                                if (time!=null && !time.equals("") && !time.equals("0")) {
-//                                    exitAtTime(Integer.valueOf(time));
-//                                    Toast.makeText(getActivity(), "将在"+time+"分钟后退出", Toast.LENGTH_SHORT).show();
-//                                } else {
-//                                    Toast.makeText(getActivity(), "输入有误！", Toast.LENGTH_SHORT).show();
-//                                }
-//
-//                            }
-//                        })
-//                        .show();
+                setSleepTime();
                 break;
             case R.id.btn_menu_item_setting:
                 // 设置
                 Toast.makeText(getActivity(), "设置", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getActivity(), SettingActivity.class));
+                getActivity().onBackPressed();
                 break;
             case R.id.btn_menu_item_exit:
                 // 退出
                 Toast.makeText(getActivity(), "退出", Toast.LENGTH_SHORT).show();
+                getActivity().onBackPressed();
                 System.exit(0);
                 break;
             case R.id.rl_menu:
@@ -157,7 +121,34 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
         }
     }
 
-    private void init() {
+    /**
+     * 设置睡眠时间
+     */
+    private void setSleepTime() {
+
+        if (!sleeping) {
+            final TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    long exitTime = hourOfDay * 60 + minute;
+                    exitAtTime(exitTime*60000);
+                    Toast.makeText(getActivity(), "将在"+exitTime+"分钟后退出！", Toast.LENGTH_SHORT).show();
+                    Log.d(TagConstants.TAG, "hour-->"+hourOfDay+"; min-->"+minute+"; total->"+exitTime);
+                }
+            };
+            TimePickerDialog dialog = new TimePickerDialog(getActivity(), listener, 0, 30, true );
+            dialog.show();
+            sleeping = true;
+        } else {
+            Toast.makeText(getActivity(), "取消睡眠", Toast.LENGTH_SHORT).show();
+            sleeping = false;
+        }
+
+    }
+    /**
+     * 初始化播放模式
+     */
+    private void initPlaySchema() {
         SharedPreferences pref = getActivity().getSharedPreferences("play_setting", Context.MODE_PRIVATE);
         int lastSchema = pref.getInt("play_schema", MusicPlayService.MUSIC_PLAY_SCHEMA_ORDER);
         String schema = null;
@@ -179,6 +170,29 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
     }
 
     /**
+     * 扫描音乐
+     */
+    private void scanMusic() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // 由于在数据库中建立列表的的时间比较长，故单独放在一个线程中
+                // 获得查询游标
+                Cursor searchCursor = CursorAdapter.get(null,null);
+
+                // 将游标中的数据存到数据库
+                MusicListManager localMusic = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_LOCAL);
+                if (localMusic!=null) {
+                    localMusic.setList(searchCursor);
+                }
+
+                // 关闭 Cursor，释放资源
+                searchCursor.close();
+            }
+        }).start();
+        Toast.makeText(getActivity(), "扫描完成！", Toast.LENGTH_SHORT).show();
+    }
+    /**
      * 在设定时间后退出
      * @param time  距离退出的时间
      */
@@ -196,6 +210,10 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
         }
     }
 
+    /**
+     * 设置播放模式
+     * @param view 视图
+     */
     private void setPlaySchema(View view) {
         SharedPreferences pref = getActivity().getSharedPreferences("play_setting", Context.MODE_PRIVATE);
         int lastSchema = pref.getInt("play_schema", MusicPlayService.MUSIC_PLAY_SCHEMA_ORDER);

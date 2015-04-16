@@ -94,7 +94,7 @@ public class CursorAdapter {
             cursor.close();  // 关闭 Cursor ，释放资源
         }
 
-        String selection = null;
+        String selection;
         if (idString.toString().equals("")) {
             selection = "_id IN()";
         } else {
@@ -104,11 +104,6 @@ public class CursorAdapter {
     }
 
     public static Cursor getMediaLibCursor() {
-//        String selection = MediaStore.Audio.Media.TITLE+"=?";
-//        String[] selectionArgs = {};
-//        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-//        String selection = MediaStore.Audio.Media.TITLE+"=?";
-//        String[] selectionArgs = {"李白"};
         return getMediaLibCursor(uri, projection,selection, selectionArgs, order);
     }
 

@@ -19,7 +19,7 @@
                 android:id="@+id/btn_menu_item_scan_music"
                 android:text="扫描音乐"
                 android:clickable="true"
-                android:background="@drawable/btn_normal"
+                android:background="@drawable/btn_common"
                 android:layout_weight="1"
                 android:padding="15dp"
                 android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
             <Button
                 android:id="@+id/btn_menu_item_play_schema"
                 android:text=""
-                android:background="@drawable/btn_normal"
+                android:background="@drawable/btn_common"
                 android:layout_weight="1"
                 android:padding="15dp"
                 android:layout_width="wrap_content"
@@ -35,7 +35,7 @@
             <Button
                 android:id="@+id/btn_menu_item_sleep_time"
                 android:text="睡眠"
-                android:background="@drawable/btn_normal"
+                android:background="@drawable/btn_common"
                 android:layout_weight="1"
                 android:padding="15dp"
                 android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
             <Button
                 android:id="@+id/btn_menu_item_change_theme"
                 android:text="更换背景"
-                android:background="@drawable/btn_normal"
+                android:background="@drawable/btn_common"
                 android:layout_weight="1"
                 android:padding="15dp"
                 android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
             <Button
                 android:id="@+id/btn_menu_item_setting"
                 android:text="设置"
-                android:background="@drawable/btn_normal"
+                android:background="@drawable/btn_common"
                 android:layout_weight="1"
                 android:padding="15dp"
                 android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
             <Button
                 android:id="@+id/btn_menu_item_exit"
                 android:text="退出"
-                android:background="@drawable/btn_normal"
+                android:background="@drawable/btn_common"
                 android:layout_weight="1"
                 android:padding="15dp"
                 android:layout_width="wrap_content"

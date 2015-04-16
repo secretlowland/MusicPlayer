@@ -61,12 +61,16 @@ public class MusicNotification {
 
     public void refreshNotification() {
         builder.setTicker("更新歌曲");
-        views.setTextViewText(R.id.tv_music_name, MusicLocator.getCurrentMusic().getName());
-        views.setTextViewText(R.id.tv_music_singer, MusicLocator.getCurrentMusic().getSinger());
+        Music music = MusicLocator.getCurrentMusic();
+        if (music!=null) {
+            views.setTextViewText(R.id.tv_music_name, music.getName());
+            views.setTextViewText(R.id.tv_music_singer, music.getSinger());
+        }
+
         if (MusicPlayService.isPlaying()) {
-            views.setTextViewText(R.id.btn_music_toggle, "暂停");
+            views.setImageViewResource(R.id.btn_music_toggle, R.drawable.btn_play_bar_toggle_on);
         } else {
-            views.setTextViewText(R.id.btn_music_toggle, "播放");
+            views.setImageViewResource(R.id.btn_music_toggle, R.drawable.btn_play_bar_toggle_off);
         }
 
         // 设置按钮点击操作   要加 PendingIntent.FLAG_UPDATE_CURRENT ，才会正确传值
@@ -103,9 +107,9 @@ public class MusicNotification {
             views.setTextViewText(R.id.tv_music_singer, music.getSinger());
         }
         if (!MusicPlayService.isPlaying()) {
-            views.setTextViewText(R.id.btn_music_toggle, "播放");
+            views.setImageViewResource(R.id.btn_music_toggle, R.drawable.btn_play_bar_toggle_off);
         } else {
-            views.setTextViewText(R.id.btn_music_toggle, "暂停");
+            views.setImageViewResource(R.id.btn_music_toggle, R.drawable.btn_play_bar_toggle_on);
         }
 
         // 设置通知栏属性

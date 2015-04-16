@@ -153,6 +153,9 @@ public class MusicLocator {
     public static void  getMusicLocation() {
         MusicListManager manager = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_CURRENT);
         currentMusicList = manager.getList();
+        if (currentMusicList==null) {
+            currentMusicList = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_LOCAL).getList();
+        }
         currentPosition = pref.getInt("position", 0);
     }
 

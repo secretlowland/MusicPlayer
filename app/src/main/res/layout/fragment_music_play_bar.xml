@@ -6,7 +6,7 @@
     android:gravity="center_vertical"
     android:background="#ee729939"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="50dp">
 
     <ImageView
         android:src="@drawable/ic_launcher"
@@ -18,6 +18,7 @@
 
     <LinearLayout
         android:orientation="vertical"
+        android:layout_gravity="center"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content">
@@ -27,7 +28,6 @@
             android:textSize="14sp"
             android:textColor="#ccffffff"
             android:singleLine="true"
-            android:paddingTop="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
@@ -36,34 +36,39 @@
             android:textSize="12sp"
             android:textColor="#80ffffff"
             android:singleLine="true"
-            android:paddingBottom="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
 
-    <ToggleButton
-        android:id="@+id/tb_music_play_toggle"
-        android:background="@drawable/btn_play_bar_toggle"
-        android:textOn=""
-        android:textOff=""
+
+    <LinearLayout
+        android:background="@drawable/btn_play_bar_common"
+        android:gravity="center"
         android:layout_weight="0"
-        android:scaleX="1.0"
-        android:scaleY="1.0"
-        android:layout_marginRight="15dp"
-        android:layout_width="30dp"
-        android:layout_height="30dp" />
+        android:layout_width="50dp"
+        android:layout_height="match_parent">
+        <ToggleButton
+            android:id="@+id/tb_music_play_toggle"
+            android:background="@drawable/btn_play_bar_toggle"
+            android:textOn=""
+            android:textOff=""
+            android:layout_weight="0"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+    </LinearLayout>
+
     <ImageButton
         android:id="@+id/btn_music_play_next"
         android:src="@drawable/btn_play_bar_next"
-        android:background="#00000000"
+        android:background="@drawable/btn_play_bar_common"
         android:layout_weight="0"
-        android:layout_marginRight="25dp"
-        android:layout_width="30dp"
-        android:layout_height="30dp" />
+        android:layout_width="50dp"
+        android:layout_height="match_parent" />
     <ImageButton
         android:id="@+id/btn_main_menu"
-        android:background="#f0ffffff"
+        android:src="@drawable/btn_play_bar_menu"
+        android:background="@drawable/btn_play_bar_common"
         android:layout_width="50dp"
         android:layout_height="match_parent" />
 
