@@ -45,6 +45,7 @@ public class MusicPlayListener implements View.OnClickListener, CompoundButton.O
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()) {
             case R.id.tb_music_play_toggle:
+                Log.d(TagConstants.TAG, "ischecked-->"+isChecked);
                 if (isChecked) {
                     // 发送开始播放的广播
                     if (!MusicPlayService.isPlaying()) {

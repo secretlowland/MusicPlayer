@@ -190,6 +190,9 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
         MusicListFactory.create(MusicListManager.MUSIC_LIST_FAVORITE);
         MusicListFactory.create(MusicListManager.MUSIC_LIST_DOWNLOAD);
 
+        // 扫描音乐
+        MusicListManager.scanMusic();
+
         // 初始化变量
         layout = (RelativeLayout) this.findViewById(R.id.frag_container_main_content);
         detector = new GestureDetector(this,this);
@@ -211,9 +214,6 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
         // 加载通知栏
         MusicNotification notification = MusicNotification.getInstance(this);
         notification.sendNotification();
-
-        // 获取上次的音乐位置
-        MusicLocator.getMusicLocation();
 
     }
 

@@ -43,10 +43,11 @@ public class MusicScanner {
 
     public static List<Music> scan(Cursor mediaCursor) {
 
+        if (mediaCursor==null) return null;
         List<Music> list = new ArrayList<Music>();
         int id = 0;
 
-        while (mediaCursor != null && mediaCursor.moveToNext()) {
+        while (mediaCursor.moveToNext()) {
             Music music = new Music();
 
             // 设置歌曲源 ID（可表示歌曲在列表中的位置）

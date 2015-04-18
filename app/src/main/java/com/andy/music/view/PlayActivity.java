@@ -67,11 +67,18 @@ public class PlayActivity extends Activity implements View.OnTouchListener, Gest
         // 设置状态栏透明
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //透明状态栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            //透明导航栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//            //透明导航栏
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 
         }
+
+        // 获取上次的音乐位置
+        MusicLocator.getMusicLocation();
+
+        // 启动 MusicPlayService 服务
+        Intent intent = new Intent(this, MusicPlayService.class);
+        this.startService(intent);
 
         // 设置监听事件（监听歌曲位置是否改变）
         MusicPlayListener listener = new MusicPlayListener();

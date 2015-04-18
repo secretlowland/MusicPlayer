@@ -90,9 +90,7 @@ public class MusicListManager {
     public static MusicListManager getInstance(String name) {
         if (musicListManager!=null) {
             return musicListManager;
-        } else {
         }
-
         return exist(name) ? new MusicListManager(name) : null;
     }
 
@@ -104,6 +102,29 @@ public class MusicListManager {
      */
     public static boolean exist(String tabName) {
         return MusicListName.exist(tabName);
+    }
+
+    /**
+     * 扫描音乐
+     */
+    public static void scanMusic() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // 由于在数据库中建立列表的的时间比较长，故单独放在一个线程中
+                // 获得查询游标
+                Cursor searchCursor = CursorAdapter.get(null,null);
+
+                // 将游标中的数据存到数据库
+                MusicListManager localMusic = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_LOCAL);
+                if (localMusic!=null) {
+                    localMusic.setList(searchCursor);
+                }
+
+                // 关闭 Cursor，释放资源
+                searchCursor.close();
+            }
+        }).start();
     }
 
     /**

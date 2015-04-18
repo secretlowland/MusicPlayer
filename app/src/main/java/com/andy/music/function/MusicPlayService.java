@@ -40,9 +40,11 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
     private Music music;
     private MediaPlayer mediaPlayer;
 
+    public static final String TAG = "MusicPlayService";
 
     @Override
     public void onCreate() {
+        Log.d(TAG, "onCreate()");
         // 创建 MediaPlayer 对象
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
@@ -57,6 +59,7 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(TAG, "onStartCommand()");
         String playAction = null;
         if (intent!=null) {
             playAction = intent.getStringExtra("play_action");
@@ -83,12 +86,12 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public void onPrepared(MediaPlayer mp) {
-
+        Log.d(TAG, "onPrepared()");
     }
 
     @Override
     public void onDestroy() {
-        Log.d(TagConstants.TAG, "MusicService-->onDestroy()");
+        Log.d(TAG, "onDestroy()");
         if (mediaPlayer != null) {
             mediaPlayer.release();
         }
@@ -101,6 +104,7 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public void onCompletion(MediaPlayer mp) {
+        Log.d(TAG, "onCompletion()");
         // 歌曲播放完成，自动播放下一首
         MusicLocator.toNext();
         BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
@@ -202,6 +206,7 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
         public void onReceive(Context context, Intent intent) {
 
             String action = intent.getAction();
+            Log.d(TagConstants.TAG, "我收到的广播为："+action);
             switch (action) {
                 case BroadCastHelper.ACTION_MUSIC_START:
                     // 开始播放音乐的广播（从断点开始）

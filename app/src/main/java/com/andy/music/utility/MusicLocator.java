@@ -22,8 +22,8 @@ public class MusicLocator {
     private static SharedPreferences pref = ContextUtil.getInstance().getSharedPreferences("music_location", Context.MODE_PRIVATE);
     private static SharedPreferences.Editor editor = pref.edit();
 
-    private static List<Music> currentMusicList = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_LOCAL).getList();
-    private static int currentPosition = 0;
+    private static List<Music> currentMusicList;
+    private static int currentPosition;
 
     /**
      * 获取当前播放列表
@@ -142,7 +142,6 @@ public class MusicLocator {
                 MusicListManager manager = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_CURRENT);
                 manager.setList(currentMusicList);
                 editor.putInt("position", currentPosition).apply();
-               Log.d(TagConstants.TAG, "播放列表已保存");
             }
         }.run();
     }
@@ -153,10 +152,12 @@ public class MusicLocator {
     public static void  getMusicLocation() {
         MusicListManager manager = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_CURRENT);
         currentMusicList = manager.getList();
-        if (currentMusicList==null) {
+        if (currentMusicList==null || currentMusicList.size()==0) {
             currentMusicList = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_LOCAL).getList();
         }
         currentPosition = pref.getInt("position", 0);
+        Log.d(TagConstants.TAG, "size-->"+currentMusicList.size());
+        Log.d(TagConstants.TAG, "pos-->"+currentPosition);
     }
 
     private static boolean first() {
