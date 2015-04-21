@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -122,6 +123,7 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
         searchView = (SearchView)menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setQueryHint("歌曲");
+        searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         searchView.setOnQueryTextListener(searchViewChangedListener);
         return true;
     }
@@ -135,6 +137,7 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
         switch (id) {
             case android.R.id.home:  // ActionBar返回键
                 onBackPressed();  // 调用系统返回方法
+                searchView.onActionViewCollapsed();  //  收起搜索框
                 break;
             default: break;
 
@@ -241,9 +244,11 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
             bundle.putStringArray("selection_args", args);
             fragment.setArguments(bundle);
             transaction.replace(R.id.frag_container_main_content, fragment);
+            transaction.addToBackStack(null);
             transaction.commit();
             searchView.clearFocus();
             searchManager.stopSearch();
+            searchView.onActionViewCollapsed();
             // 隐藏系统软键盘
 //            InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 //            inputMethodManager.hideSoftInputFromWindow(searchView.getWindowToken(), 0);

@@ -5,12 +5,14 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.andy.music.R;
 import com.andy.music.adapter.MyFragmentPagerAdapter;
+import com.andy.music.entity.TagConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,25 +30,21 @@ public class LocalMusicFragment extends Fragment {
     private List<Fragment> fragmentList;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        ActionBar actionBar = getActivity().getActionBar();
-        if(actionBar!=null) {
-            actionBar.setTitle("本地音乐");
-            actionBar.setDisplayHomeAsUpEnabled(true);  // 是否显示返回图标
-        }
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onCreateView()");
+        Log.d(TagConstants.TAG, "LocalMusicFragment-->onCreateView()");
         return inflater.inflate(R.layout.fragment_local_music, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onViewCreated()");
+        Log.d(TagConstants.TAG, "LocalMusicFragment-->onViewCreated()");
+
+        ActionBar actionBar = getActivity().getActionBar();
+        if(actionBar!=null) {
+            actionBar.setTitle("本地音乐");
+            actionBar.setDisplayHomeAsUpEnabled(true);  // 是否显示返回图标
+        }
         musicPager = (ViewPager)getActivity().findViewById(R.id.view_pager_local_music);
 
         // 要加载的页面
