@@ -40,10 +40,9 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
+//        Log.d(TagConstants.TAG, "PlayBarFragment--->onCreate()");
         // 获取上次的音乐位置
         MusicLocator.getMusicLocation();
-
         //  绑定到 MusicPlayService 服务
         Intent intent = new Intent(getActivity(), MusicPlayService.class);
         getActivity().startService(intent);
@@ -59,6 +58,7 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+//        Log.d(TagConstants.TAG, "PlayBarFragment--->onViewCreated()");
         super.onViewCreated(view, savedInstanceState);
 
         // 初始化成员变量
@@ -69,8 +69,6 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
         playNext = (ImageButton) view.findViewById(R.id.btn_music_play_next);
         mainMenu = (ImageButton) view.findViewById(R.id.btn_main_menu);
         receiver = new PlayStatusReceiver();
-
-        refreshPlayBar();
 
         // 设置监听事件
         MusicPlayListener listener = new MusicPlayListener();
@@ -112,14 +110,16 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onStart() {
-        super.onStart();
+//        Log.d(TagConstants.TAG, "PlayBarFragment--->onStart()");
         // 更新控制条视图
         refreshPlayBar();
+        super.onStart();
+
     }
 
     @Override
     public void onDestroyView() {
-//        Log.d(TagConstants.TAG, "Fragment--->onDestroy()");
+//        Log.d(TagConstants.TAG, "PlayBarFragment--->onDestroyView()");
         super.onDestroyView();
         getActivity().unregisterReceiver(receiver);  // 注销广播
     }

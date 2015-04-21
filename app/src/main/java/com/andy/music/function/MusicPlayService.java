@@ -22,11 +22,10 @@ import java.io.IOException;
 
 /**
  * 音乐播放服务
- * 注意 : 在OnBind（）方法中需返回一个IBinder实例，不然onServiceConnected方法不会调用。
  * Created by Andy on 2014/11/20.
  */
 public class MusicPlayService extends Service implements MediaPlayer.OnCompletionListener,
-        MediaPlayer.OnPreparedListener {
+        MediaPlayer.OnErrorListener {
 
     /**
      * 播放模式
@@ -36,21 +35,30 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
     public static final int MUSIC_PLAY_SCHEMA_LIST_CIRCULATE = 2;    // 列表循环
     public static final int MUSIC_PLAY_SCHEMA_SINGLE_CIRCULATE = 3;    // 单曲循环
     private static boolean isPlaying = false;
+    private static boolean isFirst = true;
 
     private Music music;
     private MediaPlayer mediaPlayer;
 
-    public static final String TAG = "MusicPlayService";
 
     @Override
     public void onCreate() {
-        Log.d(TAG, "onCreate()");
+        Log.d(TagConstants.TAG, "PlayService-->onCreate()");
         // 创建 MediaPlayer 对象
         mediaPlayer = new MediaPlayer();
+        //要确保CPU在你的 MediaPlayer  播放的时候继续处于运行状态,当初始化你的 MediaPlayer 时调用 setWakeMode()  .
+        // 一旦你这么做了, MediaPlayer 会持有指定的lock在播放的时候. 并且在paused或者stoped状态时,会释放掉这个lock.
         mediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
+
+        // 获取上次的音乐位置
+        MusicLocator.getMusicLocation();
 
         // 注册广播接收器
         registerReceiver();
+
+        // 加载通知栏
+        MusicNotification notification = MusicNotification.getInstance(this);
+        notification.sendNotification();
 
         // 设置歌曲播放完成的监听事件
         mediaPlayer.setOnCompletionListener(this);
@@ -59,7 +67,7 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand()");
+        Log.d(TagConstants.TAG, "PlayService-->onStartCommand()");
         String playAction = null;
         if (intent!=null) {
             playAction = intent.getStringExtra("play_action");
@@ -85,15 +93,20 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
     }
 
     @Override
-    public void onPrepared(MediaPlayer mp) {
-        Log.d(TAG, "onPrepared()");
+    public boolean onError(MediaPlayer mp, int what, int extra) {
+        Log.d(TagConstants.TAG, "PlayService-->onError()");
+        mp.stop();
+        mp.reset();
+        return false;
     }
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "onDestroy()");
+        Log.d(TagConstants.TAG, "PlayService-->onDestroy()");
+        MusicLocator.saveMusicLocation();
         if (mediaPlayer != null) {
             mediaPlayer.release();
+            mediaPlayer = null;
         }
     }
 
@@ -104,7 +117,7 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        Log.d(TAG, "onCompletion()");
+        Log.d(TagConstants.TAG, "PlayService-->onCompletion()");
         // 歌曲播放完成，自动播放下一首
         MusicLocator.toNext();
         BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
@@ -206,18 +219,21 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
         public void onReceive(Context context, Intent intent) {
 
             String action = intent.getAction();
-            Log.d(TagConstants.TAG, "我收到的广播为："+action);
+            Log.d(TagConstants.TAG, "PlayService-->action-->"+action);
             switch (action) {
                 case BroadCastHelper.ACTION_MUSIC_START:
                     // 开始播放音乐的广播（从断点开始）
-                    if (MusicLocator.getCurrentMusic()!=null) {
-                        start();
-                        setIsPlaying(true);
-                    } else {
-                        BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PAUSE);
-                        setIsPlaying(false);
+                    // 判断是否是第一次播放音乐(防止打开应用后直接点击开始播放按钮后没有执行prepare函数)
+                    if (isFirst) {
+                        BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY);
+                        break;
                     }
-
+                    if (MusicLocator.getCurrentMusic()==null) {
+                        BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PAUSE);
+                        break;
+                    }
+                    start();
+                    setIsPlaying(true);
                     break;
                 case BroadCastHelper.ACTION_MUSIC_PAUSE:
                     // 暂停音乐的广播

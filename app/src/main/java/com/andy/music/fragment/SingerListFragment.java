@@ -36,7 +36,7 @@ public class SingerListFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(TagConstants.TAG, "SingerList--> onCreate");
+//        Log.d(TagConstants.TAG, "SingerList--> onCreate");
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         mainView = inflater.inflate(R.layout.fragment_list_singer, (ViewGroup)getActivity().findViewById(R.id.view_pager_local_music), false);
@@ -44,55 +44,55 @@ public class SingerListFragment extends Fragment {
 
     @Override
     public void onActivityCreated( Bundle savedInstanceState) {
-        Log.d(TagConstants.TAG, "SingerList--> onActivityCreated");
+//        Log.d(TagConstants.TAG, "SingerList--> onActivityCreated");
         super.onActivityCreated(savedInstanceState);
     }
 
     @Override
     public void onStart() {
-        Log.d(TagConstants.TAG, "SingerList--> onStart");
+//        Log.d(TagConstants.TAG, "SingerList--> onStart");
         super.onStart();
     }
 
     @Override
     public void onResume() {
-        Log.d(TagConstants.TAG, "SingerList--> onResume");
+//        Log.d(TagConstants.TAG, "SingerList--> onResume");
         super.onResume();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.d(TagConstants.TAG, "SingerList--> onSaveInstanceState");
+//        Log.d(TagConstants.TAG, "SingerList--> onSaveInstanceState");
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onPause() {
-        Log.d(TagConstants.TAG, "SingerList--> onPause");
+//        Log.d(TagConstants.TAG, "SingerList--> onPause");
         super.onPause();
     }
 
     @Override
     public void onStop() {
-        Log.d(TagConstants.TAG, "SingerList--> onStop");
+//        Log.d(TagConstants.TAG, "SingerList--> onStop");
         super.onStop();
     }
 
     @Override
     public void onDestroyView() {
-        Log.d(TagConstants.TAG, "SingerList--> onDestroyView");
+//        Log.d(TagConstants.TAG, "SingerList--> onDestroyView");
         super.onDestroyView();
     }
 
     @Override
     public void onDestroy() {
-        Log.d(TagConstants.TAG, "SingerList--> onDestroy");
+//        Log.d(TagConstants.TAG, "SingerList--> onDestroy");
         super.onDestroy();
     }
 
     @Override
     public void onDetach() {
-        Log.d(TagConstants.TAG, "SingerList--> onDetach");
+//        Log.d(TagConstants.TAG, "SingerList--> onDetach");
         super.onDetach();
     }
 
@@ -100,31 +100,31 @@ public class SingerListFragment extends Fragment {
 
     @Override
     public void onAttach(Activity activity) {
-        Log.d(TagConstants.TAG, "SingerList--> onAttach");
+//        Log.d(TagConstants.TAG, "SingerList--> onAttach");
         super.onAttach(activity);
     }
 
     @Override
     public void onInflate(Activity activity, AttributeSet attrs, Bundle savedInstanceState) {
-        Log.d(TagConstants.TAG, "SingerList--> onInflate");
+//        Log.d(TagConstants.TAG, "SingerList--> onInflate");
         super.onInflate(activity, attrs, savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,  Bundle savedInstanceState) {
-        Log.d(TagConstants.TAG, "SingerList--> onCreateView");
+//        Log.d(TagConstants.TAG, "SingerList--> onCreateView");
         // 移除已存在的 view
         ViewGroup group = ((ViewGroup) mainView.getParent());
         if (group!=null) {
             group.removeAllViewsInLayout();
-            Log.d(TagConstants.TAG, "已移除已存在的view--> SongList");
+//            Log.d(TagConstants.TAG, "已移除已存在的view--> SongList");
         }
         return mainView;
     }
 
     @Override
     public void onViewCreated(View view,  Bundle savedInstanceState) {
-        Log.d(TagConstants.TAG, "SingerList--> onViewCreated");
+//        Log.d(TagConstants.TAG, "SingerList--> onViewCreated");
         super.onViewCreated(view, savedInstanceState);
 
         // 获取 ListView

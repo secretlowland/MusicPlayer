@@ -73,9 +73,6 @@ public class PlayActivity extends Activity implements View.OnTouchListener, Gest
 
         }
 
-        // 获取上次的音乐位置
-        MusicLocator.getMusicLocation();
-
         // 启动 MusicPlayService 服务
         Intent intent = new Intent(this, MusicPlayService.class);
         this.startService(intent);
@@ -97,11 +94,8 @@ public class PlayActivity extends Activity implements View.OnTouchListener, Gest
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 MusicListManager list = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_FAVORITE);
                 Music music = MusicLocator.getCurrentMusic();
-                Log.d(TagConstants.TAG, "添加到最爱");
                 if (isChecked && music!=null) {
-                    Log.d(TagConstants.TAG, "添加到最爱");
                     if (list.isMusicExist(music)) return;
-                    Log.d(TagConstants.TAG, "添加到最爱, meifanhui");
                     list.add(music);
                 } else {
                     if (!list.isMusicExist(music)) return;

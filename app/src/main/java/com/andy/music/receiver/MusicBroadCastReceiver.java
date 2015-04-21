@@ -19,7 +19,6 @@ public class MusicBroadCastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        Log.d(TagConstants.TAG, "MusicBroadCastReceiver-->"+action);
         switch (action) {
             case BroadCastHelper.ACTION_MUSIC_START:
                 MusicProgressManager.start();

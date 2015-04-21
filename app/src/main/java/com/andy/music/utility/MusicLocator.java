@@ -156,8 +156,6 @@ public class MusicLocator {
             currentMusicList = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_LOCAL).getList();
         }
         currentPosition = pref.getInt("position", 0);
-        Log.d(TagConstants.TAG, "size-->"+currentMusicList.size());
-        Log.d(TagConstants.TAG, "pos-->"+currentPosition);
     }
 
     private static boolean first() {

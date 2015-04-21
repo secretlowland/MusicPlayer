@@ -29,7 +29,6 @@ public class MusicNotification {
     private Context context;
     private NotificationManager notificationManager;
     private Notification.Builder builder;
-    private Notification notification;
     private Receiver receiver;
 
     private RemoteViews views;
@@ -39,7 +38,6 @@ public class MusicNotification {
         this.context = context;
         this.notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         this.builder = new Notification.Builder(context);
-        this.notification = builder.build();
         this.receiver = new Receiver();
         this.views = new RemoteViews(context.getPackageName(), R.layout.noti_bar);
         IntentFilter filter = new IntentFilter();
@@ -59,6 +57,9 @@ public class MusicNotification {
         return musicNotification;
     }
 
+    /**
+     * 更新通知栏
+     */
     public void refreshNotification() {
         builder.setTicker("更新歌曲");
         Music music = MusicLocator.getCurrentMusic();
@@ -94,6 +95,9 @@ public class MusicNotification {
 
     }
 
+    /**
+     * 发送通知
+     */
     public  void sendNotification () {
 
         // 点击通知栏的意图
@@ -118,14 +122,18 @@ public class MusicNotification {
         builder.setSmallIcon(R.drawable.ic_launcher);
         builder.setTicker("Hello, I'm Andy!");
         builder.setWhen(System.currentTimeMillis());
-        builder.setOngoing(true);
+//        builder.setOngoing(true);
 
         // 发送通知
         notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
 
-    public void destroyNotification() {
+    /**
+     * 取消通知栏
+     */
+    public void destroyNotification(Context context) {
         notificationManager.cancel(NOTIFICATION_ID);
+        context.unregisterReceiver(receiver);
     }
 
 
@@ -133,6 +141,7 @@ public class MusicNotification {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
+            Log.d(TagConstants.TAG, "Notification-->action-->"+action);
             if (action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT) ||
                     action.equals(BroadCastHelper.ACTION_MUSIC_PLAY) ||
                     action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_RANDOM) ||

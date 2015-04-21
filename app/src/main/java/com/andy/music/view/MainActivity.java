@@ -103,7 +103,14 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.d(TagConstants.TAG, "MainActivity-->onSaveInstanceState()");
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     protected void onDestroy() {
+        Log.d(TagConstants.TAG, "MainActivity-->onDestroy()");
         MusicLocator.saveMusicLocation();
         super.onDestroy();
     }
@@ -191,7 +198,7 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
         MusicListFactory.create(MusicListManager.MUSIC_LIST_DOWNLOAD);
 
         // 扫描音乐
-        MusicListManager.scanMusic();
+//        MusicListManager.scanMusic();
 
         // 初始化变量
         layout = (RelativeLayout) this.findViewById(R.id.frag_container_main_content);
@@ -210,10 +217,6 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
             actionbar.setDisplayHomeAsUpEnabled(false);  // 是否显示返回图标
             actionbar.setHomeButtonEnabled(false);  // 标题是否可点击
         }
-
-        // 加载通知栏
-        MusicNotification notification = MusicNotification.getInstance(this);
-        notification.sendNotification();
 
     }
 
