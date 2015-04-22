@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:andy="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:clipChildren="false"
     android:layout_width="match_parent"
@@ -9,15 +10,44 @@
         android:clipToPadding="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-
-        <android.support.v4.view.PagerTabStrip
-            android:id="@+id/pager_title_local_music"
-            android:background="#00000000"
-            android:clipToPadding="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        <!--<android.support.v4.view.PagerTabStrip-->
+            <!--android:id="@+id/pager_title_local_music"-->
+            <!--android:background="#00000000"-->
+            <!--android:clipToPadding="false"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"/>-->
 
     </android.support.v4.view.ViewPager>
+    <LinearLayout
+        android:background="#eeE0E0E0"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <com.andy.music.widget.IndicatorView
+            andy:color="#333666"
+            andy:focusedColor="#eeeeee"
+            andy:title="歌曲"
+            android:id="@+id/indicator_0"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+        <com.andy.music.widget.IndicatorView
+            andy:title="歌手"
+            andy:color="#333666"
+            andy:focusedColor="#eeeeee"
+            android:id="@+id/indicator_1"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+        <com.andy.music.widget.IndicatorView
+            andy:title="专辑"
+            andy:color="#333666"
+            andy:focusedColor="#eeeeee"
+            android:id="@+id/indicator_2"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
     <!--<TextView-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="50dp"-->

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="IndicatorView">
+        <attr name="color" format="color|reference"/>
+        <attr name="focusedColor" format="color|reference"/>
+        <attr name="title" format="string|reference"/>
+        <attr name="titleSize" format="string|reference"/>
+    </declare-styleable>
+</resources>

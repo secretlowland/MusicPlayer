@@ -9,10 +9,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.andy.music.R;
 import com.andy.music.adapter.MyFragmentPagerAdapter;
 import com.andy.music.entity.TagConstants;
+import com.andy.music.widget.IndicatorView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +24,13 @@ import java.util.List;
  * 整体为一个ViewPager，由歌曲，歌手，专辑，文件夹四个页面构成
  * Created by Andy on 2014/12/13.
  */
-public class LocalMusicFragment extends Fragment {
+public class LocalMusicFragment extends Fragment implements View.OnClickListener, ViewPager.OnPageChangeListener {
 
     private View mainview;
     private ViewPager musicPager;
 
     private List<Fragment> fragmentList;
+    private List<IndicatorView> indicatorList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,11 +44,11 @@ public class LocalMusicFragment extends Fragment {
         Log.d(TagConstants.TAG, "LocalMusicFragment-->onViewCreated()");
 
         ActionBar actionBar = getActivity().getActionBar();
-        if(actionBar!=null) {
+        if (actionBar != null) {
             actionBar.setTitle("本地音乐");
             actionBar.setDisplayHomeAsUpEnabled(true);  // 是否显示返回图标
         }
-        musicPager = (ViewPager)getActivity().findViewById(R.id.view_pager_local_music);
+        musicPager = (ViewPager) getActivity().findViewById(R.id.view_pager_local_music);
 
         // 要加载的页面
         fragmentList = new ArrayList<>();
@@ -62,58 +65,72 @@ public class LocalMusicFragment extends Fragment {
 
         // 设置适配器
         musicPager.setAdapter(new MyFragmentPagerAdapter(getFragmentManager(), fragmentList, titles));
+        musicPager.setOnPageChangeListener(this);
 
+        // 测试Indicatior
+        IndicatorView indicator0 = (IndicatorView) getActivity().findViewById(R.id.indicator_0);
+        IndicatorView indicator1 = (IndicatorView) getActivity().findViewById(R.id.indicator_1);
+        IndicatorView indicator2 = (IndicatorView) getActivity().findViewById(R.id.indicator_2);
+        indicatorList = new ArrayList<>();
+        indicatorList.add(indicator0);
+        indicatorList.add(indicator1);
+        indicatorList.add(indicator2);
+        indicator0.setOnClickListener(this);
+        indicator1.setOnClickListener(this);
+        indicator2.setOnClickListener(this);
+        setCurrentIndicator(0, 1.0f);
     }
 
 
     @Override
-    public void onAttach(Activity activity) {
-//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onAttach()");
-        super.onAttach(activity);
-    }
-
-
-
-
-
-    @Override
-    public void onStart() {
-//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onStart()");
-        super.onStart();
-    }
-
-    @Override
-    public void onResume() {
-//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onResume()");
-        super.onResume();
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.indicator_0:
+                musicPager.setCurrentItem(0, true);
+                setCurrentIndicator(0, 1.0f);
+                break;
+            case R.id.indicator_1:
+                musicPager.setCurrentItem(1, true);
+                setCurrentIndicator(1, 1.0f);
+                break;
+            case R.id.indicator_2:
+                musicPager.setCurrentItem(2, true);
+                setCurrentIndicator(2, 1.0f);
+                break;
+            default:break;
+        }
     }
 
     @Override
-    public void onPause() {
-//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onPause()");
-        super.onPause();
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        if (positionOffset>0) {
+            IndicatorView left = indicatorList.get(position);
+            IndicatorView right = indicatorList.get(position+1);
+            left.setIconAlpha(1-positionOffset);
+            right.setIconAlpha(positionOffset);
+        }
     }
 
     @Override
-    public void onStop() {
-//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onStop()");
-        super.onStop();
+    public void onPageSelected(int position) {
+
     }
 
     @Override
-    public void onDestroyView() {
-//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onDestroyView()");
-        super.onDestroyView();
+    public void onPageScrollStateChanged(int state) {
+
     }
 
-    @Override
-    public void onDestroy() {
-//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onDestroy()");
-        super.onDestroy();
+    private void setCurrentIndicator(int index, float alpha) {
+        resetIndicator();
+        indicatorList.get(index).setIconAlpha(alpha);
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
+    private void resetIndicator() {
+        for (IndicatorView indicatorView : indicatorList) {
+            indicatorView.setIconAlpha(0);
+        }
     }
+
 }
+
