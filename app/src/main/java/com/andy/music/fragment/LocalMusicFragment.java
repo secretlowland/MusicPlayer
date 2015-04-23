@@ -32,6 +32,8 @@ public class LocalMusicFragment extends Fragment implements View.OnClickListener
     private List<Fragment> fragmentList;
     private List<IndicatorView> indicatorList;
 
+    private int currentPage;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TagConstants.TAG, "LocalMusicFragment-->onCreateView()");
@@ -78,9 +80,15 @@ public class LocalMusicFragment extends Fragment implements View.OnClickListener
         indicator0.setOnClickListener(this);
         indicator1.setOnClickListener(this);
         indicator2.setOnClickListener(this);
-        setCurrentIndicator(0, 1.0f);
+        Log.d(TagConstants.TAG, "currentPage-->"+currentPage);
+        setCurrentIndicator(currentPage, 1.0f);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        this.currentPage = musicPager.getCurrentItem();
+    }
 
     @Override
     public void onClick(View v) {

@@ -89,7 +89,6 @@ public class AlbumListFragment extends Fragment {
                 map.put("num", ++num+"首歌曲");
                 data.add(map);
             } else {  // 列表为空
-                Log.d(TagConstants.TAG, "列表为空");
                 map = new HashMap<>();
                 map.put("name", name);
                 map.put("num", 1+"首歌曲");
