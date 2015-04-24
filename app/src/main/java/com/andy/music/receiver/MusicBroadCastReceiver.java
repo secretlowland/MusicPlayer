@@ -3,16 +3,13 @@ package com.andy.music.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
-import com.andy.music.entity.TagConstants;
-import com.andy.music.function.MusicNotification;
 import com.andy.music.function.MusicProgressManager;
-import com.andy.music.utility.BroadCastHelper;
-import com.andy.music.utility.ContextUtil;
+import com.andy.music.util.BroadCastHelper;
 
 /**
- * 广播接收器
+ * 广播接收器，用于接收音乐播放发出的各种广播
+ * 此广播注册在 AndroidManifest 中，全局有效
  * Created by Andy on 2014/12/21.
  */
 public class MusicBroadCastReceiver extends BroadcastReceiver {

@@ -90,6 +90,12 @@ public class Music {
         return "Name : "+this.name + "  Path :  "+this.path +"\n";
     }
 
+    /**
+     * 判断两个音乐对象是否相等
+     * 如果两个音乐的路径 path 一样，则认为是两个音乐对象等同
+     * @param o 被比较的对象
+     * @return 是否相等
+     */
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Music)) return false;

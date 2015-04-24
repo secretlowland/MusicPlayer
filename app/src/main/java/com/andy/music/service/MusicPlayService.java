@@ -1,22 +1,21 @@
-package com.andy.music.function;
+package com.andy.music.service;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.media.MediaPlayer;
-import android.os.Binder;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
 
 import com.andy.music.entity.Music;
 import com.andy.music.entity.TagConstants;
-import com.andy.music.utility.BroadCastHelper;
-import com.andy.music.utility.MusicLocator;
+import com.andy.music.function.MusicListManager;
+import com.andy.music.function.MusicNotification;
+import com.andy.music.util.BroadCastHelper;
+import com.andy.music.util.MusicLocator;
 
 import java.io.IOException;
 
@@ -34,8 +33,8 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
     public static final int MUSIC_PLAY_SCHEMA_RANDOM = 1;    // 随机播放
     public static final int MUSIC_PLAY_SCHEMA_LIST_CIRCULATE = 2;    // 列表循环
     public static final int MUSIC_PLAY_SCHEMA_SINGLE_CIRCULATE = 3;    // 单曲循环
-    private static boolean isPlaying = false;
-    private static boolean isFirst = true;
+    private static boolean isPlaying = false;  // 是否正在播放
+    private static boolean isFirst = true;  // 是否是启动后第一次播放
 
     private Music music;
     private MediaPlayer mediaPlayer;
@@ -43,9 +42,10 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public void onCreate() {
-        Log.d(TagConstants.TAG, "PlayService-->onCreate()");
+//        Log.d(TagConstants.TAG, "PlayService-->onCreate()");
         // 创建 MediaPlayer 对象
         mediaPlayer = new MediaPlayer();
+
         //要确保CPU在你的 MediaPlayer  播放的时候继续处于运行状态,当初始化你的 MediaPlayer 时调用 setWakeMode()  .
         // 一旦你这么做了, MediaPlayer 会持有指定的lock在播放的时候. 并且在paused或者stoped状态时,会释放掉这个lock.
         mediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
@@ -67,13 +67,12 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TagConstants.TAG, "PlayService-->onStartCommand()");
+//        Log.d(TagConstants.TAG, "PlayService-->onStartCommand()");
         String playAction = null;
         if (intent!=null) {
             playAction = intent.getStringExtra("play_action");
         }
         if (playAction!=null) {
-            Log.d(TagConstants.TAG, "next-->"+playAction);
             switch (playAction) {
                 case "next":
                     MusicLocator.toNext();
@@ -94,7 +93,7 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
-        Log.d(TagConstants.TAG, "PlayService-->onError()");
+//        Log.d(TagConstants.TAG, "PlayService-->onError()");
         mp.stop();
         mp.reset();
         return false;
@@ -102,7 +101,7 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public void onDestroy() {
-        Log.d(TagConstants.TAG, "PlayService-->onDestroy()");
+//        Log.d(TagConstants.TAG, "PlayService-->onDestroy()");
         MusicLocator.saveMusicLocation();
         if (mediaPlayer != null) {
             mediaPlayer.release();
@@ -117,7 +116,7 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        Log.d(TagConstants.TAG, "PlayService-->onCompletion()");
+//        Log.d(TagConstants.TAG, "PlayService-->onCompletion()");
         // 歌曲播放完成，自动播放下一首
         MusicLocator.toNext();
         BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
@@ -219,7 +218,6 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
         public void onReceive(Context context, Intent intent) {
 
             String action = intent.getAction();
-            Log.d(TagConstants.TAG, "PlayService-->action-->"+action);
             switch (action) {
                 case BroadCastHelper.ACTION_MUSIC_START:
                     // 开始播放音乐的广播（从断点开始）

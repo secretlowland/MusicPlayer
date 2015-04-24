@@ -1,4 +1,4 @@
-package com.andy.music.view;
+package com.andy.music.activity;
 
 import android.app.Activity;
 import android.os.Bundle;

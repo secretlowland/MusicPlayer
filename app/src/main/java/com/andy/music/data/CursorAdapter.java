@@ -3,11 +3,8 @@ package com.andy.music.data;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.andy.music.entity.TagConstants;
-import com.andy.music.utility.ContextUtil;
+import com.andy.music.util.ContextUtil;
 
 /**
  * 根据指定条件创建用于查询媒体库的 Cursor

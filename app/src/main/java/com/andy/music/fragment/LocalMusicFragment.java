@@ -1,7 +1,6 @@
 package com.andy.music.fragment;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -9,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.andy.music.R;
 import com.andy.music.adapter.MyFragmentPagerAdapter;
@@ -36,14 +34,14 @@ public class LocalMusicFragment extends Fragment implements View.OnClickListener
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TagConstants.TAG, "LocalMusicFragment-->onCreateView()");
+//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onCreateView()");
         return inflater.inflate(R.layout.fragment_local_music, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TagConstants.TAG, "LocalMusicFragment-->onViewCreated()");
+//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onViewCreated()");
 
         ActionBar actionBar = getActivity().getActionBar();
         if (actionBar != null) {
@@ -54,7 +52,6 @@ public class LocalMusicFragment extends Fragment implements View.OnClickListener
 
         // 要加载的页面
         fragmentList = new ArrayList<>();
-
         fragmentList.add(new SongListFragment());
         fragmentList.add(new SingerListFragment());
         fragmentList.add(new AlbumListFragment());
@@ -80,7 +77,6 @@ public class LocalMusicFragment extends Fragment implements View.OnClickListener
         indicator0.setOnClickListener(this);
         indicator1.setOnClickListener(this);
         indicator2.setOnClickListener(this);
-        Log.d(TagConstants.TAG, "currentPage-->"+currentPage);
         setCurrentIndicator(currentPage, 1.0f);
     }
 
@@ -105,16 +101,17 @@ public class LocalMusicFragment extends Fragment implements View.OnClickListener
                 musicPager.setCurrentItem(2, true);
                 setCurrentIndicator(2, 1.0f);
                 break;
-            default:break;
+            default:
+                break;
         }
     }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        if (positionOffset>0) {
+        if (positionOffset > 0) {
             IndicatorView left = indicatorList.get(position);
-            IndicatorView right = indicatorList.get(position+1);
-            left.setIconAlpha(1-positionOffset);
+            IndicatorView right = indicatorList.get(position + 1);
+            left.setIconAlpha(1 - positionOffset);
             right.setIconAlpha(positionOffset);
         }
     }

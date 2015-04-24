@@ -7,12 +7,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.andy.music.view.TitleBar
+    <com.andy.music.activity.TitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="75dp">
 
-    </com.andy.music.view.TitleBar>
+    </com.andy.music.activity.TitleBar>
 
     <!--<TextView-->
         <!--android:id="@+id/tv_title"-->

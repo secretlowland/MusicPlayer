@@ -1,22 +1,12 @@
-package com.andy.music.view;
+package com.andy.music.activity;
 
 import android.app.ActionBar;
-import android.app.Activity;
-import android.app.FragmentTransaction;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.Cursor;
+import android.content.SharedPreferences;
 import android.media.MediaScannerConnection;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -24,31 +14,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.RemoteViews;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.andy.music.R;
-import com.andy.music.fragment.LocalMusicFragment;
-import com.andy.music.fragment.SearchSongList;
-import com.andy.music.fragment.SongListFragment;
-import com.andy.music.function.MusicListManager;
 import com.andy.music.entity.TagConstants;
 import com.andy.music.fragment.NavPanelFragment;
 import com.andy.music.fragment.PlayBarFragment;
+import com.andy.music.fragment.SearchSongList;
 import com.andy.music.fragment.TopBarFragment;
 import com.andy.music.function.MusicListFactory;
-import com.andy.music.function.MusicNotification;
-import com.andy.music.utility.ContextUtil;
-import com.andy.music.utility.MusicLocator;
-
-import java.util.Timer;
-import java.util.TimerTask;
+import com.andy.music.function.MusicListManager;
+import com.andy.music.util.MusicLocator;
 
 
 public class MainActivity extends FragmentActivity implements View.OnTouchListener, GestureDetector.OnGestureListener {
@@ -119,8 +98,8 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView)menu.findItem(R.id.action_search).getActionView();
+        searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setQueryHint("歌曲");
         searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
@@ -139,7 +118,8 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
                 onBackPressed();  // 调用系统返回方法
                 searchView.onActionViewCollapsed();  //  收起搜索框
                 break;
-            default: break;
+            default:
+                break;
 
         }
         return super.onOptionsItemSelected(item);
@@ -200,12 +180,12 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
         MusicListFactory.create(MusicListManager.MUSIC_LIST_FAVORITE);
         MusicListFactory.create(MusicListManager.MUSIC_LIST_DOWNLOAD);
 
-        // 扫描音乐
-//        MusicListManager.scanMusic();
+        // 首次启动时扫描音乐
+        firstScanMusic();
 
         // 初始化变量
         layout = (RelativeLayout) this.findViewById(R.id.frag_container_main_content);
-        detector = new GestureDetector(this,this);
+        detector = new GestureDetector(this, this);
 
         layout.setOnTouchListener(this);
         layout.setLongClickable(true);
@@ -213,7 +193,7 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
 
         // 设置 ActionBar
         ActionBar actionbar = getActionBar();
-        if (actionbar!=null) {
+        if (actionbar != null) {
             actionbar.setTitle("音乐");
             actionbar.setDisplayShowHomeEnabled(false);  // 是否显示图标 默认true
             actionbar.setDisplayShowTitleEnabled(true);  // 是否显示标题 默认true
@@ -224,13 +204,24 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
     }
 
 
-
     // 更新媒体库
-    private void  updateMediaStore() {
+    private void updateMediaStore() {
         // 通知系统扫描媒体库
         MediaScannerConnection.scanFile(this, new String[]{Environment
                 .getExternalStorageDirectory().getAbsolutePath()}, null, null);
     }
+
+    // 判断是否是首次启动，如果是则扫描音乐
+    private void firstScanMusic() {
+        SharedPreferences pref = this.getSharedPreferences("launch_info", Context.MODE_PRIVATE);
+        boolean firstLaunch = pref.getBoolean("first_launch", true);
+        if (firstLaunch) {
+            MusicListManager.scanMusic();
+            Toast.makeText(this, "扫描音乐完成！", Toast.LENGTH_SHORT).show();
+        }
+        pref.edit().putBoolean("first_launch", false).apply();
+    }
+
 
     // SearchView 的事件监听
     private SearchView.OnQueryTextListener searchViewChangedListener = new SearchView.OnQueryTextListener() {
@@ -249,10 +240,6 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
             searchView.clearFocus();
             searchManager.stopSearch();
             searchView.onActionViewCollapsed();
-            // 隐藏系统软键盘
-//            InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-//            inputMethodManager.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-//            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             return true;
         }
 

@@ -2,19 +2,16 @@ package com.andy.music.fragment;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,11 +19,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.andy.music.R;
-import com.andy.music.data.CursorAdapter;
+import com.andy.music.activity.SettingActivity;
 import com.andy.music.entity.TagConstants;
 import com.andy.music.function.MusicListManager;
-import com.andy.music.function.MusicPlayService;
-import com.andy.music.view.SettingActivity;
+import com.andy.music.service.MusicPlayService;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -115,7 +111,9 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
                 System.exit(0);
                 break;
             case R.id.rl_menu:
-                getActivity().onBackPressed();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+//                transaction.setCustomAnimations(R.anim.fade_out, 0);
+                transaction.remove(this).commit();
                 break;
             default:
                 break;
@@ -132,12 +130,12 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                     long exitTime = hourOfDay * 60 + minute;
-                    exitAtTime(exitTime*60000);
-                    Toast.makeText(getActivity(), "将在"+exitTime+"分钟后退出！", Toast.LENGTH_SHORT).show();
-                    Log.d(TagConstants.TAG, "hour-->"+hourOfDay+"; min-->"+minute+"; total->"+exitTime);
+                    exitAtTime(exitTime * 60000);
+                    Toast.makeText(getActivity(), "将在" + exitTime + "分钟后退出！", Toast.LENGTH_SHORT).show();
+                    Log.d(TagConstants.TAG, "hour-->" + hourOfDay + "; min-->" + minute + "; total->" + exitTime);
                 }
             };
-            TimePickerDialog dialog = new TimePickerDialog(getActivity(), listener, 0, 30, true );
+            TimePickerDialog dialog = new TimePickerDialog(getActivity(), listener, 0, 30, true);
             dialog.show();
             sleeping = true;
         } else {
@@ -146,6 +144,7 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
         }
 
     }
+
     /**
      * 初始化播放模式
      */
@@ -173,7 +172,8 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
 
     /**
      * 在设定时间后退出
-     * @param time  距离退出的时间
+     *
+     * @param time 距离退出的时间
      */
     private void exitAtTime(long time) {
         TimerTask task = new TimerTask() {
@@ -182,7 +182,7 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
                 System.exit(0);
             }
         };
-        if (time>0) {
+        if (time > 0) {
             new Timer().schedule(task, time);
         } else {
             Log.d(TagConstants.TAG, "时间小于0");
@@ -191,6 +191,7 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
 
     /**
      * 设置播放模式
+     *
      * @param view 视图
      */
     private void setPlaySchema(View view) {
@@ -215,10 +216,11 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
                 playSchema = "顺序播放";
                 currentSchema = MusicPlayService.MUSIC_PLAY_SCHEMA_ORDER;
                 break;
-            default: break;
+            default:
+                break;
         }
         ((TextView) view.findViewById(R.id.btn_menu_item_play_schema)).setText(playSchema);
-        SharedPreferences.Editor  editor = pref.edit();
+        SharedPreferences.Editor editor = pref.edit();
         editor.putInt("play_schema", currentSchema);
         editor.apply();
     }

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.andy.music.utility.ContextUtil;
+import com.andy.music.util.ContextUtil;
 
 /**
  * 数据库辅助类

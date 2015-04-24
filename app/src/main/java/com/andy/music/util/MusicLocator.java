@@ -1,15 +1,11 @@
-package com.andy.music.utility;
+package com.andy.music.util;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.andy.music.entity.Music;
-import com.andy.music.entity.TagConstants;
 import com.andy.music.function.MusicListManager;
-import com.andy.music.function.MusicPlayService;
+import com.andy.music.service.MusicPlayService;
 
 import java.util.List;
 

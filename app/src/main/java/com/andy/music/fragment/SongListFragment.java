@@ -21,8 +21,8 @@ import com.andy.music.adapter.MusicListAdapter;
 import com.andy.music.data.CursorAdapter;
 import com.andy.music.data.MusicScanner;
 import com.andy.music.entity.Music;
-import com.andy.music.utility.BroadCastHelper;
-import com.andy.music.utility.MusicLocator;
+import com.andy.music.util.BroadCastHelper;
+import com.andy.music.util.MusicLocator;
 
 import java.util.List;
 

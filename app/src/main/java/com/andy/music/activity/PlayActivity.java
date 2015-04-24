@@ -1,21 +1,17 @@
-package com.andy.music.view;
+package com.andy.music.activity;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.gesture.GestureOverlayView;
-import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -25,14 +21,13 @@ import android.widget.ToggleButton;
 
 import com.andy.music.R;
 import com.andy.music.entity.Music;
-import com.andy.music.entity.TagConstants;
 import com.andy.music.function.MusicListManager;
-import com.andy.music.function.MusicPlayService;
+import com.andy.music.service.MusicPlayService;
 import com.andy.music.function.MusicProgressManager;
 import com.andy.music.listener.MusicPlayListener;
-import com.andy.music.utility.BroadCastHelper;
-import com.andy.music.utility.MusicLocator;
-import com.andy.music.utility.TimeHelper;
+import com.andy.music.util.BroadCastHelper;
+import com.andy.music.util.MusicLocator;
+import com.andy.music.util.TimeHelper;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -94,7 +89,7 @@ public class PlayActivity extends Activity implements View.OnTouchListener, Gest
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 MusicListManager list = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_FAVORITE);
                 Music music = MusicLocator.getCurrentMusic();
-                if (isChecked && music!=null) {
+                if (isChecked && music != null) {
                     if (list.isMusicExist(music)) return;
                     list.add(music);
                 } else {
@@ -238,6 +233,9 @@ public class PlayActivity extends Activity implements View.OnTouchListener, Gest
         return true;
     }
 
+    /**
+     * 接收各种歌曲播放的广播，更新播放面板
+     */
     public class PlayStatusReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -253,6 +251,9 @@ public class PlayActivity extends Activity implements View.OnTouchListener, Gest
         }
     }
 
+    /**
+     * 更新播放时间的 Handler
+     */
     public class PlayProgressHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
@@ -266,6 +267,9 @@ public class PlayActivity extends Activity implements View.OnTouchListener, Gest
         }
     }
 
+    /**
+     * 用于播放歌曲时计时的线程
+     */
     public class PlayProgressThread {
 
         Timer timer;

@@ -11,8 +11,7 @@ import com.andy.music.entity.*;
 public class MusicListFactory {
 
     /**
-     * 在数据库中建立一个音乐表
-     *
+     * 在数据库中建立一个音乐表     *
      * @param name 要建立的表的名称
      */
     public static MusicListManager create(String name) {

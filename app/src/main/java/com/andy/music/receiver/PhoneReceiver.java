@@ -5,11 +5,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 
-import com.andy.music.entity.TagConstants;
-import com.andy.music.function.MusicPlayService;
-import com.andy.music.utility.BroadCastHelper;
+import com.andy.music.service.MusicPlayService;
+import com.andy.music.util.BroadCastHelper;
 
 /**
  * 接收来电和去电的广播

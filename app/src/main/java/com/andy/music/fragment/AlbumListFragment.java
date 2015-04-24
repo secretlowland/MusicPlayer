@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 
 import com.andy.music.R;
 import com.andy.music.data.CursorAdapter;
-import com.andy.music.entity.TagConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,25 +34,25 @@ public class AlbumListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        mainView = inflater.inflate(R.layout.fragment_list_album, (ViewGroup)getActivity().findViewById(R.id.view_pager_local_music), false);
+        mainView = inflater.inflate(R.layout.fragment_list_album, (ViewGroup) getActivity().findViewById(R.id.view_pager_local_music), false);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,  Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // 移除已存在的 view
         ViewGroup group = ((ViewGroup) mainView.getParent());
-        if (group!=null) {
+        if (group != null) {
             group.removeAllViewsInLayout();
-//            Log.d(TagConstants.TAG, "已移除已存在的view");
         }
         return mainView;
     }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // 获取 ListView
-        listView =(ListView) view.findViewById(R.id.lv_list_album);
+        listView = (ListView) view.findViewById(R.id.lv_list_album);
 
         // 为 ListView 设置适配器
         listView.setAdapter(getAdapter());
@@ -76,28 +74,28 @@ public class AlbumListFragment extends Fragment {
             HashMap<String, Object> pre = null;
             if (!data.isEmpty()) {  // 列表不为空,则遍历 data 中已存在的数据
                 int num = 0;  // 该歌手出现的次数
-                for (int i=0; i<data.size(); i++) {
+                for (int i = 0; i < data.size(); i++) {
                     pre = data.get(i);
                     if (name.equals(pre.get("name"))) {
-                        String str = (String)pre.get("num");
+                        String str = (String) pre.get("num");
                         num = getInt(str);
                         data.remove(pre);
                     }
                 }
                 map = new HashMap<>();
                 map.put("name", name);
-                map.put("num", ++num+"首歌曲");
+                map.put("num", ++num + "首歌曲");
                 data.add(map);
             } else {  // 列表为空
                 map = new HashMap<>();
                 map.put("name", name);
-                map.put("num", 1+"首歌曲");
+                map.put("num", 1 + "首歌曲");
                 data.add(map);
             }
 
         }
         cursor.close();
-        SimpleAdapter adapter =new SimpleAdapter(getActivity(), data, resource, from, to);
+        SimpleAdapter adapter = new SimpleAdapter(getActivity(), data, resource, from, to);
         return adapter;
     }
 
@@ -106,7 +104,7 @@ public class AlbumListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // 获取当前 item 的专辑名
-                String albumName = ((TextView)view.findViewById(R.id.tv_list_cell_double_line_first)).getText().toString();
+                String albumName = ((TextView) view.findViewById(R.id.tv_list_cell_double_line_first)).getText().toString();
 
                 // 将主体部分替换成 songListFragment
                 SongListFragment fragment = new SongListFragment();
@@ -121,11 +119,18 @@ public class AlbumListFragment extends Fragment {
             }
         };
     }
+
+    /**
+     * 从字符串中取出数字
+     * 注：因为此方法只在本类中特定环境下使用，所以并不是很严谨
+     * @param str 带有数字的字符串，如 “ 5首歌曲 ”
+     * @return 字符串中的数字
+     */
     private int getInt(String str) {
         int index = 0;
-        for (int i=0; i<str.length(); i++) {
+        for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
-            if (c<=57) index ++;
+            if (c <= 57) index++;
         }
         return Integer.parseInt(str.substring(0, index));
     }

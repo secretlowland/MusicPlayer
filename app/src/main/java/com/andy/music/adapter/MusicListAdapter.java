@@ -12,7 +12,7 @@ import android.widget.ToggleButton;
 
 import com.andy.music.R;
 import com.andy.music.entity.Music;
-import com.andy.music.utility.MusicLocator;
+import com.andy.music.util.MusicLocator;
 
 import java.util.List;
 

@@ -17,8 +17,8 @@ import android.widget.TextView;
 import com.andy.music.R;
 import com.andy.music.adapter.MusicListAdapter;
 import com.andy.music.entity.Music;
-import com.andy.music.utility.BroadCastHelper;
-import com.andy.music.utility.MusicLocator;
+import com.andy.music.util.BroadCastHelper;
+import com.andy.music.util.MusicLocator;
 
 import java.util.List;
 

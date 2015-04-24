@@ -1,19 +1,15 @@
 package com.andy.music.listener;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.andy.music.R;
-import com.andy.music.entity.TagConstants;
-import com.andy.music.function.MusicPlayService;
-import com.andy.music.utility.BroadCastHelper;
-import com.andy.music.utility.ContextUtil;
-import com.andy.music.utility.MusicLocator;
+import com.andy.music.service.MusicPlayService;
+import com.andy.music.util.BroadCastHelper;
+import com.andy.music.util.ContextUtil;
+import com.andy.music.util.MusicLocator;
 
 /**
  * 监听音乐播放器的播放，暂停，下一首等操作

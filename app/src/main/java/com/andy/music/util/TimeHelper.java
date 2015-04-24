@@ -1,4 +1,4 @@
-package com.andy.music.utility;
+package com.andy.music.util;
 
 /**
  * 时间助手类

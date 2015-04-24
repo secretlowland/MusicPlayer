@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +16,11 @@ import android.widget.ToggleButton;
 
 import com.andy.music.R;
 import com.andy.music.entity.Music;
-import com.andy.music.entity.TagConstants;
-import com.andy.music.function.MusicPlayService;
+import com.andy.music.service.MusicPlayService;
 import com.andy.music.listener.MusicPlayListener;
-import com.andy.music.utility.BroadCastHelper;
-import com.andy.music.utility.MusicLocator;
-import com.andy.music.view.PlayActivity;
+import com.andy.music.util.BroadCastHelper;
+import com.andy.music.util.MusicLocator;
+import com.andy.music.activity.PlayActivity;
 
 /**
  * 音乐播放控制条
@@ -36,6 +34,7 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
     private ToggleButton playToggle;
     private ImageButton playNext, mainMenu;
 
+    private MainMenuFragment menuFragment;
     private PlayStatusReceiver receiver;
 
     @Override
@@ -69,6 +68,7 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
         playNext = (ImageButton) view.findViewById(R.id.btn_music_play_next);
         mainMenu = (ImageButton) view.findViewById(R.id.btn_main_menu);
         receiver = new PlayStatusReceiver();
+        menuFragment = new MainMenuFragment();
 
         // 设置监听事件
         MusicPlayListener listener = new MusicPlayListener();
@@ -77,13 +77,10 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
         mainMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainMenuFragment fragment = new MainMenuFragment();
-                fragment.setCancelable(true);
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//                transaction.setCustomAnimations(R.anim.bottom_to_top, R.anim.fade_out, R.anim.fade_out, R.anim.fade_out);
-//                transaction.setCustomAnimations(R.anim.bottom_to_top, 0, 0, R.anim.fade_out);
-                transaction.add(R.id.frag_container_main_menu, fragment);
-                transaction.addToBackStack(null).commit();
+//                transaction.setCustomAnimations(R.anim.bottom_to_top,0);
+                transaction.replace(R.id.frag_container_main_menu, new MainMenuFragment());
+                transaction.addToBackStack("MainMenu").commit();
 
             }
         });

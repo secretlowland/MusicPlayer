@@ -3,14 +3,12 @@ package com.andy.music.fragment;
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.andy.music.R;
-import com.andy.music.entity.TagConstants;
 import com.andy.music.function.MusicListManager;
 
 /**
@@ -49,7 +47,7 @@ public class NavPanelFragment extends android.support.v4.app.Fragment implements
     @Override
     public void onResume() {
         ActionBar actionBar = getActivity().getActionBar();
-        if(actionBar!=null) {
+        if (actionBar != null) {
             actionBar.setTitle("音乐");
             actionBar.setDisplayHomeAsUpEnabled(false);
             actionBar.setHomeButtonEnabled(true);
@@ -68,7 +66,7 @@ public class NavPanelFragment extends android.support.v4.app.Fragment implements
 
         // 模块替换
         android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        Fragment frag= new Fragment();
+        Fragment frag = new Fragment();
         String listName = MusicListManager.MUSIC_LIST_LOCAL;
         boolean flag = true;
 

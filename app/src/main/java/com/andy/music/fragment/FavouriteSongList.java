@@ -10,6 +10,7 @@ import com.andy.music.function.MusicListManager;
 import java.util.List;
 
 /**
+ * 音乐收藏列表
  * Created by Andy on 2015/1/11.
  */
 public class FavouriteSongList extends BaseSongList {
