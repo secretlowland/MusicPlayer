@@ -31,6 +31,7 @@
         </activity>
         <activity android:name=".activity.PlayActivity" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
         <activity android:name=".activity.SettingActivity"/>
+        <activity android:name=".activity.SearchActivity"/>
 
         <service android:name=".service.MusicPlayService"/>
 

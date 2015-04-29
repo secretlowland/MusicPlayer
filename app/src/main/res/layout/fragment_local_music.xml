@@ -22,7 +22,7 @@
         android:background="#eeE0E0E0"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="35dp">
         <com.andy.music.widget.IndicatorView
             andy:color="#333666"
             andy:focusedColor="#eeeeee"

@@ -80,11 +80,13 @@ public class IndicatorView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        float width = (getMeasuredWidth() - getPaddingLeft() - getPaddingRight()) / 2;
-        float height = (getMeasuredHeight() - getPaddingTop() - getPaddingBottom()) / 2;
-        float left = width / 2;
-        float top = height / 2;
-        iconRect = new RectF(left, top, left + width, top + height);
+        float width = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
+        float height = getMeasuredHeight() - getPaddingTop() - getPaddingBottom();
+        float iconWidth = width*0.5f;
+        float iconHeight  = height*0.8f;
+        float left = (width - iconWidth)*0.5f;
+        float top = (height - iconHeight)*0.8f;
+        iconRect = new RectF(left, top, left + iconWidth, top + iconHeight);
     }
 
     public void setIconAlpha(float alpha) {

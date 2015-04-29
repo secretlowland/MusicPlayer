@@ -44,6 +44,7 @@
 
     <LinearLayout
         android:background="@drawable/btn_play_bar_common"
+        android:clickable="true"
         android:gravity="center"
         android:layout_weight="0"
         android:layout_width="50dp"
@@ -54,8 +55,8 @@
             android:textOn=""
             android:textOff=""
             android:layout_weight="0"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
+            android:layout_width="50dp"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <ImageButton

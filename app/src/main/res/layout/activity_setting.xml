@@ -5,6 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <fragment
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:name="com.andy.music.fragment.TopBarFragment"/>
+
     <TextView
         android:text="基本设置"
         android:layout_marginBottom="5dp"

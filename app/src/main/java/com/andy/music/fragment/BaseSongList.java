@@ -23,6 +23,7 @@ import com.andy.music.util.MusicLocator;
 import java.util.List;
 
 /**
+ * 歌曲列表，收藏列表，最近播放列表等的直接父类
  * Created by Andy on 2015/1/11.
  */
 public abstract class BaseSongList extends ListFragment {

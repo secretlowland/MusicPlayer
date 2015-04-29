@@ -43,16 +43,15 @@ public class LocalMusicFragment extends Fragment implements View.OnClickListener
         super.onViewCreated(view, savedInstanceState);
 //        Log.d(TagConstants.TAG, "LocalMusicFragment-->onViewCreated()");
 
-        ActionBar actionBar = getActivity().getActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle("本地音乐");
-            actionBar.setDisplayHomeAsUpEnabled(true);  // 是否显示返回图标
+        TopBarFragment topBar = (TopBarFragment)getActivity().getSupportFragmentManager().findFragmentByTag("topBar");
+        if (topBar!=null) {
+            topBar.setCustomTitle("本地音乐");
         }
         musicPager = (ViewPager) getActivity().findViewById(R.id.view_pager_local_music);
 
         // 要加载的页面
         fragmentList = new ArrayList<>();
-        fragmentList.add(new SongListFragment());
+        fragmentList.add(new LocalSongList());
         fragmentList.add(new SingerListFragment());
         fragmentList.add(new AlbumListFragment());
 

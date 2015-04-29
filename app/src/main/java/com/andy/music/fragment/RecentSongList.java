@@ -12,6 +12,7 @@ import com.andy.music.function.MusicListManager;
 import java.util.List;
 
 /**
+ * 最近播放列表
  * Created by Andy on 2015/1/11.
  */
 public class RecentSongList extends BaseSongList {
@@ -25,10 +26,9 @@ public class RecentSongList extends BaseSongList {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ActionBar actionBar = getActivity().getActionBar();
-        if(actionBar!=null) {
-            actionBar.setTitle("最近播放");
-            actionBar.setDisplayHomeAsUpEnabled(true);  // 是否显示返回图标
+        TopBarFragment topBar = (TopBarFragment)getActivity().getSupportFragmentManager().findFragmentByTag("topBar");
+        if (topBar!=null) {
+            topBar.setCustomTitle("最近播放");
         }
     }
 

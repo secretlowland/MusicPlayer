@@ -8,6 +8,7 @@ import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -67,8 +68,8 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
             navPanelFragment.setArguments(getIntent().getExtras());
             playBarFragment.setArguments(getIntent().getExtras());
 
-            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//            transaction.add(R.id.frag_container_top_bar, topBarFragment);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.frag_container_top_bar, topBarFragment, "topBar");
             transaction.add(R.id.frag_container_main_content, navPanelFragment);
             transaction.add(R.id.frag_container_play_bar, playBarFragment);
             transaction.commit();

@@ -46,11 +46,9 @@ public class NavPanelFragment extends android.support.v4.app.Fragment implements
 
     @Override
     public void onResume() {
-        ActionBar actionBar = getActivity().getActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle("音乐");
-            actionBar.setDisplayHomeAsUpEnabled(false);
-            actionBar.setHomeButtonEnabled(true);
+        TopBarFragment topBar = (TopBarFragment)getActivity().getSupportFragmentManager().findFragmentByTag("topBar");
+        if (topBar!=null) {
+            topBar.setCustomTitle("音乐");
         }
         super.onResume();
     }

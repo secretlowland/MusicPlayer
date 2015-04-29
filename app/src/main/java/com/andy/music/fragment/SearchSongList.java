@@ -19,6 +19,7 @@ import com.andy.music.function.MusicListManager;
 import java.util.List;
 
 /**
+ * 搜索结果列表
  * Created by Andy on 2015/4/6.
  */
 public class SearchSongList extends BaseSongList {

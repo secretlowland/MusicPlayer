@@ -36,52 +36,7 @@ public class SongListFragment extends Fragment {
     private ListView listView;
     private Cursor searchCursor;
     private List<Music> musicList;
-
-
-
-
-
-    @Override
-    public void onResume() {
-//        Log.d(TagConstants.TAG, "SongList-->onResume");
-        super.onResume();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-//        Log.d(TagConstants.TAG, "SongList-->onSaveInstanceState");
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onPause() {
-//        Log.d(TagConstants.TAG, "SongList-->onPause");
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-//        Log.d(TagConstants.TAG, "SongList-->onStop");
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroyView() {
-//        Log.d(TagConstants.TAG, "SongList-->onDestroyView");
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-//        Log.d(TagConstants.TAG, "SongList-->onDestroy");
-        super.onDestroy();
-    }
-
-    @Override
-    public void onDetach() {
-//        Log.d(TagConstants.TAG, "SongList-->onDetach");
-        super.onDetach();
-    }
+    private Receiver receiver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -126,6 +81,12 @@ public class SongListFragment extends Fragment {
 //        Log.d(TagConstants.TAG, "SongList-->");
         super.onStart();
         refreshMusicList(listView);
+    }
+
+    @Override
+    public void onDestroyOptionsMenu() {
+        super.onDestroyOptionsMenu();
+        getActivity().unregisterReceiver(receiver);
     }
 
     public BaseAdapter getAdapter() {
@@ -209,7 +170,7 @@ public class SongListFragment extends Fragment {
         filter.addAction(BroadCastHelper.ACTION_MUSIC_PLAY);
         filter.addAction(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
         filter.addAction(BroadCastHelper.ACTION_MUSIC_PLAY_RANDOM);
-        Receiver receiver = new Receiver();
+        receiver = new Receiver();
         getActivity().registerReceiver(receiver, filter);
     }
 

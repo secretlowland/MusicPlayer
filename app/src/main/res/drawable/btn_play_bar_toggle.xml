@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_checked="true" android:drawable="@drawable/btn_play_bar_toggle_on"/>
-    <item android:state_checked="false" android:drawable="@drawable/btn_play_bar_toggle_off"/>
+    <item android:state_checked="true"  android:state_pressed="true">
+        <bitmap android:src="@drawable/btn_play_bar_toggle_on" android:tileMode="disabled" android:gravity="center" />
+        <color android:color="#34ffffff"/>
+    </item>
+
+    <item android:state_pressed="true" android:state_checked="true">
+        <bitmap android:src="@drawable/btn_play_bar_toggle_on" android:tileMode="disabled" android:gravity="center" />
+        <color android:color="#34ffffff"/>
+    </item>
+
+    <item android:state_pressed="false" android:state_checked="true">
+        <bitmap android:src="@drawable/btn_play_bar_toggle_on" android:tileMode="disabled" android:gravity="center" />
+    </item>
+
+    <item android:state_pressed="false" android:state_checked="false">
+        <bitmap android:src="@drawable/btn_play_bar_toggle_off" android:tileMode="disabled" android:gravity="center" />
+    </item>
 </selector>
