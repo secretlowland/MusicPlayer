@@ -7,6 +7,7 @@
         android:id="@+id/lv_list_song"
         android:clipToPadding="false"
         android:clipChildren="false"
+        android:paddingTop="30dp"
         android:paddingBottom="50dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

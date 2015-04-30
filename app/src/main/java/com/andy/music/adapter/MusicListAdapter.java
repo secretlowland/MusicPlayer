@@ -74,7 +74,6 @@ public class MusicListAdapter extends BaseAdapter {
 
         ViewHolder holder;
         if (convertView == null) {
-
             // 获取控件对象
             holder = new ViewHolder();
             convertView = inflater.inflate(resource, null);
@@ -131,29 +130,6 @@ public class MusicListAdapter extends BaseAdapter {
         }
 
         return convertView;
-
-//        不可取方法
-//        convertView = inflater.inflate(R.layout.music_list_cell, null);
-//
-//        TextView number = (TextView) convertView.findViewById(R.id.tv_music_number);
-//        TextView name =(TextView) convertView.findViewById(R.id.tv_music_name);
-//        TextView singer =(TextView) convertView.findViewById(R.id.tv_music_singer);
-//        ImageButton addToFavor = (ImageButton) convertView.findViewById(R.id.ib_add_to_favorite);
-//
-//        number.setText(position+1+"");
-//        name.setText(musicList.get(position).getName());
-//        singer.setText(musicList.get(position).getSinger());
-//        addToFavor.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // 添加到我的最爱
-//                /// 获得我的最爱列表
-//                MusicList favorMusicList = MusicList.getInstance(context, MusicList.MUSIC_LIST_FAVORITE);
-//                favorMusicList.add(new Music(musicList.get(position).getId()));
-//                Toast.makeText(context, "已添加到我的最爱", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        return convertView;
     }
 
 

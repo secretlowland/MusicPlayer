@@ -61,11 +61,12 @@ public class MusicNotification {
      * 更新通知栏
      */
     public void refreshNotification() {
-        builder.setTicker("更新歌曲");
+
         Music music = MusicLocator.getCurrentMusic();
         if (music!=null) {
             views.setTextViewText(R.id.tv_music_name, music.getName());
             views.setTextViewText(R.id.tv_music_singer, music.getSinger());
+            builder.setTicker(music.getSinger()+"-"+music.getName());
         }
 
         if (MusicPlayService.isPlaying()) {
@@ -109,6 +110,7 @@ public class MusicNotification {
         if(music!=null) {
             views.setTextViewText(R.id.tv_music_name, music.getName());
             views.setTextViewText(R.id.tv_music_singer, music.getSinger());
+            builder.setTicker(music.getSinger()+"-"+music.getName());
         }
         if (!MusicPlayService.isPlaying()) {
             views.setImageViewResource(R.id.btn_music_toggle, R.drawable.btn_play_bar_toggle_off);
@@ -120,7 +122,6 @@ public class MusicNotification {
         builder.setContent(views);
         builder.setContentIntent(pendingIntent);
         builder.setSmallIcon(R.drawable.ic_launcher);
-        builder.setTicker("Hello, I'm Andy!");
         builder.setWhen(System.currentTimeMillis());
 //        builder.setOngoing(true);
 
@@ -141,7 +142,6 @@ public class MusicNotification {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            Log.d(TagConstants.TAG, "Notification-->action-->"+action);
             if (action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT) ||
                     action.equals(BroadCastHelper.ACTION_MUSIC_PLAY) ||
                     action.equals(BroadCastHelper.ACTION_MUSIC_PLAY_RANDOM) ||

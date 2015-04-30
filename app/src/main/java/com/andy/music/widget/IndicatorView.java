@@ -85,7 +85,7 @@ public class IndicatorView extends View {
         float iconWidth = width*0.5f;
         float iconHeight  = height*0.8f;
         float left = (width - iconWidth)*0.5f;
-        float top = (height - iconHeight)*0.8f;
+        float top = (height - iconHeight)*0.5f;
         iconRect = new RectF(left, top, left + iconWidth, top + iconHeight);
     }
 
@@ -99,8 +99,7 @@ public class IndicatorView extends View {
         titlePaint.setAlpha(alpha);
         titlePaint.setAntiAlias(true);
         float x = getWidth() / 2 - titleRect.width() / 2;
-        float y = (iconRect.top + iconRect.bottom) / 2 + titleRect.height() / 2;
-        float yy = getHeight() / 2 + titleRect.height() / 2;
+        float y = getHeight() / 2 + titleRect.height() / 2;
         canvas.drawText(title, x, y, titlePaint);
     }
 

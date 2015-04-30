@@ -1,17 +1,14 @@
 package com.andy.music.fragment;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.andy.music.R;
 import com.andy.music.adapter.MyFragmentPagerAdapter;
-import com.andy.music.entity.TagConstants;
 import com.andy.music.widget.IndicatorView;
 
 import java.util.ArrayList;
@@ -52,8 +49,8 @@ public class LocalMusicFragment extends Fragment implements View.OnClickListener
         // 要加载的页面
         fragmentList = new ArrayList<>();
         fragmentList.add(new LocalSongList());
-        fragmentList.add(new SingerListFragment());
-        fragmentList.add(new AlbumListFragment());
+        fragmentList.add(new LocalSingerList());
+        fragmentList.add(new LocalAlbumList());
 
         // 页面标题
         final ArrayList<String> titles = new ArrayList<String>();

@@ -1,21 +1,28 @@
 package com.andy.music.fragment;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.SimpleAdapter;
 
 import com.andy.music.R;
-import com.andy.music.function.MusicListManager;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * 主界面导航模块
  * Created by Andy on 2014/11/27.
  */
-public class NavPanelFragment extends android.support.v4.app.Fragment implements View.OnClickListener {
+public class NavPanelFragment extends android.support.v4.app.Fragment {
+
+    GridView navPanel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,14 +40,33 @@ public class NavPanelFragment extends android.support.v4.app.Fragment implements
         super.onViewCreated(view, savedInstanceState);
 
         // 初始化成员变量
-        Button toLocalMusic = (Button) view.findViewById(R.id.btn_to_local_music);
-        Button toFavorMusic = (Button) view.findViewById(R.id.btn_to_favorite_music);
-        Button toRecentMusic = (Button) view.findViewById(R.id.btn_to_recent_music);
+        navPanel = (GridView)getActivity().findViewById(R.id.gv_nav_panel);
+        navPanel.setAdapter(getInitAdapter());
 
         // 设置监听事件
-        toLocalMusic.setOnClickListener(this);
-        toFavorMusic.setOnClickListener(this);
-        toRecentMusic.setOnClickListener(this);
+        navPanel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                Fragment fragment = null;
+                switch (position) {
+                    case 0:
+                        fragment = new LocalMusicFragment();
+                        break;
+                    case 1:
+                        fragment = new FavouriteSongList();
+                        break;
+                    case 2:
+                        fragment = new RecentSongList();
+                        break;
+                    default: break;
+                }
+
+                transaction.replace(R.id.frag_container_main_content, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
 
     }
 
@@ -59,51 +85,32 @@ public class NavPanelFragment extends android.support.v4.app.Fragment implements
         super.onDestroyView();
     }
 
-    @Override
-    public void onClick(View v) {
 
-        // 模块替换
-        android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        Fragment frag = new Fragment();
-        String listName = MusicListManager.MUSIC_LIST_LOCAL;
-        boolean flag = true;
+    /**
+     * 初始化 用于 GridView 的 Adapter
+     * @return adapter
+     */
+    private BaseAdapter getInitAdapter() {
+        final ArrayList<HashMap<String, Object>> data = new ArrayList<>();
 
-        switch (v.getId()) {
-            case R.id.btn_to_local_music:
-                flag = false;
-                frag = new LocalMusicFragment();
-//                transaction.setCustomAnimations(R.anim.frag_in, R.anim.frag_out, 0, 0);  // 必须在 replace() 等方法之前调用
-                transaction.replace(R.id.frag_container_main_content, frag);
-                transaction.addToBackStack(null);
-                transaction.commit();
-                break;
-            case R.id.btn_to_recent_music:
-                flag = false;
-                frag = new RecentSongList();
-                transaction.replace(R.id.frag_container_main_content, frag);
-                transaction.addToBackStack(null);
-                transaction.commit();
-                break;
-            case R.id.btn_to_favorite_music:
-                flag = false;
-                frag = new FavouriteSongList();
-                transaction.replace(R.id.frag_container_main_content, frag);
-                transaction.addToBackStack(null);
-                transaction.commit();
-                listName = MusicListManager.MUSIC_LIST_FAVORITE;
-                break;
-            default:
-                break;
-        }
-//
-//        if (flag) {
-//            Bundle bundle = new Bundle();
-//            bundle.putString("list_name", listName);
-//            fragment.setArguments(bundle);
-//            transaction.replace(R.id.frag_container_main_content, fragment);
-//            transaction.addToBackStack(null);  // 添加到返回栈
-//            transaction.commit();  // 提交事务
-//        }
+        HashMap<String , Object> local = new HashMap<>();
+        local.put("icon", R.drawable.class_icon_local);
+        local.put("title", "本地音乐");
+        data.add(local);
 
+        HashMap<String , Object> favourite = new HashMap<>();
+        favourite.put("icon", R.drawable.class_icon_favourite);
+        favourite.put("title", "我的最爱");
+        data.add(favourite);
+
+        HashMap<String , Object> recent = new HashMap<>();
+        recent.put("icon", R.drawable.class_icon_recent);
+        recent.put("title", "最近播放");
+        data.add(recent);
+
+        int resource = R.layout.grid_cell_nav_panel;
+        String[] from = {"icon", "title"};
+        int[] to = {R.id.iv_nav_panel_icon, R.id.tv_nav_panel_title};
+        return new SimpleAdapter(getActivity(), data, resource, from, to);
     }
 }

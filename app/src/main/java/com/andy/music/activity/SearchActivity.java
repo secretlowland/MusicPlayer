@@ -1,22 +1,15 @@
 package com.andy.music.activity;
-import android.app.ActionBar;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.andy.music.R;
-import com.andy.music.entity.TagConstants;
 import com.andy.music.fragment.LocalSongList;
 import com.andy.music.fragment.SearchSongList;
-import com.andy.music.fragment.SongListFragment;
 import com.andy.music.fragment.TopBarFragment;
 
 /**
@@ -35,10 +28,8 @@ public class SearchActivity extends FragmentActivity {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         TopBarFragment topBarFragment = new TopBarFragment();
-//        topBarFragment.setCustomTitle("搜索");
-//        topBarFragment.hideSearchIcon();
         transaction.add(R.id.ll_top_bar_container, new TopBarFragment(), "topBar");
-        transaction.add(R.id.frag_container_search_list, new LocalSongList(), "songList");
+        transaction.add(R.id.frag_container_search_list, new SearchSongList(), "songList");
         transaction.commit();
 
         // 初始化变量

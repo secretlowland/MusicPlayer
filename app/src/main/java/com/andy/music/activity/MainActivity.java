@@ -85,13 +85,13 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Log.d(TagConstants.TAG, "MainActivity-->onSaveInstanceState()");
+//        Log.d(TagConstants.TAG, "MainActivity-->onSaveInstanceState()");
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onDestroy() {
-        Log.d(TagConstants.TAG, "MainActivity-->onDestroy()");
+//        Log.d(TagConstants.TAG, "MainActivity-->onDestroy()");
         MusicLocator.saveMusicLocation();
         super.onDestroy();
     }

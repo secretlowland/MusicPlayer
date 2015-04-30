@@ -7,7 +7,6 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 
 import com.andy.music.R;
 import com.andy.music.data.CursorAdapter;
-import com.andy.music.entity.TagConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +27,7 @@ import java.util.List;
  * 歌曲列表模块
  * Created by Andy on 2014/12/16.
  */
-public class SingerListFragment extends Fragment {
+public class LocalSingerList extends Fragment {
 
     private View mainView;
     private ListView listView;
@@ -39,11 +37,11 @@ public class SingerListFragment extends Fragment {
 //        Log.d(TagConstants.TAG, "SingerList--> onCreate");
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        mainView = inflater.inflate(R.layout.fragment_list_singer, (ViewGroup)getActivity().findViewById(R.id.view_pager_local_music), false);
+        mainView = inflater.inflate(R.layout.fragment_list_singer, (ViewGroup) getActivity().findViewById(R.id.view_pager_local_music), false);
     }
 
     @Override
-    public void onActivityCreated( Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
 //        Log.d(TagConstants.TAG, "SingerList--> onActivityCreated");
         super.onActivityCreated(savedInstanceState);
     }
@@ -97,7 +95,6 @@ public class SingerListFragment extends Fragment {
     }
 
 
-
     @Override
     public void onAttach(Activity activity) {
 //        Log.d(TagConstants.TAG, "SingerList--> onAttach");
@@ -111,11 +108,11 @@ public class SingerListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,  Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //        Log.d(TagConstants.TAG, "SingerList--> onCreateView");
         // 移除已存在的 view
         ViewGroup group = ((ViewGroup) mainView.getParent());
-        if (group!=null) {
+        if (group != null) {
             group.removeAllViewsInLayout();
 //            Log.d(TagConstants.TAG, "已移除已存在的view--> SongList");
         }
@@ -123,12 +120,12 @@ public class SingerListFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view,  Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
 //        Log.d(TagConstants.TAG, "SingerList--> onViewCreated");
         super.onViewCreated(view, savedInstanceState);
 
         // 获取 ListView
-        listView =(ListView) view.findViewById(R.id.lv_list_singer);
+        listView = (ListView) view.findViewById(R.id.lv_list_singer);
 
         // 为 ListView 设置适配器
         listView.setAdapter(getAdapter());
@@ -151,28 +148,28 @@ public class SingerListFragment extends Fragment {
             HashMap<String, Object> pre = null;
             if (!data.isEmpty()) {  // 列表不为空,则遍历 data 中已存在的数据
                 int num = 0;  // 该歌手出现的次数
-                for (int i=0; i<data.size(); i++) {
+                for (int i = 0; i < data.size(); i++) {
                     pre = data.get(i);
                     if (name.equals(pre.get("name"))) {
-                        String str = (String)pre.get("num");
+                        String str = (String) pre.get("num");
                         num = getInt(str);
                         data.remove(pre);
                     }
                 }
                 map = new HashMap<>();
                 map.put("name", name);
-                map.put("num", ++num+"首歌曲");
+                map.put("num", ++num + "首歌曲");
                 data.add(map);
             } else {  // 列表为空
                 map = new HashMap<>();
                 map.put("name", name);
-                map.put("num", 1+"首歌曲");
+                map.put("num", 1 + "首歌曲");
                 data.add(map);
             }
 
         }
         cursor.close();
-        SimpleAdapter adapter =new SimpleAdapter(getActivity(), data, resource, from, to);
+        SimpleAdapter adapter = new SimpleAdapter(getActivity(), data, resource, from, to);
         return adapter;
     }
 
@@ -182,10 +179,10 @@ public class SingerListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // 获取当前 item 的歌手名
-                String singerName = ((TextView)view.findViewById(R.id.tv_list_cell_double_line_first)).getText().toString();
+                String singerName = ((TextView) view.findViewById(R.id.tv_list_cell_double_line_first)).getText().toString();
 
                 // 将主体部分替换成 songListFragment
-                SongListFragment fragment = new SongListFragment();
+                SongList fragment = new SongList();
                 Bundle bundle = new Bundle();
                 String selection = MediaStore.Audio.Media.ARTIST + "=?";
                 String[] selectionArgs = {singerName};
@@ -201,9 +198,9 @@ public class SingerListFragment extends Fragment {
 
     private int getInt(String str) {
         int index = 0;
-        for (int i=0; i<str.length(); i++) {
+        for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
-            if (c<=57) index ++;
+            if (c <= 57) index++;
         }
         return Integer.parseInt(str.substring(0, index));
     }

@@ -26,15 +26,16 @@ public class SearchSongList extends BaseSongList {
     @Override
     List<Music> getList() {
         // 获取传递进来的查询语句
+        List<Music> list = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_LOCAL).getList();
         Bundle bundle = getArguments();
         String selection = MediaStore.Audio.Media.TITLE + " LIKE ?";
         String[] selectionArgs = null;
         if (bundle!=null) {
             selectionArgs = bundle.getStringArray("selection_args");
             selectionArgs[0] = "%"+selectionArgs[0]+"%";
+            Cursor cursor = CursorAdapter.get(selection, selectionArgs);
+            list = MusicScanner.scan(cursor);
         }
-        Cursor cursor = CursorAdapter.get(selection, selectionArgs);
-        List<Music> list = MusicScanner.scan(cursor);
         return list;
     }
     @Override

@@ -29,7 +29,7 @@
                 android:name="android.app.default_searchable"
                 android:value=".search.SearchResultActivity" />
         </activity>
-        <activity android:name=".activity.PlayActivity" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
+        <activity android:name=".activity.PlayActivity"/>
         <activity android:name=".activity.SettingActivity"/>
         <activity android:name=".activity.SearchActivity"/>
 

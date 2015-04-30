@@ -1,56 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:rowCount="3"
-    android:columnCount="2"
-    android:alignmentMode="alignBounds"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+          android:id="@+id/gv_nav_panel"
+          android:numColumns="3"
+          android:gravity="center"
+          android:fadingEdge="vertical"
+          android:stretchMode="columnWidth"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
 
-    <ScrollView
-        android:overScrollMode="always"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/btn_to_local_music"
-                android:background="@drawable/btn_common"
-                android:layout_weight="1"
-                android:layout_margin="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:textColor="#ccffffff"
-                android:text="本地音乐"/>
-
-            <Button
-                android:id="@+id/btn_to_favorite_music"
-                android:background="@drawable/btn_common"
-                android:textColor="#ccffffff"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:text="我的最爱"/>
-
-            <Button
-                android:id="@+id/btn_to_recent_music"
-                android:text="最近播放"
-                android:layout_weight="1"
-                android:textColor="#ccffffff"
-                android:background="@drawable/btn_common"
-                android:layout_margin="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp" />
-        </LinearLayout>
-
-
-    </ScrollView>
-
-
-
-
-</LinearLayout>
+</GridView>
