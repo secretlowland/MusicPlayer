@@ -207,8 +207,7 @@ public class MusicListManager {
     }
 
     /**
-     * 向列表中添加音乐文件
-     *
+     * 向列表中添加音乐文件     *
      * @param music 要添加的音乐文件
      */
     public boolean add(Music music) {
@@ -232,15 +231,14 @@ public class MusicListManager {
     }
 
     /**
-     * 向列表中添加音乐文件
-     *
-     * @param music 要添加的音乐文件
+     * 移除列表中的音乐文件     *
+     * @param music 要移除的音乐文件
      */
     public boolean remove(Music music) {
         if (!isMusicExist(music)) return false;
         dbWriter = musicDBHelper.getWritableDatabase();
         try {
-            String whereClause = "source_id = " + music.getId();
+            String whereClause = "source_id = " + music.getSrcId();
             dbWriter.delete(tabName, whereClause, null);
         } catch (Exception e) {
             Log.d(TagConstants.TAG, "移除失败！");

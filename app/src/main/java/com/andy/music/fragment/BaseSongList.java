@@ -78,6 +78,10 @@ public abstract class BaseSongList extends ListFragment {
         };
     }
 
+    public ListView getListView() {
+        return listView;
+    }
+
     /**
      * 刷新列表。当前歌曲改变的时候刷新
      */
