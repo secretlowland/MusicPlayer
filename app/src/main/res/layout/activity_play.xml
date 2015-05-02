@@ -43,7 +43,7 @@
                     android:id="@+id/tv_music_play_name"
                     android:text="歌曲名"
                     android:textSize="20sp"
-                    android:textColor="#333333"
+                    android:textColor="#2fb17a"
                     android:singleLine="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

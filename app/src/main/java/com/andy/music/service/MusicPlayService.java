@@ -5,10 +5,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.andy.music.entity.Music;
 import com.andy.music.entity.TagConstants;
@@ -24,7 +30,7 @@ import java.io.IOException;
  * Created by Andy on 2014/11/20.
  */
 public class MusicPlayService extends Service implements MediaPlayer.OnCompletionListener,
-        MediaPlayer.OnErrorListener {
+        MediaPlayer.OnErrorListener, SensorEventListener {
 
     /**
      * 播放模式
@@ -37,7 +43,8 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
     private static boolean isFirst = true;  // 是否是启动后第一次播放
 
     private Music music;
-    private MediaPlayer mediaPlayer;
+    private static MediaPlayer mediaPlayer;
+    private SensorManager sensorManager;
 
 
     @Override
@@ -49,6 +56,10 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
         //要确保CPU在你的 MediaPlayer  播放的时候继续处于运行状态,当初始化你的 MediaPlayer 时调用 setWakeMode()  .
         // 一旦你这么做了, MediaPlayer 会持有指定的lock在播放的时候. 并且在paused或者stoped状态时,会释放掉这个lock.
         mediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
+
+        // 获取传感器服务
+        sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
 
         // 获取上次的音乐位置
         MusicLocator.getMusicLocation();
@@ -100,6 +111,28 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
     }
 
     @Override
+    public void onSensorChanged(SensorEvent event) {
+        SharedPreferences pref = getSharedPreferences("settings", Context.MODE_PRIVATE);
+        boolean shaking = pref.getBoolean("shaking", false);
+        if (!shaking) return;
+        int sensorType = event.sensor.getType();
+        float[] values = event.values;
+        if (sensorType==Sensor.TYPE_ACCELEROMETER) {
+            if (Math.abs(values[0])>14 || Math.abs(values[1])>14 || Math.abs(values[2])>14) {
+                // 摇动切歌
+                Toast.makeText(this, "切歌成功！", Toast.LENGTH_SHORT).show();
+                MusicLocator.toNext();
+                BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    @Override
     public void onDestroy() {
 //        Log.d(TagConstants.TAG, "PlayService-->onDestroy()");
         MusicLocator.saveMusicLocation();
@@ -120,6 +153,10 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
         // 歌曲播放完成，自动播放下一首
         MusicLocator.toNext();
         BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
+    }
+
+    public static void seekTo(int pos) {
+        mediaPlayer.seekTo(pos);
     }
 
     /**

@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.ToggleButton;
 
 import com.andy.music.R;
 import com.andy.music.entity.Music;
+import com.andy.music.entity.TagConstants;
 import com.andy.music.function.MusicListManager;
 import com.andy.music.service.MusicPlayService;
 import com.andy.music.function.MusicProgressManager;
@@ -180,6 +182,7 @@ public class PlayActivity extends Activity implements View.OnTouchListener, Gest
         musicSinger.setText(music.getSinger());
         seekBar.setMax(music.getDuration());
         seekBar.setProgress(MusicProgressManager.getProgress());
+        seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener());
         currentTime.setText(TimeHelper.timeFormat(MusicProgressManager.getProgress()));
         totalTime.setText(TimeHelper.timeFormat(music.getDuration()));
 
@@ -231,6 +234,28 @@ public class PlayActivity extends Activity implements View.OnTouchListener, Gest
 //            overridePendingTransition(R.anim.fade_in, R.anim.top_to_bottom);
 //        }
         return true;
+    }
+
+    /**
+     * SeekBar 监听类
+     */
+    public class OnSeekBarChangeListener implements SeekBar.OnSeekBarChangeListener {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            MusicProgressManager.setProgress(progress);
+            currentTime.setText(TimeHelper.timeFormat(progress));
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            int progress = seekBar.getProgress();
+            MusicProgressManager.setProgress(progress);
+            MusicPlayService.seekTo(progress);
+        }
     }
 
     /**

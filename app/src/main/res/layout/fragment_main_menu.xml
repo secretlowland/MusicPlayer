@@ -18,10 +18,8 @@
             <Button
                 android:id="@+id/btn_menu_item_scan_music"
                 android:text="扫描音乐"
-                android:clickable="true"
                 android:background="@drawable/btn_common"
                 android:layout_weight="1"
-                android:padding="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <Button
@@ -29,7 +27,6 @@
                 android:text=""
                 android:background="@drawable/btn_common"
                 android:layout_weight="1"
-                android:padding="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <Button
@@ -37,7 +34,6 @@
                 android:text="睡眠"
                 android:background="@drawable/btn_common"
                 android:layout_weight="1"
-                android:padding="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -52,7 +48,6 @@
                 android:text="更换背景"
                 android:background="@drawable/btn_common"
                 android:layout_weight="1"
-                android:padding="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <Button
@@ -60,7 +55,6 @@
                 android:text="设置"
                 android:background="@drawable/btn_common"
                 android:layout_weight="1"
-                android:padding="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <Button
@@ -68,7 +62,6 @@
                 android:text="退出"
                 android:background="@drawable/btn_common"
                 android:layout_weight="1"
-                android:padding="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
