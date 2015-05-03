@@ -45,6 +45,7 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
     private Music music;
     private static MediaPlayer mediaPlayer;
     private SensorManager sensorManager;
+    private Receiver playerReceiver;
 
 
     @Override
@@ -140,6 +141,7 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
             mediaPlayer.release();
             mediaPlayer = null;
         }
+        unregisterReceiver(playerReceiver);
     }
 
     @Override
@@ -230,9 +232,9 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
         filter.addAction(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
         filter.addAction(BroadCastHelper.ACTION_MUSIC_PLAY_PREVIOUS);
         filter.addAction(BroadCastHelper.ACTION_MUSIC_PLAY_RANDOM);
-        Receiver receiver = new Receiver();
-        registerReceiver(receiver, filter);
-
+        filter.addAction(Intent.ACTION_HEADSET_PLUG);
+        playerReceiver = new Receiver();
+        registerReceiver(playerReceiver, filter);
     }
 
     /**
@@ -245,7 +247,6 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
             recentList.add(music);
         }
     }
-
 
     /**
      * 接收与音乐播放有关的广播，然后做出相应操作
@@ -295,6 +296,20 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
                     // 随机播放的广播
                     play();
                     setIsPlaying(true);
+                case Intent.ACTION_HEADSET_PLUG:   // 耳机事件
+                    int state = intent.getIntExtra("state", -1);
+                    SharedPreferences pref = getSharedPreferences("settings", Context.MODE_PRIVATE);
+                    if (state==0) {  // 拔出耳机暂停播放
+                        boolean auto_pause = pref.getBoolean("auto_pause", true);
+                        if (auto_pause) {
+                            BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PAUSE);
+                        }
+                    } else if (state==1) {  //　插入耳机自动播放
+                        boolean auto_start = pref.getBoolean("auto_start", false);
+                        if (auto_start) {
+                            BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_START);
+                        }
+                    }
                 default: break;
             }
 
