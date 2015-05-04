@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <View
-        android:background="#666666"
+        android:background="#dddddd"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
 

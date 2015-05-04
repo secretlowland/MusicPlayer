@@ -91,7 +91,7 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
                 break;
             case R.id.btn_menu_item_change_theme:
                 // 更换背景
-                Toast.makeText(getActivity(), "更换背景", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "暂未实现！", Toast.LENGTH_SHORT).show();
                 getActivity().onBackPressed();
                 break;
             case R.id.btn_menu_item_sleep_time:
@@ -100,7 +100,6 @@ public class MainMenuFragment extends DialogFragment implements View.OnClickList
                 break;
             case R.id.btn_menu_item_setting:
                 // 设置
-                Toast.makeText(getActivity(), "设置", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getActivity(), SettingActivity.class));
                 getActivity().onBackPressed();
                 break;

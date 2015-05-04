@@ -7,25 +7,85 @@
     <LinearLayout
         android:id="@+id/ll_top_bar_container"
         android:orientation="vertical"
+        android:paddingBottom="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </LinearLayout>
 
-    <TextView
-        android:text="基本设置"
-        android:layout_marginBottom="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:text="摇一摇切歌"
-        android:textAlignment="textStart"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:text="屏幕常亮"
-        android:textColor="#666666"
+    <include layout="@layout/slider_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="摇一摇切歌"/>
+        <ToggleButton
+            android:id="@+id/tb_setting_shaking"
+            android:layout_weight="0"
+            android:background="@drawable/btn_check"
+            android:textOff=""
+            android:textOn=""
+            android:checked="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <include layout="@layout/slider_horizontal"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="耳机拔出暂停播放"/>
+        <ToggleButton
+            android:id="@+id/tb_setting_auto_pause"
+            android:background="@drawable/btn_check"
+            android:textOff=""
+            android:textOn=""
+            android:checked="true"
+            android:layout_weight="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <include layout="@layout/slider_horizontal"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="耳机插入开始播放"/>
+        <ToggleButton
+            android:id="@+id/tb_setting_auto_start"
+            android:background="@drawable/btn_check"
+            android:textOff=""
+            android:textOn=""
+            android:checked="false"
+            android:layout_weight="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <include layout="@layout/slider_horizontal"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"/>
 
 </LinearLayout>
