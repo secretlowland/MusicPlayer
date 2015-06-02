@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.andy.music.data.MusicDBHelper;
 
+import java.util.Locale;
+
 /**
  * 存储音乐列表的名称
  * Created by Andy on 2014/11/16.
@@ -24,6 +26,7 @@ public class MusicListName {
         cv.put("tab_name", tabName);
         cv.put("hash_code", name.hashCode());
         dbWriter.insert("_list", null, cv);
+        dbWriter.close();
     }
 
 
@@ -36,6 +39,7 @@ public class MusicListName {
      */
     public static boolean exist(String name) {
         SQLiteDatabase dbReader = MusicDBHelper.getInstance().getReadableDatabase();
+        dbReader.setLocale(Locale.CHINA);
         Cursor cursor = dbReader.query("_list", null, null, null, null, null, null);
         boolean flag = false;
         while (cursor.moveToNext()) {
@@ -43,6 +47,8 @@ public class MusicListName {
                 flag = true;
             }
         }
+        cursor.close();
+//        dbReader.close();
         return flag;
     }
 

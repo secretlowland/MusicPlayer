@@ -13,6 +13,7 @@ import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.os.Vibrator;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -47,6 +48,7 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
     private SensorManager sensorManager;
     private Receiver playerReceiver;
     private boolean shaking;
+    private Vibrator vibrator;
 
 
     @Override
@@ -55,16 +57,18 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
         // 创建 MediaPlayer 对象
         mediaPlayer = new MediaPlayer();
 
-        SharedPreferences pref = getSharedPreferences("settings", Context.MODE_PRIVATE);
-        shaking = pref.getBoolean("shaking", false);
-
         //要确保CPU在你的 MediaPlayer  播放的时候继续处于运行状态,当初始化你的 MediaPlayer 时调用 setWakeMode()  .
         // 一旦你这么做了, MediaPlayer 会持有指定的lock在播放的时候. 并且在paused或者stoped状态时,会释放掉这个lock.
         mediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
 
+        // 获取震动服务
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+
         // 获取传感器服务
         sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
-        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+        if (sensorManager!=null) {
+            sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_UI);
+        }
 
         // 获取上次的音乐位置
         MusicLocator.getMusicLocation();
@@ -117,14 +121,16 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-
+        SharedPreferences pref = getSharedPreferences("settings", Context.MODE_PRIVATE);
+        shaking = pref.getBoolean("shaking", false);
         if (!shaking) return;
         int sensorType = event.sensor.getType();
         float[] values = event.values;
         if (sensorType==Sensor.TYPE_ACCELEROMETER) {
-            if (Math.abs(values[0])>15 || Math.abs(values[1])>15 || Math.abs(values[2])>15) {
+            if (Math.abs(values[0])>17 || Math.abs(values[1])>17 || Math.abs(values[2])>17) {
                 Log.d(TagConstants.TAG, "切歌");
                 // 摇动切歌
+                vibrator.vibrate(200);
                 MusicLocator.toNext();
                 BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
                 Toast.makeText(this, "切歌成功！", Toast.LENGTH_SHORT).show();

@@ -217,8 +217,8 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
         SharedPreferences pref = this.getSharedPreferences("launch_info", Context.MODE_PRIVATE);
         boolean firstLaunch = pref.getBoolean("first_launch", true);
         if (firstLaunch) {
-            MusicListManager.scanMusic();
-            Toast.makeText(this, "扫描音乐完成！", Toast.LENGTH_SHORT).show();
+//            MusicListManager.scanMusic();
+//            Toast.makeText(this, "扫描音乐完成！", Toast.LENGTH_SHORT).show();
         }
         pref.edit().putBoolean("first_launch", false).apply();
     }

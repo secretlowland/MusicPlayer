@@ -139,12 +139,13 @@ public class MusicListManager {
     public List<Music> getList(String[] columns, String selection, String[] selectionArgs,
                                String groupBy, String having, String orderBy) {
         dbReader = musicDBHelper.getReadableDatabase();
+
         if (!exist(tabName)) return null;
         Cursor cursor = dbReader.query(tabName, columns, selection, selectionArgs, groupBy, having, orderBy);
 
         // 通过CursorHelper.translate() 方法将音乐列表数据库中的 Cursor  转换成查询系统媒体库的 Cursor
         list = MusicScanner.scan(CursorAdapter.translate(cursor));
-        dbReader.close();
+//        dbReader.close();
         return list;
     }
 

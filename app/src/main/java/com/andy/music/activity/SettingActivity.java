@@ -51,7 +51,6 @@ public class SettingActivity extends FragmentActivity implements CompoundButton.
         SharedPreferences.Editor editor = pref.edit();
         switch (buttonView.getId()) {
             case R.id.tb_setting_shaking:
-                Log.d(TagConstants.TAG, "checked-->"+isChecked);
                 editor.putBoolean("shaking", isChecked).commit();
                 break;
             case R.id.tb_setting_auto_pause:
