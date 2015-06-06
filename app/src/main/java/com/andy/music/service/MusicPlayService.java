@@ -271,7 +271,8 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
                     // 开始播放音乐的广播（从断点开始）
                     // 判断是否是第一次播放音乐(防止打开应用后直接点击开始播放按钮后没有执行prepare函数)
                     if (isFirst) {
-                        BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY);
+                        play();
+                        setIsPlaying(true);
                         isFirst = false;
                         break;
                     }
