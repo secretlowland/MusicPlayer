@@ -1,5 +1,6 @@
 # MusicPlayer
-一个简洁、美观、功能相对完善的音乐播放器。
+一个简洁、美观、功能相对完善的音乐播放器。  
+[APK下载](https://github.com/Andy-yyyy/MusicPlayer/musicplayer.apk "下载musicplayer.apk")
 ****
 
 ##主要功能
@@ -13,4 +14,8 @@
 * 耳机线控  
 
 ##部分界面展示
+![](https://github.com/Andy-yyyy/MusicPlayer/blob/master/image/preview1.jpg)
+![](https://github.com/Andy-yyyy/MusicPlayer/blob/master/image/preview2.jpg)
+![](https://github.com/Andy-yyyy/MusicPlayer/blob/master/image/preview3.jpg)
+![](https://github.com/Andy-yyyy/MusicPlayer/blob/master/image/preview4.jpg)
 
