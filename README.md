@@ -1,6 +1,6 @@
 # MusicPlayer
 一个简洁、美观、功能相对完善的音乐播放器。  
-[APK下载](https://github.com/Andy-yyyy/MusicPlayer/musicplayer.apk "下载musicplayer.apk")
+[APK下载](https://raw.githubusercontent.com/Andy-yyyy/MusicPlayer/master/musicplayer.apk "下载musicplayer.apk")
 ****
 
 ##主要功能
