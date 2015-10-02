@@ -21,6 +21,7 @@ import com.andy.music.listener.MusicPlayListener;
 import com.andy.music.util.BroadCastHelper;
 import com.andy.music.util.MusicLocator;
 import com.andy.music.activity.PlayActivity;
+import com.andy.music.widget.BottomMenu;
 
 /**
  * 音乐播放控制条
@@ -77,10 +78,9 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
         mainMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//                transaction.setCustomAnimations(R.anim.bottom_to_top,0);
-                transaction.replace(R.id.frag_container_main_menu, new MainMenuFragment());
-                transaction.addToBackStack("MainMenu").commit();
+                MainMenuFragment fragment = new MainMenuFragment();
+                BottomMenu dialog = new BottomMenu(getActivity());
+                dialog.show();
 
             }
         });

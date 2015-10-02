@@ -1,6 +1,7 @@
 package com.andy.music.activity;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -43,6 +44,8 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_content);
+
+        ActivityManager.setCurrentActivity(this);
 
         // 初始化
         init();

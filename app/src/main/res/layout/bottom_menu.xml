@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.andy.music.widget.MenuButton
+            android:id="@+id/btn_menu_item_scan_music"
+            android:text="扫描音乐"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <com.andy.music.widget.MenuButton
+            android:id="@+id/btn_menu_item_play_schema"
+            android:text=""
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <com.andy.music.widget.MenuButton
+            android:id="@+id/btn_menu_item_sleep_time"
+            android:text="睡眠"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.andy.music.widget.MenuButton
+            android:id="@+id/btn_menu_item_change_theme"
+            android:text="更换背景"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <com.andy.music.widget.MenuButton
+            android:id="@+id/btn_menu_item_setting"
+            android:text="设置"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <com.andy.music.widget.MenuButton
+            android:id="@+id/btn_menu_item_exit"
+            android:text="退出"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</LinearLayout>
