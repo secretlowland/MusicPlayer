@@ -10,16 +10,6 @@
         <!--android:scaleType="centerCrop"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent" />-->
-    <!-- 主模块容器-->
-    <RelativeLayout
-        android:id="@+id/frag_container_main_content"
-        android:clipToPadding="false"
-        android:paddingTop="75dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </RelativeLayout>
-
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -31,6 +21,15 @@
             android:layout_alignParentTop="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+        </RelativeLayout>
+
+        <!-- 主模块容器-->
+        <RelativeLayout
+            android:id="@+id/frag_container_main_content"
+            android:clipToPadding="false"
+            android:layout_below="@id/frag_container_top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         </RelativeLayout>
 
         <!-- 播放条容器-->

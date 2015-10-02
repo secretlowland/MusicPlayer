@@ -1,6 +1,7 @@
 package com.andy.music.fragment;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,13 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andy.music.R;
-import com.andy.music.activity.MainActivity;
 import com.andy.music.activity.SearchActivity;
-
-import org.w3c.dom.Text;
+import com.andy.music.util.ScreenInfo;
 
 /**
  * 标题栏模块
@@ -24,15 +26,27 @@ public class TopBarFragment extends Fragment {
 
     ImageButton searchBtn, backBtn;
     TextView title;
+    LinearLayout layout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_top_bar, container, false);
+        layout = (LinearLayout)inflater.inflate(R.layout.fragment_top_bar, container, false);
+        return layout;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // 4.4以上版本采用沉浸式状态栏，用背景色填充状态栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            int statusHeight = ScreenInfo.getStatusHeight();
+            View v = new View(getActivity());
+            v.setBackgroundColor(0xee729939);
+            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 50);
+            v.setLayoutParams(layoutParams);
+            layout.addView(v, 0);
+        }
 
         searchBtn = (ImageButton)getActivity().findViewById(R.id.ib_top_bar_search_btn);
         backBtn = (ImageButton)getActivity().findViewById(R.id.ib_top_bar_back_btn);

@@ -1,28 +1,26 @@
 package com.andy.music.activity;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaScannerConnection;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.andy.music.R;
-import com.andy.music.entity.TagConstants;
 import com.andy.music.fragment.NavPanelFragment;
 import com.andy.music.fragment.PlayBarFragment;
 import com.andy.music.fragment.SearchSongList;
@@ -53,11 +51,11 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
         // 更新媒体库
         updateMediaStore();
 
-        // 设置透明状态栏
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);  //透明状态栏
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);   //透明导航栏
-//        }
+         // 设置透明状态栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);  //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);   //透明导航栏
+        }
 
         // 加载模块
         if (findViewById(R.id.frag_container_main_content) != null) {

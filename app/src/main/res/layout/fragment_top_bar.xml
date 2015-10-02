@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:paddingTop="25dp"
-    android:background="#729939"
+    android:background="#ee729939"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -29,10 +28,11 @@
             android:src="@drawable/btn_top_bar_search"
             android:background="@drawable/btn_play_bar_common"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_width="50dp"
             android:layout_height="match_parent"/>
 
     </RelativeLayout>
 
 
-</RelativeLayout>
+</LinearLayout>
