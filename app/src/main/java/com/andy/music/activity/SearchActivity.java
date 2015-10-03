@@ -1,9 +1,11 @@
 package com.andy.music.activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -11,6 +13,7 @@ import com.andy.music.R;
 import com.andy.music.fragment.LocalSongList;
 import com.andy.music.fragment.SearchSongList;
 import com.andy.music.fragment.TopBarFragment;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 /**
 * 本地音乐查找视图
@@ -25,6 +28,19 @@ public class SearchActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        // 设置沉浸式状态栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);  //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);   //透明导航栏
+            //  改变状态栏颜色
+            //  创建状态栏的管理实例
+            SystemBarTintManager tintManager = new SystemBarTintManager(this);
+            // 激活状态栏设置
+            tintManager.setStatusBarTintEnabled(true);
+            //  给状态栏设置颜色
+            tintManager.setStatusBarTintColor(0xee729939);
+        }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         TopBarFragment topBarFragment = new TopBarFragment();

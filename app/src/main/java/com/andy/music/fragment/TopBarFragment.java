@@ -38,11 +38,9 @@ public class TopBarFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // 4.4以上版本采用沉浸式状态栏，用背景色填充状态栏
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             int statusHeight = ScreenInfo.getStatusHeight();
             View v = new View(getActivity());
-            v.setBackgroundColor(0xee729939);
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 50);
             v.setLayoutParams(layoutParams);
             layout.addView(v, 0);
@@ -80,11 +78,11 @@ public class TopBarFragment extends Fragment {
      * 隐藏搜索按钮
      */
     public void hideSearchIcon() {
-        this.searchBtn.setVisibility(View.GONE);
+        this.searchBtn.setVisibility(View.INVISIBLE);
     }
 
     public void hideBackIcon() {
-        this.backBtn.setVisibility(View.GONE);
+        this.backBtn.setVisibility(View.INVISIBLE);
     }
 
 
