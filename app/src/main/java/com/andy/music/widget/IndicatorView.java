@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Looper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -29,7 +30,7 @@ public class IndicatorView extends View {
     private float titleSize;
     private float alpha;
 
-    private float defaultTitleSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 35, getResources().getDisplayMetrics());
+    private float defaultTitleSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14, getResources().getDisplayMetrics());
 
     public IndicatorView(Context context) {
         this(context, null);
@@ -64,7 +65,7 @@ public class IndicatorView extends View {
         }
         titleRect = new Rect();
         titlePaint = new Paint();
-        titlePaint.setTextSize(25);
+        titlePaint.setTextSize(defaultTitleSize);
         titlePaint.getTextBounds(title, 0, title.length(), titleRect);
     }
 
@@ -72,7 +73,7 @@ public class IndicatorView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         int a = (int) Math.ceil(alpha * 255);
-        drawIcon(canvas, a);
+//        drawIcon(canvas, a);
         drawSourceTitle(canvas, a);
         drawColorTitle(canvas, a);
     }

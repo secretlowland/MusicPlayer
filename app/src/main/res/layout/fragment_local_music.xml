@@ -24,8 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="35dp">
         <com.andy.music.widget.IndicatorView
-            andy:color="#333666"
-            andy:focusedColor="#eeeeee"
+            andy:color="#666666"
+            andy:focusedColor="#729939"
             andy:title="歌曲"
             android:id="@+id/indicator_0"
             android:layout_weight="1"
@@ -33,16 +33,16 @@
             android:layout_height="match_parent"/>
         <com.andy.music.widget.IndicatorView
             andy:title="歌手"
-            andy:color="#333666"
-            andy:focusedColor="#eeeeee"
+            andy:color="#666666"
+            andy:focusedColor="#729939"
             android:id="@+id/indicator_1"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"/>
         <com.andy.music.widget.IndicatorView
             andy:title="专辑"
-            andy:color="#333666"
-            andy:focusedColor="#eeeeee"
+            andy:color="#666666"
+            andy:focusedColor="#729939"
             android:id="@+id/indicator_2"
             android:layout_weight="1"
             android:layout_width="0dp"
