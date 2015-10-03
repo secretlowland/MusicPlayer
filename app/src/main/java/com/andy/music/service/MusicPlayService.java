@@ -50,6 +50,8 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
     private boolean shaking;
     private Vibrator vibrator;
 
+    long lastSensorTime;     // 上次重力加速度变化事件
+
 
     @Override
     public void onCreate() {
@@ -121,6 +123,7 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+
         SharedPreferences pref = getSharedPreferences("settings", Context.MODE_PRIVATE);
         shaking = pref.getBoolean("shaking", false);
         if (!shaking) return;
@@ -129,6 +132,12 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
         if (sensorType==Sensor.TYPE_ACCELEROMETER) {
             if (Math.abs(values[0])>17 || Math.abs(values[1])>17 || Math.abs(values[2])>17) {
                 Log.d(TagConstants.TAG, "切歌");
+                // 时间小于1s忽略不计
+                long time = System.currentTimeMillis();
+                if (time - lastSensorTime < 1000) {
+                    return;
+                }
+                lastSensorTime = time;
                 // 摇动切歌
                 vibrator.vibrate(200);
                 MusicLocator.toNext();
