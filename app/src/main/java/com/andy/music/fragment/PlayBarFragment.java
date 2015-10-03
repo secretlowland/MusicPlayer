@@ -88,7 +88,6 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), PlayActivity.class));
-                getActivity().overridePendingTransition(R.anim.bottom_to_top, R.anim.fade_out);   // 设置 activity动画
             }
         });
 
