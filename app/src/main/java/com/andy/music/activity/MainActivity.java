@@ -14,8 +14,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.RelativeLayout;
@@ -32,12 +30,11 @@ import com.andy.music.util.MusicLocator;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 
-public class MainActivity extends FragmentActivity implements View.OnTouchListener, GestureDetector.OnGestureListener {
+public class MainActivity extends FragmentActivity {
 
     private RelativeLayout layout;
     private SearchView searchView;
     private SearchManager searchManager;
-    private GestureDetector detector;
 
 
     @Override
@@ -95,13 +92,11 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-//        Log.d(TagConstants.TAG, "MainActivity-->onSaveInstanceState()");
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onDestroy() {
-//        Log.d(TagConstants.TAG, "MainActivity-->onDestroy()");
         MusicLocator.saveMusicLocation();
         super.onDestroy();
     }
@@ -136,52 +131,6 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onDown(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-//        Log.d(TagConstants.TAG, "onFling()");
-//        if (velocityX<0) {
-//            // 左滑，切换到下一页
-//            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//            LocalMusicFragment fragment = new LocalMusicFragment();
-//            transaction.setCustomAnimations(R.anim.frag_in, R.anim.frag_out);
-//            transaction.replace(R.id.frag_container_main_content, fragment);
-//            transaction.addToBackStack(null);
-//            transaction.commit();
-//        }
-        return true;
-    }
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-//        Log.d(TagConstants.TAG, "onTouch()");
-        return detector.onTouchEvent(event);
-    }
-
     private void init() {
 
         // 创建音乐列表
@@ -196,11 +145,7 @@ public class MainActivity extends FragmentActivity implements View.OnTouchListen
 
         // 初始化变量
         layout = (RelativeLayout) this.findViewById(R.id.frag_container_main_content);
-        detector = new GestureDetector(this, this);
-
-        layout.setOnTouchListener(this);
         layout.setLongClickable(true);
-        detector.setIsLongpressEnabled(true);
 
         // 设置 ActionBar
         ActionBar actionbar = getActionBar();

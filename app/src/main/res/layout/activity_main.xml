@@ -10,28 +10,6 @@
         android:background="#80000000"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
      </FrameLayout>
-
-
-    <!--<com.andy.music.view.SlideMenu-->
-        <!--android:id="@+id/slide_menu"-->
-        <!--android:tag="slide_menu"-->
-        <!--android:scrollbars="none"-->
-        <!--custom:paddingRight="200dp"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
-
-        <!--<LinearLayout-->
-            <!--android:orientation="horizontal"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent">-->
-
-            <!--<include layout="@layout/slide_menu" />-->
-            <!--<include layout="@layout/activity_main_content" />-->
-
-         <!--</LinearLayout>-->
-
-    <!--</com.andy.music.view.SlideMenu>-->
 
 </FrameLayout>

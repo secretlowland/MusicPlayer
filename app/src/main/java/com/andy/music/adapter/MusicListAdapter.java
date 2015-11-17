@@ -108,12 +108,6 @@ public class MusicListAdapter extends BaseAdapter {
         holder.singer.setTextColor(Color.parseColor("#78000000"));
         holder.number.setTextColor(Color.parseColor("#78000000"));
 
-//        holder.cell.setBackgroundColor(Color.parseColor("#00000000"));
-//        holder.locBar.setBackgroundColor(Color.parseColor("#00000000"));
-//        holder.name.setTextColor(Color.parseColor("#ccffffff"));
-//        holder.singer.setTextColor(Color.parseColor("#78ffffff"));
-//        holder.number.setTextColor(Color.parseColor("#78ffffff"));
-
         // 设置当前歌曲样式
         if (music != null && music.equals(MusicLocator.getCurrentMusic())) {
             holder.cell.setBackgroundColor(Color.parseColor("#c4d9c6"));
@@ -121,12 +115,6 @@ public class MusicListAdapter extends BaseAdapter {
             holder.name.setTextColor(Color.parseColor("#729939"));
             holder.singer.setTextColor(Color.parseColor("#729939"));
             holder.number.setTextColor(Color.parseColor("#729939"));
-
-//            holder.cell.setBackgroundColor(Color.parseColor("#34000000"));
-//            holder.locBar.setBackgroundColor(Color.parseColor("#ec505e"));
-//            holder.name.setTextColor(Color.parseColor("#ec505e"));
-//            holder.singer.setTextColor(Color.parseColor("#ec505e"));
-//            holder.number.setTextColor(Color.parseColor("#ec505e"));
         }
 
         return convertView;

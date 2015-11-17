@@ -145,7 +145,6 @@ public class MusicListManager {
 
         // 通过CursorHelper.translate() 方法将音乐列表数据库中的 Cursor  转换成查询系统媒体库的 Cursor
         list = MusicScanner.scan(CursorAdapter.translate(cursor));
-//        dbReader.close();
         return list;
     }
 
@@ -319,14 +318,5 @@ public class MusicListManager {
         return flag;
     }
 
-
-
-//    public List<Music> refresh(String name) {
-//        List<Music> list = null;
-//        dbReader = musicDBHelper.getReadableDatabase();
-////        Cursor c = dbReader.query();
-//        String selection = context.toString();
-//        return null;
-//    }
 
 }

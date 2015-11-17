@@ -31,14 +31,12 @@ public class LocalMusicFragment extends Fragment implements View.OnClickListener
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onCreateView()");
         return inflater.inflate(R.layout.fragment_local_music, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        Log.d(TagConstants.TAG, "LocalMusicFragment-->onViewCreated()");
 
         TopBarFragment topBar = (TopBarFragment)getActivity().getSupportFragmentManager().findFragmentByTag("topBar");
         if (topBar!=null) {

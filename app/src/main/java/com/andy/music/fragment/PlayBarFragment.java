@@ -40,7 +40,6 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-//        Log.d(TagConstants.TAG, "PlayBarFragment--->onCreate()");
         // 获取上次的音乐位置
         MusicLocator.getMusicLocation();
         //  绑定到 MusicPlayService 服务
@@ -58,7 +57,6 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-//        Log.d(TagConstants.TAG, "PlayBarFragment--->onViewCreated()");
         super.onViewCreated(view, savedInstanceState);
 
         // 初始化成员变量
@@ -106,7 +104,6 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onStart() {
-//        Log.d(TagConstants.TAG, "PlayBarFragment--->onStart()");
         // 更新控制条视图
         refreshPlayBar();
         super.onStart();
@@ -115,7 +112,6 @@ public class PlayBarFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onDestroyView() {
-//        Log.d(TagConstants.TAG, "PlayBarFragment--->onDestroyView()");
         super.onDestroyView();
         getActivity().unregisterReceiver(receiver);  // 注销广播
     }

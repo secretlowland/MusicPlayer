@@ -123,7 +123,6 @@ public class MusicNotification {
         builder.setContentIntent(pendingIntent);
         builder.setSmallIcon(R.drawable.ic_launcher);
         builder.setWhen(System.currentTimeMillis());
-//        builder.setOngoing(true);
 
         // 发送通知
         notificationManager.notify(NOTIFICATION_ID, builder.build());
@@ -150,12 +149,10 @@ public class MusicNotification {
                 notificationManager.notify(NOTIFICATION_ID, builder.build());
             }
             if (action.equals(BroadCastHelper.ACTION_MUSIC_PAUSE)) {
-//                builder.setOngoing(false);
                 musicNotification.refreshNotification();
                 notificationManager.notify(NOTIFICATION_ID, builder.build());
             }
             if (action.equals(BroadCastHelper.ACTION_MUSIC_START)) {
-//                builder.setOngoing(true);
                 musicNotification.refreshNotification();
                 notificationManager.notify(NOTIFICATION_ID, builder.build());
             }

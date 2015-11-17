@@ -79,12 +79,6 @@ public class NavPanelFragment extends android.support.v4.app.Fragment {
         super.onResume();
     }
 
-    @Override
-    public void onDestroyView() {
-//        Log.d(TagConstants.TAG, "NavPanelFragment-->onDestroyView");
-        super.onDestroyView();
-    }
-
 
     /**
      * 初始化 用于 GridView 的 Adapter

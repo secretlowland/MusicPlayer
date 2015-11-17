@@ -55,7 +55,6 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public void onCreate() {
-//        Log.d(TagConstants.TAG, "PlayService-->onCreate()");
         // 创建 MediaPlayer 对象
         mediaPlayer = new MediaPlayer();
 
@@ -89,7 +88,6 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-//        Log.d(TagConstants.TAG, "PlayService-->onStartCommand()");
         String playAction = null;
         if (intent!=null) {
             playAction = intent.getStringExtra("play_action");
@@ -115,7 +113,6 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
-//        Log.d(TagConstants.TAG, "PlayService-->onError()");
         mp.stop();
         mp.reset();
         return false;
@@ -154,7 +151,6 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public void onDestroy() {
-//        Log.d(TagConstants.TAG, "PlayService-->onDestroy()");
         MusicLocator.saveMusicLocation();
         if (mediaPlayer != null) {
             mediaPlayer.release();
@@ -170,7 +166,6 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-//        Log.d(TagConstants.TAG, "PlayService-->onCompletion()");
         // 歌曲播放完成，自动播放下一首
         MusicLocator.toNext();
         BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);

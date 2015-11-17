@@ -1,4 +1,4 @@
-package com.andy.music.adapter;//package com.andy.music.abandoned;
+package com.andy.music.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -6,8 +6,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.ViewGroup;
-
-import com.andy.music.entity.TagConstants;
 
 import java.util.List;
 
@@ -34,13 +32,11 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-//        Log.d(TagConstants.TAG, "MFPA-->getItem()-->"+position);
         return list.get(position);
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-//        Log.d(TagConstants.TAG, "MFPA-->instantiateItem()-->"+position);
 
         if (mCurTransaction == null) {
             mCurTransaction = mFragmentManager.beginTransaction();
@@ -83,7 +79,6 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-//        Log.d(TagConstants.TAG, "MFPA-->destroyItem()-->"+position);
         if (mCurTransaction == null) {
             mCurTransaction = mFragmentManager.beginTransaction();
         }
@@ -94,7 +89,6 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
-//        Log.d(TagConstants.TAG, "MFPA-->setPrimaryItem()-->"+position);
         Fragment fragment = (Fragment)object;
         if (fragment != mCurrentPrimaryItem) {
             if (mCurrentPrimaryItem != null) {
@@ -111,7 +105,6 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public void finishUpdate(ViewGroup container) {
-//        Log.d(TagConstants.TAG, "MFPA-->finishUpdate()");
         if (mCurTransaction != null) {
             mCurTransaction.commitAllowingStateLoss();
             mCurTransaction = null;
@@ -122,7 +115,6 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public long getItemId(int position) {
-//        Log.d(TagConstants.TAG, "MFPA-->getItemId()-->"+position);
         return position;
     }
 

@@ -40,7 +40,6 @@ public class LocalSongList extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-//        Log.d(TagConstants.TAG, "SongList-->onCreate");
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         mainView = inflater.inflate(R.layout.fragment_list_song, (ViewGroup)getActivity().findViewById(R.id.view_pager_local_music), false);
@@ -58,7 +57,6 @@ public class LocalSongList extends Fragment {
 
     @Override
     public void onViewCreated(View view,  Bundle savedInstanceState) {
-//        Log.d(TagConstants.TAG, "SongList-->onViewCreated");
         super.onViewCreated(view, savedInstanceState);
 
         // 获取 ListView 对象
@@ -76,7 +74,6 @@ public class LocalSongList extends Fragment {
 
     @Override
     public void onStart() {
-//        Log.d(TagConstants.TAG, "SongList-->");
         super.onStart();
         refreshMusicList(listView);
     }

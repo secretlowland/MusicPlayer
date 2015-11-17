@@ -73,7 +73,6 @@ public class IndicatorView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         int a = (int) Math.ceil(alpha * 255);
-//        drawIcon(canvas, a);
         drawSourceTitle(canvas, a);
         drawColorTitle(canvas, a);
     }

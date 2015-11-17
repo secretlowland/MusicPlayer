@@ -51,30 +51,8 @@
                 android:textColor="#78000000"/>
 
         </LinearLayout>
-        <!--点击按钮显示或隐藏功能区域-->
-        <!--<ToggleButton-->
-            <!--android:id="@+id/tb_music_list_menu"-->
-            <!--android:layout_weight="1"-->
-            <!--android:textColor="#000"-->
-            <!--android:layout_width="40dp"-->
-            <!--android:layout_height="fill_parent" />-->
 
      </LinearLayout>
 
-    <!--列表下半部，功能区域，可以被隐藏或显示-->
-    <!--<LinearLayout-->
-        <!--android:id="@+id/ll_list_item_menu"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:visibility="gone"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content">-->
-
-        <!--<ImageButton-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:src="@drawable/img_musiccircle_post_detail_header_cancel_favorite"-->
-            <!--android:contentDescription="收藏"-->
-            <!--android:layout_height="wrap_content" />-->
-
-     <!--</LinearLayout>-->
 
 </LinearLayout>

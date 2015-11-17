@@ -9,10 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
@@ -23,11 +19,10 @@ import android.widget.ToggleButton;
 
 import com.andy.music.R;
 import com.andy.music.entity.Music;
-import com.andy.music.entity.TagConstants;
 import com.andy.music.function.MusicListManager;
-import com.andy.music.service.MusicPlayService;
 import com.andy.music.function.MusicProgressManager;
 import com.andy.music.listener.MusicPlayListener;
+import com.andy.music.service.MusicPlayService;
 import com.andy.music.util.BroadCastHelper;
 import com.andy.music.util.MusicLocator;
 import com.andy.music.util.TimeHelper;
@@ -39,7 +34,7 @@ import java.util.TimerTask;
  * 音乐播放界面
  * Created by Andy on 2014/11/16.
  */
-public class PlayActivity extends Activity implements View.OnTouchListener, GestureDetector.OnGestureListener {
+public class PlayActivity extends Activity {
 
     private LinearLayout layout;
     private TextView musicName, musicSinger, currentTime, totalTime;
@@ -50,9 +45,6 @@ public class PlayActivity extends Activity implements View.OnTouchListener, Gest
 
     private PlayProgressThread playProgressThread;
     private PlayProgressHandler playProgressHandler;
-
-    private GestureDetector detector;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +68,7 @@ public class PlayActivity extends Activity implements View.OnTouchListener, Gest
         playToggle.setOnCheckedChangeListener(listener);
         playNext.setOnClickListener(listener);
         playPre.setOnClickListener(listener);
-        layout.setOnTouchListener(this);
         layout.setLongClickable(true);
-        detector.setIsLongpressEnabled(true);
 
         // 动态注册广播接收(接收歌曲正在播放的广播)
         registerService();
@@ -140,7 +130,6 @@ public class PlayActivity extends Activity implements View.OnTouchListener, Gest
         seekBar = (SeekBar) this.findViewById(R.id.sb_music_play_progress);
         layout = (LinearLayout) this.findViewById(R.id.ll_up);
 
-        detector = new GestureDetector(this);
         receiver = new PlayStatusReceiver();
         playProgressThread = new PlayProgressThread();
         playProgressHandler = new PlayProgressHandler();
@@ -192,46 +181,6 @@ public class PlayActivity extends Activity implements View.OnTouchListener, Gest
         }
     }
 
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        return detector.onTouchEvent(event);
-    }
-
-    @Override
-    public boolean onDown(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-//        Log.d(TagConstants.TAG, "onFling()-->"+velocityX);
-//        if (velocityY>0) {
-//            Intent intent = new Intent(PlayActivity.this, MainActivity.class);
-//            startActivity(intent);
-//            overridePendingTransition(R.anim.fade_in, R.anim.top_to_bottom);
-//        }
-        return true;
-    }
 
     /**
      * SeekBar 监听类
