@@ -94,6 +94,7 @@ public class MusicListAdapter extends BaseAdapter {
         if (music != null) {
             musicName = music.getName();
             musicSinger = music.getSinger();
+            convertView.setTag(R.id.TAG_MUSIC_PATH, music.getPath());
         }
 
         // 为列表项中的变量赋值

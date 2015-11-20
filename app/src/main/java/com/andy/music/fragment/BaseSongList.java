@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.print.PrintAttributes;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -115,6 +116,10 @@ public abstract class BaseSongList extends ListFragment {
 
             // 获取 listView 中的第 i 项
             View view = listView.getChildAt(i);
+            String tag = (String)view.getTag(R.id.TAG_MUSIC_PATH);
+            if (tag == null) {
+                continue;
+            }
 
             // 设置不是当前播放的歌曲的样式
             view.setBackgroundColor(Color.parseColor("#00000000"));
@@ -129,8 +134,7 @@ public abstract class BaseSongList extends ListFragment {
 
             // 设置当前歌曲的样式
             Music curMusic = MusicLocator.getCurrentMusic();
-            if (curMusic!=null && curMusic.getName().equals(musicName) &&
-                    curMusic.getSinger().equals(musicSinger)) {
+            if (curMusic!=null && curMusic.getPath().equals(tag)) {
                 view.setBackgroundColor(Color.parseColor("#c4d9c6"));
                 view.findViewById(R.id.v_locator_bar).setBackgroundColor(Color.parseColor("#729939"));
                 ((TextView) view.findViewById(R.id.tv_music_name)).setTextColor(Color.parseColor("#729939"));
