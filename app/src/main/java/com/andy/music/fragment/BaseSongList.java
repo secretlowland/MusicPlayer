@@ -78,11 +78,10 @@ public abstract class BaseSongList extends ListFragment {
                         return "#";
                     }
                 })
-                .sortKeys()
+                .hideSectionTitles()
+                .hideSectionOverlays()
                 .build();
-        secAdapter.setKeySorting(SectionedListAdapter.Sorting.Natural);
-        secAdapter.setShowSectionTitles(false);
-        secAdapter.setShowSectionOverlays(false);
+        secAdapter.setKeySorting(SectionedListAdapter.Sorting.InputOrder);
         return secAdapter;
     }
 
