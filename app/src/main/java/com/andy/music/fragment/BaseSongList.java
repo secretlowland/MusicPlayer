@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.print.PrintAttributes;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -18,7 +19,10 @@ import com.andy.music.R;
 import com.andy.music.adapter.MusicListAdapter;
 import com.andy.music.entity.Music;
 import com.andy.music.util.BroadCastHelper;
+import com.andy.music.util.CharacterParser;
 import com.andy.music.util.MusicLocator;
+import com.nolanlawson.supersaiyan.SectionedListAdapter;
+import com.nolanlawson.supersaiyan.Sectionizer;
 
 import java.util.List;
 
@@ -29,8 +33,6 @@ import java.util.List;
 public abstract class BaseSongList extends ListFragment {
 
     private ListView listView;
-    private Cursor searchCursor;
-    private List<Music> musicList;
 
     abstract List<Music> getList();
 
@@ -39,7 +41,7 @@ public abstract class BaseSongList extends ListFragment {
         super.onViewCreated(view, savedInstanceState);
 
         // 获取 ListView 对象
-        listView = (ListView) getActivity().findViewById(R.id.lv_list_common);
+        listView = getListView();
 
         // 为 ListView 对象设置适配器
         listView.setAdapter(getAdapter());
@@ -58,7 +60,24 @@ public abstract class BaseSongList extends ListFragment {
     }
     @Override
     public BaseAdapter getAdapter() {
-        return new MusicListAdapter(getActivity().getApplicationContext(), getList(), R.layout.music_list_cell);
+        MusicListAdapter adapter = new MusicListAdapter(getActivity().getApplicationContext(), getList(), R.layout.music_list_cell);
+        SectionedListAdapter secAdapter = SectionedListAdapter.Builder.create(getActivity(), adapter)
+                .setSectionizer(new Sectionizer<Music>() {
+                    @Override
+                    public CharSequence toSection(Music music) {
+                        if (music!=null && music.getName()!=null && music.getName().length()>0) {
+                            String spelling = CharacterParser.getInstance().getSelling(music.getName());
+                            char firstChar = Character.toUpperCase(spelling.charAt(0));
+                            if (firstChar >'A' && firstChar <'Z') {
+                                return Character.toString(firstChar);
+                            }
+                        }
+                        return "#";
+                    }
+                })
+                .sortKeys()
+                .build();
+        return secAdapter;
     }
 
     @Override
@@ -76,10 +95,6 @@ public abstract class BaseSongList extends ListFragment {
 
             }
         };
-    }
-
-    public ListView getListView() {
-        return listView;
     }
 
     /**
