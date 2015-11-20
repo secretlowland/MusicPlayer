@@ -19,6 +19,12 @@ import com.andy.music.R;
  */
 public abstract class ListFragment extends Fragment {
 
+    private ListView listView;
+
+    public ListView getListView() {
+        return listView;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_list_common, container, false);
@@ -28,10 +34,8 @@ public abstract class ListFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ListView listView;
-
         // 获取 ListView 对象
-        listView = (ListView) getActivity().findViewById(R.id.lv_list_common);
+        listView = (ListView) view.findViewById(R.id.lv_list_common);
 
         // 为 ListView 对象设置适配器
         listView.setAdapter(getAdapter());
