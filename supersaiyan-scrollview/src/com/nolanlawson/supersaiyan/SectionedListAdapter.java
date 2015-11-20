@@ -207,6 +207,15 @@ public class SectionedListAdapter< T extends BaseAdapter> extends BaseAdapter im
     }
 
     /**
+     * Return the sub position according to the absolute index
+     * @param absoluteIndex
+     * @return
+     */
+    public int getSubPosition(int absoluteIndex) {
+        return absoluteIndexToRelativeIndex[absoluteIndex];
+    }
+
+    /**
      * Get the item at the specified position.  Either returns a CharSequence (in the case of section headers)
      * or the object that would normally be in the BaseAdapter (in the case of section content).
      */
@@ -351,7 +360,7 @@ public class SectionedListAdapter< T extends BaseAdapter> extends BaseAdapter im
         absoluteIndexToIsHeader = ArrayUtil.recycleIfPossible(absoluteIndexToIsHeader, totalLength);
         sectionsToPositions = ArrayUtil.recycleIfPossible(sectionsToPositions, sections.size());
         positionsToSections = ArrayUtil.recycleIfPossible(positionsToSections, totalLength);
-        
+
         headersToSections = sections;
         int counter = 0;
         int headerCounter = 0;

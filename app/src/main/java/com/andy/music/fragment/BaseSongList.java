@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andy.music.R;
 import com.andy.music.adapter.MusicListAdapter;
@@ -33,6 +34,7 @@ import java.util.List;
 public abstract class BaseSongList extends ListFragment {
 
     private ListView listView;
+    private SectionedListAdapter secAdapter;
 
     abstract List<Music> getList();
 
@@ -61,14 +63,14 @@ public abstract class BaseSongList extends ListFragment {
     @Override
     public BaseAdapter getAdapter() {
         MusicListAdapter adapter = new MusicListAdapter(getActivity().getApplicationContext(), getList(), R.layout.music_list_cell);
-        SectionedListAdapter secAdapter = SectionedListAdapter.Builder.create(getActivity(), adapter)
+        secAdapter = SectionedListAdapter.Builder.create(getActivity(), adapter)
                 .setSectionizer(new Sectionizer<Music>() {
                     @Override
                     public CharSequence toSection(Music music) {
                         if (music!=null && music.getName()!=null && music.getName().length()>0) {
                             String spelling = CharacterParser.getInstance().getSelling(music.getName());
                             char firstChar = Character.toUpperCase(spelling.charAt(0));
-                            if (firstChar >'A' && firstChar <'Z') {
+                            if (firstChar >='A' && firstChar <='Z') {
                                 return Character.toString(firstChar);
                             }
                         }
@@ -77,6 +79,9 @@ public abstract class BaseSongList extends ListFragment {
                 })
                 .sortKeys()
                 .build();
+        secAdapter.setKeySorting(SectionedListAdapter.Sorting.Natural);
+        secAdapter.setShowSectionTitles(false);
+        secAdapter.setShowSectionOverlays(false);
         return secAdapter;
     }
 
@@ -86,9 +91,12 @@ public abstract class BaseSongList extends ListFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                // 所点击的歌曲的位置（不计算section标题栏的位置）
+                int subPos = secAdapter.getSubPosition(position);
+
                 // 定位当前歌曲列表和位置
                 MusicLocator.setCurrentMusicList(getList());
-                MusicLocator.setCurrentPosition(position);
+                MusicLocator.setCurrentPosition(subPos);
 
                 // 发送播放歌曲的广播
                 BroadCastHelper.send(BroadCastHelper.ACTION_MUSIC_PLAY);
