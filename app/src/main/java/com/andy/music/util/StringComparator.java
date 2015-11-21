@@ -16,11 +16,9 @@ public class StringComparator implements Comparator {
         char lc = Character.toUpperCase(ls.charAt(0));
         char rc = Character.toUpperCase(rs.charAt(0));
         if (lc < 'A' | lc > 'z') {
-            Log.d("TAG", "lc-->"+lc);
             return 1;
         }
         if (rc <'A' | rc > 'z') {
-            Log.d("TAG", "rc-->"+rc);
             return -1;
         }
         return lc - rc;
