@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import com.andy.music.R;
 import com.andy.music.data.CursorAdapter;
+import com.andy.music.util.CharacterParser;
+import com.nolanlawson.supersaiyan.SectionedListAdapter;
+import com.nolanlawson.supersaiyan.Sectionizer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,7 +61,24 @@ public class LocalAlbumList extends ListFragment {
         }
         cursor.close();
         SimpleAdapter adapter = new SimpleAdapter(getActivity(), data, resource, from, to);
-        return adapter;
+        SectionedListAdapter secAdapter = SectionedListAdapter.Builder.create(getActivity(), adapter)
+                .setSectionizer(new Sectionizer<HashMap<String, Object>>() {
+                    @Override
+                    public CharSequence toSection(HashMap<String, Object> input) {
+                        if (input != null) {
+                            String name = (String) input.get("name");
+                            if (name != null && name.length() > 0) {
+                                String spelling = CharacterParser.getInstance().getSelling(name);
+                                char firstChar = Character.toUpperCase(spelling.charAt(0));
+                                return Character.toString(firstChar);
+                            }
+                        }
+                        return "#";
+                    }
+                })
+                .build();
+        secAdapter.setKeySorting(SectionedListAdapter.Sorting.InputOrder);
+        return secAdapter;
     }
 
     public AdapterView.OnItemClickListener getOnItemClickListener() {
