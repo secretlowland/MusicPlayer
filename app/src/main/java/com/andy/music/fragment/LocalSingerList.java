@@ -1,18 +1,12 @@
 package com.andy.music.fragment;
 
-import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -27,98 +21,7 @@ import java.util.List;
  * 歌曲列表模块
  * Created by Andy on 2014/12/16.
  */
-public class LocalSingerList extends Fragment {
-
-    private View mainView;
-    private ListView listView;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        mainView = inflater.inflate(R.layout.fragment_list_singer, (ViewGroup) getActivity().findViewById(R.id.view_pager_local_music), false);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-//        Log.d(TagConstants.TAG, "SingerList--> onStop");
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onInflate(Activity activity, AttributeSet attrs, Bundle savedInstanceState) {
-        super.onInflate(activity, attrs, savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // 移除已存在的 view
-        ViewGroup group = ((ViewGroup) mainView.getParent());
-        if (group != null) {
-            group.removeAllViewsInLayout();
-        }
-        return mainView;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        // 获取 ListView
-        listView = (ListView) view.findViewById(R.id.lv_list_singer);
-
-        // 为 ListView 设置适配器
-        listView.setAdapter(getAdapter());
-
-        // 为 ListView 设置监听器
-        listView.setOnItemClickListener(getOnItemClickListener());
-    }
+public class LocalSingerList extends ListFragment {
 
     public BaseAdapter getAdapter() {
 

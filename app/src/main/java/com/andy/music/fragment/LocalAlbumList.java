@@ -3,14 +3,10 @@ package com.andy.music.fragment;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -25,41 +21,7 @@ import java.util.List;
  * 专辑列表模块
  * Created by Andy on 2014/12/16.
  */
-public class LocalAlbumList extends Fragment {
-
-    private View mainView;
-    private ListView listView;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        mainView = inflater.inflate(R.layout.fragment_list_album, (ViewGroup) getActivity().findViewById(R.id.view_pager_local_music), false);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // 移除已存在的 view
-        ViewGroup group = ((ViewGroup) mainView.getParent());
-        if (group != null) {
-            group.removeAllViewsInLayout();
-        }
-        return mainView;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        // 获取 ListView
-        listView = (ListView) view.findViewById(R.id.lv_list_album);
-
-        // 为 ListView 设置适配器
-        listView.setAdapter(getAdapter());
-
-        // 为 ListView 设置监听器
-        listView.setOnItemClickListener(getOnItemClickListener());
-    }
+public class LocalAlbumList extends ListFragment {
 
     public BaseAdapter getAdapter() {
         Cursor cursor = CursorAdapter.getMediaLibCursor();
