@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -13,10 +14,13 @@ import android.widget.TextView;
 import com.andy.music.R;
 import com.andy.music.data.CursorAdapter;
 import com.andy.music.util.CharacterParser;
+import com.andy.music.util.StringComparator;
 import com.nolanlawson.supersaiyan.SectionedListAdapter;
 import com.nolanlawson.supersaiyan.Sectionizer;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -61,6 +65,18 @@ public class LocalSingerList extends ListFragment {
 
         }
         cursor.close();
+
+        // 根据名字的首字母对列表进行排序
+        Collections.sort(data, new Comparator<HashMap<String, Object>>() {
+            @Override
+            public int compare(HashMap<String, Object> lhs, HashMap<String, Object> rhs) {
+                String ln = (String) lhs.get("name");
+                String rn = (String) rhs.get("name");
+                StringComparator comparator = new StringComparator();
+                return comparator.compare(ln, rn);
+            }
+        });
+
         SimpleAdapter adapter = new SimpleAdapter(getActivity(), data, resource, from, to);
         SectionedListAdapter secAdapter = SectionedListAdapter.Builder.create(getActivity(), adapter)
                 .setSectionizer(new Sectionizer<HashMap<String, Object>>() {
@@ -71,14 +87,16 @@ public class LocalSingerList extends ListFragment {
                             if (name != null && name.length() > 0) {
                                 String spelling = CharacterParser.getInstance().getSelling(name);
                                 char firstChar = Character.toUpperCase(spelling.charAt(0));
-                                return Character.toString(firstChar);
+                                if (firstChar >='A' && firstChar <='Z') {
+                                    return Character.toString(firstChar);
+                                }
                             }
                         }
                         return "#";
                     }
                 })
                 .build();
-        secAdapter.setKeySorting(SectionedListAdapter.Sorting.Natural);
+        secAdapter.setKeySorting(SectionedListAdapter.Sorting.InputOrder);
         return secAdapter;
     }
 
