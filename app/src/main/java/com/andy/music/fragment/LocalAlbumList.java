@@ -19,7 +19,6 @@ import com.andy.music.util.CharacterParser;
 import com.andy.music.util.StringComparator;
 import com.nolanlawson.supersaiyan.SectionedListAdapter;
 import com.nolanlawson.supersaiyan.Sectionizer;
-import com.nolanlawson.supersaiyan.Sectionizers;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -84,7 +83,17 @@ public class LocalAlbumList extends ListFragment {
                 .setSectionizer(new Sectionizer<HashMap<String, Object>>() {
                     @Override
                     public CharSequence toSection(HashMap<String, Object> input) {
-                        return Sectionizers.UsingFirstLetterOfToString.toSection(input.get("name"));
+                        if (input != null) {
+                            String name = (String) input.get("name");
+                            if (name != null && name.length() > 0) {
+                                String spelling = CharacterParser.getInstance().getSelling(name);
+                                char firstChar = Character.toUpperCase(spelling.charAt(0));
+                                if (firstChar >='A' && firstChar <='Z') {
+                                    return Character.toString(firstChar);
+                                }
+                            }
+                        }
+                        return "#";
                     }
                 })
                 .build();
