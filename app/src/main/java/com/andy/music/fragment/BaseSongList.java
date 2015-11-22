@@ -25,6 +25,7 @@ import com.andy.music.util.CharacterParser;
 import com.andy.music.util.MusicLocator;
 import com.nolanlawson.supersaiyan.SectionedListAdapter;
 import com.nolanlawson.supersaiyan.Sectionizer;
+import com.nolanlawson.supersaiyan.Sectionizers;
 
 import java.util.List;
 
@@ -68,14 +69,7 @@ public abstract class BaseSongList extends ListFragment {
                 .setSectionizer(new Sectionizer<Music>() {
                     @Override
                     public CharSequence toSection(Music music) {
-                        if (music!=null && music.getName()!=null && music.getName().length()>0) {
-                            String spelling = CharacterParser.getInstance().getSelling(music.getName());
-                            char firstChar = Character.toUpperCase(spelling.charAt(0));
-                            if (firstChar >='A' && firstChar <='Z') {
-                                return Character.toString(firstChar);
-                            }
-                        }
-                        return "#";
+                        return Sectionizers.UsingFirstLetterOfToString.toSection(music.getName());
                     }
                 })
                 .build();
