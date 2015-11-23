@@ -36,6 +36,7 @@ public abstract class BaseSongList extends ListFragment {
 
     private ListView listView;
     private SectionedListAdapter secAdapter;
+    private Receiver receiver = new Receiver();
 
     abstract List<Music> getList();
 
@@ -54,6 +55,12 @@ public abstract class BaseSongList extends ListFragment {
 
         // 动态注册广播接收器，用于接收播放下一首，上一首等广播
         registerReceiver();
+    }
+
+    @Override
+    public void onDestroy() {
+        getActivity().unregisterReceiver(receiver);
+        super.onDestroy();
     }
 
     @Override
@@ -151,7 +158,6 @@ public abstract class BaseSongList extends ListFragment {
         filter.addAction(BroadCastHelper.ACTION_MUSIC_PLAY);
         filter.addAction(BroadCastHelper.ACTION_MUSIC_PLAY_NEXT);
         filter.addAction(BroadCastHelper.ACTION_MUSIC_PLAY_RANDOM);
-        Receiver receiver = new Receiver();
         getActivity().registerReceiver(receiver, filter);
     }
 

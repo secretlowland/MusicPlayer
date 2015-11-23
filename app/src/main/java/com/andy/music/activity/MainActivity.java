@@ -48,7 +48,7 @@ public class MainActivity extends FragmentActivity {
         init();
 
         // 更新媒体库
-        updateMediaStore();
+//        updateMediaStore();
 
          // 设置沉浸式状态栏
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
