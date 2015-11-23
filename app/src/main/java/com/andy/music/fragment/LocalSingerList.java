@@ -3,6 +3,7 @@ package com.andy.music.fragment;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -33,55 +34,23 @@ import java.util.List;
  */
 public class LocalSingerList extends ListFragment {
 
-    public BaseAdapter getAdapter() {
+    private List<HashMap<String, Object>> data;
+    private SectionedListAdapter secAdapter;
 
-        Cursor cursor = CursorAdapter.getMediaLibCursor();
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        data = new ArrayList<>();
+        prepareData();
+    }
+
+    public BaseAdapter getAdapter() {
         int resource = R.layout.list_cell_double_line;
         String[] from = {"name", "num"};
         int[] to = {R.id.tv_list_cell_double_line_first, R.id.tv_list_cell_double_line_second};
 
-        List<HashMap<String, Object>> data = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            String name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
-            HashMap<String, Object> map = null;
-            HashMap<String, Object> pre = null;
-            if (!data.isEmpty()) {  // 列表不为空,则遍历 data 中已存在的数据
-                int num = 0;  // 该歌手出现的次数
-                for (int i = 0; i < data.size(); i++) {
-                    pre = data.get(i);
-                    if (name.equals(pre.get("name"))) {
-                        String str = (String) pre.get("num");
-                        num = getInt(str);
-                        data.remove(pre);
-                    }
-                }
-                map = new HashMap<>();
-                map.put("name", name);
-                map.put("num", ++num + "首歌曲");
-                data.add(map);
-            } else {  // 列表为空
-                map = new HashMap<>();
-                map.put("name", name);
-                map.put("num", 1 + "首歌曲");
-                data.add(map);
-            }
-
-        }
-        cursor.close();
-
-        // 根据名字的首字母对列表进行排序
-        Collections.sort(data, new Comparator<HashMap<String, Object>>() {
-            @Override
-            public int compare(HashMap<String, Object> lhs, HashMap<String, Object> rhs) {
-                String ln = (String) lhs.get("name");
-                String rn = (String) rhs.get("name");
-                StringComparator comparator = new StringComparator();
-                return comparator.compare(ln, rn);
-            }
-        });
-
         SimpleAdapter adapter = new SimpleAdapter(getActivity(), data, resource, from, to);
-        SectionedListAdapter secAdapter = SectionedListAdapter.Builder.create(getActivity(), adapter)
+        secAdapter = SectionedListAdapter.Builder.create(getActivity(), adapter)
                 .setSectionizer(new Sectionizer<HashMap<String, Object>>() {
                     @Override
                     public CharSequence toSection(HashMap<String, Object> input) {
@@ -120,7 +89,9 @@ public class LocalSingerList extends ListFragment {
                 bundle.putStringArray("selection_args", selectionArgs);
                 fragment.setArguments(bundle);
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.frag_container_main_content, fragment).addToBackStack(null).commit();
+                Fragment frag = getActivity().getSupportFragmentManager().findFragmentByTag("localMusicFragment");
+                transaction.hide(frag);
+                transaction.add(R.id.frag_container_main_content, fragment).addToBackStack(null).commit();
 
             }
         };
@@ -134,6 +105,60 @@ public class LocalSingerList extends ListFragment {
         int paddingTopDp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, res);
         int paddingBottomDp = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, res);
         listView.setPadding(0, paddingTopDp, 0, paddingBottomDp);
+    }
+
+    private void prepareData() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Cursor cursor = CursorAdapter.getMediaLibCursor();
+                while (cursor.moveToNext()) {
+                    String name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
+                    HashMap<String, Object> map = null;
+                    HashMap<String, Object> pre = null;
+                    if (!data.isEmpty()) {  // 列表不为空,则遍历 data 中已存在的数据
+                        int num = 0;  // 该歌手出现的次数
+                        for (int i = 0; i < data.size(); i++) {
+                            pre = data.get(i);
+                            if (name.equals(pre.get("name"))) {
+                                String str = (String) pre.get("num");
+                                num = getInt(str);
+                                data.remove(pre);
+                            }
+                        }
+                        map = new HashMap<>();
+                        map.put("name", name);
+                        map.put("num", ++num + "首歌曲");
+                        data.add(map);
+                    } else {  // 列表为空
+                        map = new HashMap<>();
+                        map.put("name", name);
+                        map.put("num", 1 + "首歌曲");
+                        data.add(map);
+                    }
+
+                }
+                cursor.close();
+
+                // 根据名字的首字母对列表进行排序
+                Collections.sort(data, new Comparator<HashMap<String, Object>>() {
+                    @Override
+                    public int compare(HashMap<String, Object> lhs, HashMap<String, Object> rhs) {
+                        String ln = (String) lhs.get("name");
+                        String rn = (String) rhs.get("name");
+                        StringComparator comparator = new StringComparator();
+                        return comparator.compare(ln, rn);
+                    }
+                });
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        secAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        }).start();
     }
 
     private int getInt(String str) {

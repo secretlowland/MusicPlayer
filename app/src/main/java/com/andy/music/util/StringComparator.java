@@ -16,7 +16,7 @@ public class StringComparator implements Comparator {
         String rs = CharacterParser.getInstance().getSelling(rhs.toString());
 
         if (ls == null || rs == null || ls.length() <=0 || rs.length() <=0 ) return 0;
-        
+
         char lc = Character.toUpperCase(ls.charAt(0));
         char rc = Character.toUpperCase(rs.charAt(0));
         if (lc < 'A' | lc > 'z') {

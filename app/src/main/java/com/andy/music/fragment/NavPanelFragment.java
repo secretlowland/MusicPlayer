@@ -49,20 +49,24 @@ public class NavPanelFragment extends android.support.v4.app.Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 Fragment fragment = null;
+                String tag = "";
                 switch (position) {
                     case 0:
                         fragment = new LocalMusicFragment();
+                        tag = "localMusicFragment";
                         break;
                     case 1:
                         fragment = new FavouriteSongList();
+                        tag = "FavouriteSongList";
                         break;
                     case 2:
                         fragment = new RecentSongList();
+                        tag = "RecentSongList";
                         break;
                     default: break;
                 }
 
-                transaction.replace(R.id.frag_container_main_content, fragment);
+                transaction.replace(R.id.frag_container_main_content, fragment, tag);
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
