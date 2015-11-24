@@ -41,33 +41,19 @@ public abstract class BaseSongList extends ListFragment {
     abstract List<Music> getList();
 
     @Override
-    public void onViewCreated(View view,  Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        // 获取 ListView 对象
-        listView = getListView();
-
-        // 为 ListView 对象设置适配器
-        listView.setAdapter(getAdapter());
-
-        // 为 ListView 设置监听器
-        listView.setOnItemClickListener(getOnItemClickListener());
-
-        // 动态注册广播接收器，用于接收播放下一首，上一首等广播
-        registerReceiver();
-    }
-
-    @Override
-    public void onDestroy() {
-        getActivity().unregisterReceiver(receiver);
-        super.onDestroy();
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
+        listView = getListView();
+        registerReceiver();
         refreshMusicList(listView);
     }
+
+    @Override
+    public void onStop() {
+        getActivity().unregisterReceiver(receiver);
+        super.onStop();
+    }
+
     @Override
     public BaseAdapter getAdapter() {
         MusicListAdapter adapter = new MusicListAdapter(getActivity().getApplicationContext(), getList(), R.layout.music_list_cell);
