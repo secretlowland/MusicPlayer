@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
@@ -240,11 +241,16 @@ public class SuperSaiyanScrollView extends FrameLayout
         // If user is dragging the scroll bar, draw the alphabet overlay
         if (mDragging && mDrawOverlay) {
             mCurrentThumb.setState(STATE_PRESSED);
-            mOverlayDrawable.draw(canvas);
+//            mOverlayDrawable.draw(canvas);
             final Paint paint = mPaint;
             float descent = paint.descent();
             final RectF rectF = mOverlayPos;
-            
+
+            paint.setColor(Color.parseColor("#66595485"));
+            float radius = (rectF.bottom - rectF.top)/2;
+            canvas.drawCircle(rectF.centerX(), rectF.centerY(), radius, paint);
+            paint.setColor(Color.WHITE);
+
             if (mSectionText.indexOf('\n') != -1) { // two lines
                 float textY = (int) (rectF.bottom + rectF.top) / 2 + descent - (paint.getTextSize() / 2);
                 for (String substring : StringUtil.split(mSectionText, '\n')) {
@@ -283,7 +289,7 @@ public class SuperSaiyanScrollView extends FrameLayout
         final RectF pos = mOverlayPos;
         pos.left = (w - mOverlayWidth) / 2;
         pos.right = pos.left + mOverlayWidth;
-        pos.top = h / 10; // 10% from top
+        pos.top = h / 3; // 30% from top
         pos.bottom = pos.top + mOverlayHeight;
         mOverlayDrawable.setBounds((int) pos.left, (int) pos.top,
                 (int) pos.right, (int) pos.bottom);        
