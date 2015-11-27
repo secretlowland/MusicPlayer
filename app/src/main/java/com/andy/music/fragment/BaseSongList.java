@@ -23,6 +23,7 @@ import com.andy.music.entity.Music;
 import com.andy.music.util.BroadCastHelper;
 import com.andy.music.util.CharacterParser;
 import com.andy.music.util.MusicLocator;
+import com.andy.music.util.StringComparator;
 import com.nolanlawson.supersaiyan.SectionedListAdapter;
 import com.nolanlawson.supersaiyan.Sectionizer;
 
@@ -71,8 +72,8 @@ public abstract class BaseSongList extends ListFragment {
                         return "#";
                     }
                 })
+                .sortKeys(new StringComparator())
                 .build();
-        secAdapter.setKeySorting(SectionedListAdapter.Sorting.InputOrder);
         return secAdapter;
     }
 
