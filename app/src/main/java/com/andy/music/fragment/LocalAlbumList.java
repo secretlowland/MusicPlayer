@@ -122,6 +122,9 @@ public class LocalAlbumList extends ListFragment {
 
 
     private void prepareData() {
+        TextView tv = new TextView(getActivity());
+        tv.setText("正在加载");
+        getListView().addHeaderView(tv);
         new Thread(new Runnable() {
             @Override
             public void run() {
