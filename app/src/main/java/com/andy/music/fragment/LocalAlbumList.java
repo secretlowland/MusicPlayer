@@ -3,12 +3,15 @@ package com.andy.music.fragment;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -37,17 +40,12 @@ public class LocalAlbumList extends ListFragment {
     private List<HashMap<String, Object>> data;
     private SectionedListAdapter secAdapter;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        data = new ArrayList<>();
-        prepareData();
-    }
-
     public BaseAdapter getAdapter() {
         int resource = R.layout.list_cell_double_line;
         String[] from = {"name", "num"};
         int[] to = {R.id.tv_list_cell_double_line_first, R.id.tv_list_cell_double_line_second};
+        data = new ArrayList<>();
+        prepareData();
 
         SimpleAdapter adapter = new SimpleAdapter(getActivity(), data, resource, from, to);
         secAdapter = SectionedListAdapter.Builder.create(getActivity(), adapter)
@@ -122,9 +120,7 @@ public class LocalAlbumList extends ListFragment {
 
 
     private void prepareData() {
-        TextView tv = new TextView(getActivity());
-        tv.setText("正在加载");
-        getListView().addHeaderView(tv);
+        showLoadingView(true);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -171,6 +167,7 @@ public class LocalAlbumList extends ListFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        showLoadingView(false);
                         secAdapter.notifyDataSetChanged();
                     }
                 });

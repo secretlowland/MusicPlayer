@@ -11,6 +11,10 @@
         android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    <include layout="@layout/loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/loading_view"/>
 </com.nolanlawson.supersaiyan.widget.SuperSaiyanScrollView>
 
 
