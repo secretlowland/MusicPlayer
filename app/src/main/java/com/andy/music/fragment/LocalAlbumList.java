@@ -65,8 +65,8 @@ public class LocalAlbumList extends ListFragment {
                         return "#";
                     }
                 })
+                .sortKeys(new StringComparator())
                 .build();
-        secAdapter.setKeySorting(SectionedListAdapter.Sorting.InputOrder);
         return secAdapter;
     }
 
@@ -152,17 +152,6 @@ public class LocalAlbumList extends ListFragment {
 
                 }
                 cursor.close();
-
-                // 根据名字的首字母对列表进行排序
-                Collections.sort(data, new Comparator<HashMap<String, Object>>() {
-                    @Override
-                    public int compare(HashMap<String, Object> lhs, HashMap<String, Object> rhs) {
-                        String ln = (String) lhs.get("name");
-                        String rn = (String) rhs.get("name");
-                        StringComparator comparator = new StringComparator();
-                        return comparator.compare(ln, rn);
-                    }
-                });
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
