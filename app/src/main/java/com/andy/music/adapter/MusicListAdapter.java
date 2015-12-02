@@ -98,7 +98,6 @@ public class MusicListAdapter extends BaseAdapter {
         }
 
         // 为列表项中的变量赋值
-        holder.number.setText(position + 1 + "");
         holder.name.setText(musicName);
         holder.singer.setText(musicSinger);
 
@@ -107,7 +106,6 @@ public class MusicListAdapter extends BaseAdapter {
         holder.locBar.setBackgroundColor(Color.parseColor("#00000000"));
         holder.name.setTextColor(Color.parseColor("#cc000000"));
         holder.singer.setTextColor(Color.parseColor("#78000000"));
-        holder.number.setTextColor(Color.parseColor("#78000000"));
 
         // 设置当前歌曲样式
         if (music != null && music.equals(MusicLocator.getCurrentMusic())) {
@@ -115,7 +113,6 @@ public class MusicListAdapter extends BaseAdapter {
             holder.locBar.setBackgroundColor(Color.parseColor("#729939"));
             holder.name.setTextColor(Color.parseColor("#729939"));
             holder.singer.setTextColor(Color.parseColor("#729939"));
-            holder.number.setTextColor(Color.parseColor("#729939"));
         }
 
         return convertView;
