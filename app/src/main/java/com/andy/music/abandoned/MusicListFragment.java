@@ -90,7 +90,7 @@
 //        // 加载音乐列表
 //        if (musicListManager != null && !musicListManager.isEmpty()) {
 //            list = musicListManager.getList();
-//            adapter = new MusicListAdapter(getActivity(), list, R.layout.music_list_cell);
+//            adapter = new MusicListAdapter(getActivity(), list, R.layout.list_cell_song);
 //            musicListView.setAdapter(adapter);
 //        } else if (searchContent!=null) {
 //            String whereClause = "title LIKE '%"+ searchContent + "%'";
@@ -98,7 +98,7 @@
 //            if (cursor!=null) {
 //                list = MusicScanner.scan(cursor);
 //            }
-//            adapter = new MusicListAdapter(getActivity(), list, R.layout.music_list_cell);
+//            adapter = new MusicListAdapter(getActivity(), list, R.layout.list_cell_song);
 //            musicListView.setAdapter(adapter);
 //        } else  {          // 列表为空
 //            Toast.makeText(getActivity(), "一首歌曲都没有呢~~", Toast.LENGTH_SHORT).show();

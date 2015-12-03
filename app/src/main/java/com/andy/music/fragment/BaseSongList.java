@@ -5,17 +5,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.Cursor;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.print.PrintAttributes;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.andy.music.R;
 import com.andy.music.adapter.MusicListAdapter;
@@ -57,7 +52,7 @@ public abstract class BaseSongList extends ListFragment {
 
     @Override
     public BaseAdapter getAdapter() {
-        MusicListAdapter adapter = new MusicListAdapter(getActivity().getApplicationContext(), getList(), R.layout.music_list_cell);
+        MusicListAdapter adapter = new MusicListAdapter(getActivity().getApplicationContext(), getList(), R.layout.list_cell_song);
         secAdapter = SectionedListAdapter.Builder.create(getActivity(), adapter)
                 .setSectionizer(new Sectionizer<Music>() {
                     @Override
@@ -115,9 +110,6 @@ public abstract class BaseSongList extends ListFragment {
             // 设置不是当前播放的歌曲的样式
             view.setBackgroundColor(Color.parseColor("#00000000"));
             view.findViewById(R.id.v_locator_bar).setBackgroundColor(Color.parseColor("#00000000"));
-            ((TextView) view.findViewById(R.id.tv_music_name)).setTextColor(Color.parseColor("#cc000000"));
-            ((TextView) view.findViewById(R.id.tv_music_singer)).setTextColor(Color.parseColor("#78000000"));
-            ((TextView) view.findViewById(R.id.tv_music_number)).setTextColor(Color.parseColor("#78000000"));
 
             // 当前歌曲的名字和歌手
             String musicName = ((TextView) view.findViewById(R.id.tv_music_name)).getText().toString();
@@ -128,9 +120,6 @@ public abstract class BaseSongList extends ListFragment {
             if (curMusic!=null && curMusic.getPath().equals(tag)) {
                 view.setBackgroundColor(Color.parseColor("#c4d9c6"));
                 view.findViewById(R.id.v_locator_bar).setBackgroundColor(Color.parseColor("#729939"));
-                ((TextView) view.findViewById(R.id.tv_music_name)).setTextColor(Color.parseColor("#729939"));
-                ((TextView) view.findViewById(R.id.tv_music_singer)).setTextColor(Color.parseColor("#729939"));
-                ((TextView) view.findViewById(R.id.tv_music_number)).setTextColor(Color.parseColor("#729939"));
             }
         }
 

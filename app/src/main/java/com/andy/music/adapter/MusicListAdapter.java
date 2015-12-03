@@ -79,7 +79,6 @@ public class MusicListAdapter extends BaseAdapter {
             convertView = inflater.inflate(resource, null);
             holder.cell = (LinearLayout) convertView.findViewById(R.id.ll_music_list_cell);
             holder.locBar = convertView.findViewById(R.id.v_locator_bar);
-            holder.number = (TextView) convertView.findViewById(R.id.tv_music_number);
             holder.name = (TextView) convertView.findViewById(R.id.tv_music_name);
             holder.singer = (TextView) convertView.findViewById(R.id.tv_music_singer);
             convertView.setTag(holder);

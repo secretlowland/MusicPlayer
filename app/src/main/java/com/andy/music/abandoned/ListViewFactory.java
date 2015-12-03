@@ -43,7 +43,7 @@
 //        switch (viewType) {
 //            case LIST_VIEW_MUSIC:
 //                listView.setOnItemClickListener(new MusicListListener());
-//                adapter = new MusicListAdapter(context, MusicListManager.getInstance(MusicListManager.MUSIC_LIST_LOCAL).getList(), R.layout.music_list_cell);
+//                adapter = new MusicListAdapter(context, MusicListManager.getInstance(MusicListManager.MUSIC_LIST_LOCAL).getList(), R.layout.list_cell_song);
 //                break;
 //            case LIST_VIEW_SINGER:
 //                adapter = new SimpleCursorAdapter(context, R.layout.list_cell_double_line, cursor, from, to, 0);
