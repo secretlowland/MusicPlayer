@@ -1,5 +1,6 @@
 # AndroidStudio
 /local.properties
+/build
 /*/build
 .gradle
 .idea/
