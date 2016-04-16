@@ -44,6 +44,11 @@ public class MusicListAdapter extends BaseAdapter {
         this.inflater = LayoutInflater.from(context);
     }
 
+    public void updateData(List<Music> data) {
+        this.musicList = data;
+        this.notifyDataSetChanged ();
+    }
+
     @Override
     public int getCount() {
         if (musicList == null) return 0;

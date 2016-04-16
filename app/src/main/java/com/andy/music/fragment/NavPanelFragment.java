@@ -63,6 +63,10 @@ public class NavPanelFragment extends android.support.v4.app.Fragment {
                         fragment = new RecentSongList();
                         tag = "RecentSongList";
                         break;
+                    case 3:
+                        fragment = new CloudSongList ();
+                        tag = "CloudSongList";
+                        break;
                     default: break;
                 }
 
@@ -105,6 +109,11 @@ public class NavPanelFragment extends android.support.v4.app.Fragment {
         recent.put("icon", R.drawable.class_icon_recent);
         recent.put("title", "最近播放");
         data.add(recent);
+
+        HashMap<String, Object> cloud = new HashMap<> ();
+        cloud.put ("icon", R.drawable.class_icon_favourite);
+        cloud.put ("title", "网络歌曲");
+        data.add (cloud);
 
         int resource = R.layout.grid_cell_nav_panel;
         String[] from = {"icon", "title"};

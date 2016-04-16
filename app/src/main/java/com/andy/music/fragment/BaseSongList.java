@@ -32,9 +32,14 @@ public abstract class BaseSongList extends ListFragment {
 
     private ListView listView;
     private SectionedListAdapter secAdapter;
+    private MusicListAdapter listAdapter;
     private Receiver receiver = new Receiver();
 
     abstract List<Music> getList();
+
+    protected void updateData(List<Music> data) {
+        listAdapter.updateData (data);
+    }
 
     @Override
     public void onStart() {
@@ -52,8 +57,8 @@ public abstract class BaseSongList extends ListFragment {
 
     @Override
     public BaseAdapter getAdapter() {
-        MusicListAdapter adapter = new MusicListAdapter(getActivity().getApplicationContext(), getList(), R.layout.list_cell_song);
-        secAdapter = SectionedListAdapter.Builder.create(getActivity(), adapter)
+        listAdapter = new MusicListAdapter(getActivity().getApplicationContext(), getList(), R.layout.list_cell_song);
+        secAdapter = SectionedListAdapter.Builder.create(getActivity(), listAdapter)
                 .setSectionizer(new Sectionizer<Music>() {
                     @Override
                     public CharSequence toSection(Music music) {
