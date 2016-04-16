@@ -29,9 +29,12 @@ import com.andy.music.function.MusicListManager;
 import com.andy.music.util.MusicLocator;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
+import cn.bmob.v3.Bmob;
+
 
 public class MainActivity extends FragmentActivity {
 
+    private final String APP_KEY_BMOB = "c4b279fe7822a48105fff4759e19c337";
     private RelativeLayout layout;
     private SearchView searchView;
     private SearchManager searchManager;
@@ -49,6 +52,9 @@ public class MainActivity extends FragmentActivity {
 
         // 更新媒体库
 //        updateMediaStore();
+
+        // 初始化 Bmob
+        Bmob.initialize (this, APP_KEY_BMOB);
 
          // 设置沉浸式状态栏
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

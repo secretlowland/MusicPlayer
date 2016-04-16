@@ -1,10 +1,12 @@
 package com.andy.music.entity;
 
+import cn.bmob.v3.BmobObject;
+
 /**
  * 该类用于描述音乐文件
  * Created by Andy on 2014/11/14.
  */
-public class Music {
+public class Music extends BmobObject{
 
     private int id;
     private int srcId;
