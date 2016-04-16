@@ -22,8 +22,14 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':supersaiyan-scrollview')
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
-    compile project(':supersaiyan-scrollview')
+
+    // bmob-sdk：Bmob的android sdk包
+    // bmob-sdk:3.4.6需要依赖support-v4（23.2.1）、okhttp（2.4.0）、okio（2.4.0）及org.apache.http.legacy包
+    compile 'cn.bmob.android:bmob-sdk:3.4.6'
+    compile 'com.squareup.okhttp:okhttp:2.4.0'
+    compile 'com.squareup.okio:okio:1.4.0'
 }
