@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -33,12 +34,18 @@ public abstract class BaseSongList extends ListFragment {
     private ListView listView;
     private SectionedListAdapter secAdapter;
     private MusicListAdapter listAdapter;
+    private List<Music> musicList;
     private Receiver receiver = new Receiver();
 
-    abstract List<Music> getList();
-
-    protected void updateData(List<Music> data) {
+    protected void updateList(List<Music> data) {
+        this.musicList = data;
         listAdapter.updateData (data);
+        secAdapter.notifyDataSetChanged ();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate (savedInstanceState);
     }
 
     @Override
@@ -57,7 +64,7 @@ public abstract class BaseSongList extends ListFragment {
 
     @Override
     public BaseAdapter getAdapter() {
-        listAdapter = new MusicListAdapter(getActivity(), getList());
+        listAdapter = new MusicListAdapter(getActivity(), musicList);
         secAdapter = SectionedListAdapter.Builder.create(getActivity(), listAdapter)
                 .setSectionizer(new Sectionizer<Music>() {
                     @Override
@@ -87,7 +94,7 @@ public abstract class BaseSongList extends ListFragment {
                 int subPos = secAdapter.getSubPosition(position);
 
                 // 定位当前歌曲列表和位置
-                MusicLocator.setCurrentMusicList(getList());
+                MusicLocator.setCurrentMusicList(musicList);
                 MusicLocator.setCurrentPosition(subPos);
 
                 // 发送播放歌曲的广播

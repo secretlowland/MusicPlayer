@@ -1,5 +1,8 @@
 package com.andy.music.fragment;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.Toast;
 
 import com.andy.music.entity.Music;
@@ -14,25 +17,35 @@ import cn.bmob.v3.listener.FindListener;
  */
 public class CloudSongList extends BaseSongList {
 
-
     @Override
-    List<Music> getList() {
-        final List<Music> data;
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated (savedInstanceState);
+        showLoadingView (true);
         BmobQuery<Music> query = new BmobQuery<> ();
         query.setLimit (20);
         query.findObjects (getActivity (), new FindListener<Music> () {
             @Override
             public void onSuccess(List<Music> list) {
-                Toast.makeText (getActivity (), "获取网络歌曲成功", Toast.LENGTH_SHORT).show ();
-                updateData (list);
-
+                updateList (list);
+                showLoadingView (false);
             }
 
             @Override
             public void onError(int i, String s) {
                 Toast.makeText (getActivity (), s, Toast.LENGTH_SHORT).show ();
+                showLoadingView (false);
             }
         });
-        return null;
     }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        TopBarFragment topBar = (TopBarFragment)getActivity().getSupportFragmentManager().findFragmentByTag("topBar");
+        if (topBar!=null) {
+            topBar.setCustomTitle("网络歌曲");
+        }
+    }
+
+
 }

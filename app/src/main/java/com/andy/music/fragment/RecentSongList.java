@@ -1,9 +1,9 @@
 package com.andy.music.fragment;
 
 
-import android.app.ActionBar;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.andy.music.entity.Music;
@@ -16,11 +16,21 @@ import java.util.List;
  * Created by Andy on 2015/1/11.
  */
 public class RecentSongList extends BaseSongList {
+
     @Override
-    List<Music> getList() {
-        MusicListManager manager = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_RECENT);
-        List<Music> list = manager.getList();
-        return list;
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated (savedInstanceState);
+        showLoadingView (true);
+        Handler handler = new Handler ();
+        handler.postDelayed (new Runnable () {
+            @Override
+            public void run() {
+                MusicListManager manager = MusicListManager.getInstance (MusicListManager.MUSIC_LIST_RECENT);
+                List<Music> list = (manager != null ? manager.getList() : null);
+                updateList (list);
+                showLoadingView (false);
+            }
+        }, 0);
     }
 
     @Override

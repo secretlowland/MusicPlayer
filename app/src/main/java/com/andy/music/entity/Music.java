@@ -100,7 +100,7 @@ public class Music extends BmobObject{
      */
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Music)) return false;
+        if (path == null || !(o instanceof Music)) return false;
         Music music = (Music)o;
         return path.equals(music.getPath());
     }
