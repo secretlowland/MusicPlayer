@@ -129,7 +129,7 @@ public abstract class BaseSongList extends ListFragment {
 
             // 设置当前歌曲的样式
             Music curMusic = MusicLocator.getCurrentMusic();
-            if (curMusic!=null && curMusic.getPath().equals(tag)) {
+            if (curMusic!=null && tag.equals(curMusic.getPath())) {
                 view.setBackgroundColor(Color.parseColor("#c4d9c6"));
                 view.findViewById(R.id.v_locator_bar).setBackgroundColor(Color.parseColor("#729939"));
             }

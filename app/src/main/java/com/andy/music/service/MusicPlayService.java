@@ -14,6 +14,7 @@ import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.Vibrator;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -182,6 +183,11 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
         music = MusicLocator.getCurrentMusic();
         if (music == null) {
             Log.d(TagConstants.TAG, "歌曲为空");
+            return;
+        }
+
+        if (TextUtils.isEmpty (music.getPath())) {
+            Log.d(TagConstants.TAG, "歌曲路径为空");
             return;
         }
 
