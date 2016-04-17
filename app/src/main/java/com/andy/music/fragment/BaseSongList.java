@@ -57,7 +57,7 @@ public abstract class BaseSongList extends ListFragment {
 
     @Override
     public BaseAdapter getAdapter() {
-        listAdapter = new MusicListAdapter(getActivity().getApplicationContext(), getList(), R.layout.list_cell_song);
+        listAdapter = new MusicListAdapter(getActivity(), getList());
         secAdapter = SectionedListAdapter.Builder.create(getActivity(), listAdapter)
                 .setSectionizer(new Sectionizer<Music>() {
                     @Override

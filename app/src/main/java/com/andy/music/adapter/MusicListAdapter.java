@@ -33,15 +33,15 @@ import java.util.List;
 public class MusicListAdapter extends BaseAdapter {
 
     private List<Music> musicList;
-    private LayoutInflater inflater;
     private Context context;
-    private int resource;
 
-    public MusicListAdapter(Context context, List<Music> musicList, int resource) {
+    public MusicListAdapter(Context context, List<Music> musicList) {
         this.context = context;
         this.musicList = musicList;
-        this.resource = resource;
-        this.inflater = LayoutInflater.from(context);
+    }
+
+    public MusicListAdapter(Context context) {
+        this.context = context;
     }
 
     public void updateData(List<Music> data) {
@@ -81,7 +81,7 @@ public class MusicListAdapter extends BaseAdapter {
         if (convertView == null) {
             // 获取控件对象
             holder = new ViewHolder();
-            convertView = inflater.inflate(resource, null);
+            convertView = LayoutInflater.from (context).inflate(R.layout.list_cell_song, null);
             holder.cell = (LinearLayout) convertView.findViewById(R.id.ll_music_list_cell);
             holder.locBar = convertView.findViewById(R.id.v_locator_bar);
             holder.name = (TextView) convertView.findViewById(R.id.tv_music_name);
