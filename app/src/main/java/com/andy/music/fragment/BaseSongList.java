@@ -43,6 +43,10 @@ public abstract class BaseSongList extends ListFragment {
         secAdapter.notifyDataSetChanged ();
     }
 
+    protected SectionedListAdapter getSecAdapter() {
+        return secAdapter;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);

@@ -54,15 +54,24 @@ public class FavouriteSongList extends BaseSongList {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                final Music music = musicList.get(position);
+                if (getSecAdapter() == null || musicList == null || musicList.isEmpty()) {
+                    return false;
+                }
+                final int subpos = getSecAdapter().getSubPosition(position);
+                final Music music = musicList.get(subpos);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("删除");
                 builder.setMessage("确定删除 " + music.getName() + "?");
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (MusicListManager.getInstance(MusicListManager.MUSIC_LIST_FAVORITE).remove(music)) {
-                            Toast.makeText(FavouriteSongList.this.getActivity(), "移除成功！", Toast.LENGTH_SHORT).show();
+                        MusicListManager manager = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_FAVORITE);
+                        if (manager != null && manager.remove(music)) {
+                            Toast.makeText(FavouriteSongList.this.getActivity(), "移除成功", Toast.LENGTH_SHORT).show();
+                            musicList.remove(subpos);
+                            updateList(musicList);
+                        } else {
+                            Toast.makeText(FavouriteSongList.this.getActivity(), "移除成功", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
