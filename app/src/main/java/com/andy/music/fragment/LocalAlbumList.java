@@ -2,16 +2,14 @@ package com.andy.music.fragment;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -26,8 +24,6 @@ import com.nolanlawson.supersaiyan.SectionedListAdapter;
 import com.nolanlawson.supersaiyan.Sectionizer;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,15 +33,19 @@ import java.util.List;
  */
 public class LocalAlbumList extends ListFragment {
 
-    private List<HashMap<String, Object>> data;
+    private List<HashMap<String, Object>> data= new ArrayList<>();
     private SectionedListAdapter secAdapter;
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        prepareData();
+    }
 
     public BaseAdapter getAdapter() {
         int resource = R.layout.list_cell_double_line;
         String[] from = {"name", "num"};
         int[] to = {R.id.tv_list_cell_double_line_first, R.id.tv_list_cell_double_line_second};
-        data = new ArrayList<>();
-        prepareData();
 
         SimpleAdapter adapter = new SimpleAdapter(getActivity(), data, resource, from, to);
         secAdapter = SectionedListAdapter.Builder.create(getActivity(), adapter)
@@ -121,7 +121,8 @@ public class LocalAlbumList extends ListFragment {
 
     private void prepareData() {
         showLoadingView(true);
-        new Thread(new Runnable() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 Cursor cursor = CursorAdapter.getMediaLibCursor();
@@ -152,16 +153,10 @@ public class LocalAlbumList extends ListFragment {
 
                 }
                 cursor.close();
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showLoadingView(false);
-                        secAdapter.notifyDataSetChanged();
-                    }
-                });
+                showLoadingView(false);
+                secAdapter.notifyDataSetChanged();
             }
-        }).start();
+        }, 0);
     }
 
 }

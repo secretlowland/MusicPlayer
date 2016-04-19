@@ -2,11 +2,12 @@ package com.andy.music.fragment;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,8 +24,6 @@ import com.nolanlawson.supersaiyan.SectionedListAdapter;
 import com.nolanlawson.supersaiyan.Sectionizer;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,13 +33,12 @@ import java.util.List;
  */
 public class LocalSingerList extends ListFragment {
 
-    private List<HashMap<String, Object>> data;
+    private List<HashMap<String, Object>> data = new ArrayList<>();
     private SectionedListAdapter secAdapter;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        data = new ArrayList<>();
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         prepareData();
     }
 
@@ -108,7 +106,10 @@ public class LocalSingerList extends ListFragment {
     }
 
     private void prepareData() {
-        new Thread(new Runnable() {
+
+        showLoadingView(true);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 Cursor cursor = CursorAdapter.getMediaLibCursor();
@@ -139,15 +140,10 @@ public class LocalSingerList extends ListFragment {
 
                 }
                 cursor.close();
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        secAdapter.notifyDataSetChanged();
-                    }
-                });
+                showLoadingView(false);
+                secAdapter.notifyDataSetChanged();
             }
-        }).start();
+        }, 0);
     }
 
     private int getInt(String str) {
