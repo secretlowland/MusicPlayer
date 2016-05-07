@@ -11,6 +11,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.Vibrator;
@@ -32,7 +33,7 @@ import java.io.IOException;
  * Created by Andy on 2014/11/20.
  */
 public class MusicPlayService extends Service implements MediaPlayer.OnCompletionListener,
-        MediaPlayer.OnErrorListener, SensorEventListener {
+        MediaPlayer.OnErrorListener, SensorEventListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnBufferingUpdateListener {
 
     /**
      * 播放模式
@@ -84,6 +85,8 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
 
         // 设置歌曲播放完成的监听事件
         mediaPlayer.setOnCompletionListener(this);
+        mediaPlayer.setOnPreparedListener(this);
+        mediaPlayer.setOnBufferingUpdateListener(this);
         super.onCreate();
     }
 
@@ -151,6 +154,17 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
     }
 
     @Override
+    public void onPrepared(MediaPlayer mp) {
+        Log.d("TAG", "onPrepared: time: "+mp.getDuration());
+        start();
+    }
+
+    @Override
+    public void onBufferingUpdate(MediaPlayer mp, int percent) {
+        Log.d("TAG", "buffer changed: "+percent);
+    }
+
+    @Override
     public void onDestroy() {
         MusicLocator.saveMusicLocation();
         if (mediaPlayer != null) {
@@ -205,8 +219,12 @@ public class MusicPlayService extends Service implements MediaPlayer.OnCompletio
      * 开始播放（从歌曲开头开始）
      */
     public void play() {
-        prepare();
-        start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                prepare();
+            }
+        }).start();
     }
 
     /**
