@@ -45,7 +45,6 @@ public class SearchActivity extends FragmentActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         TopBarFragment topBarFragment = new TopBarFragment();
         transaction.add(R.id.ll_top_bar_container, new TopBarFragment(), "topBar");
-        transaction.add(R.id.frag_container_search_list, new SearchSongList(), "songList");
         transaction.commit();
 
         // 初始化变量
