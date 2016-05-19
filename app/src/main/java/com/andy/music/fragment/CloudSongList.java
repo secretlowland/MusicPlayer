@@ -22,7 +22,7 @@ public class CloudSongList extends BaseSongList {
         super.onActivityCreated (savedInstanceState);
         showLoadingView (true);
         BmobQuery<Music> query = new BmobQuery<> ();
-        query.setLimit (20);
+        query.setLimit (1000);
         query.findObjects (getActivity (), new FindListener<Music> () {
             @Override
             public void onSuccess(List<Music> list) {
