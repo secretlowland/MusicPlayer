@@ -22,7 +22,7 @@ import java.util.HashMap;
  */
 public class NavPanelFragment extends android.support.v4.app.Fragment {
 
-    GridView navPanel;
+    GridView navPanel, navCenter, navBottom;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,11 +40,77 @@ public class NavPanelFragment extends android.support.v4.app.Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // 初始化成员变量
-        navPanel = (GridView)getActivity().findViewById(R.id.gv_nav_panel);
-        navPanel.setAdapter(getInitAdapter());
+        navPanel = (GridView)getActivity().findViewById(R.id.gv_nav_top);
+        navCenter = (GridView)getActivity().findViewById(R.id.gv_nav_center);
+        navBottom = (GridView)getActivity().findViewById(R.id.gv_nav_bottom);
+        navPanel.setAdapter(getTopAdapter());
+        navCenter.setAdapter(getCenterAdapter());
+        navBottom.setAdapter(getBottomAdapter());
 
         // 设置监听事件
         navPanel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                Fragment fragment = null;
+                String tag = "";
+                switch (position) {
+                    case 0:
+                        fragment = new LocalMusicFragment();
+                        tag = "localMusicFragment";
+                        break;
+                    case 1:
+                        fragment = new FavouriteSongList();
+                        tag = "FavouriteSongList";
+                        break;
+                    case 2:
+                        fragment = new RecentSongList();
+                        tag = "RecentSongList";
+                        break;
+                    case 3:
+                        fragment = new CloudSongList ();
+                        tag = "CloudSongList";
+                        break;
+                    default: break;
+                }
+
+                transaction.replace(R.id.frag_container_main_content, fragment, tag);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+        navCenter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                Fragment fragment = null;
+                String tag = "";
+                switch (position) {
+                    case 0:
+                        fragment = new LocalMusicFragment();
+                        tag = "localMusicFragment";
+                        break;
+                    case 1:
+                        fragment = new FavouriteSongList();
+                        tag = "FavouriteSongList";
+                        break;
+                    case 2:
+                        fragment = new RecentSongList();
+                        tag = "RecentSongList";
+                        break;
+                    case 3:
+                        fragment = new CloudSongList ();
+                        tag = "CloudSongList";
+                        break;
+                    default: break;
+                }
+
+                transaction.replace(R.id.frag_container_main_content, fragment, tag);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+        navBottom.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -92,7 +158,7 @@ public class NavPanelFragment extends android.support.v4.app.Fragment {
      * 初始化 用于 GridView 的 Adapter
      * @return adapter
      */
-    private BaseAdapter getInitAdapter() {
+    private BaseAdapter getTopAdapter() {
         final ArrayList<HashMap<String, Object>> data = new ArrayList<>();
 
         HashMap<String , Object> local = new HashMap<>();
@@ -120,4 +186,53 @@ public class NavPanelFragment extends android.support.v4.app.Fragment {
         int[] to = {R.id.iv_nav_panel_icon, R.id.tv_nav_panel_title};
         return new SimpleAdapter(getActivity(), data, resource, from, to);
     }
+
+    private BaseAdapter getCenterAdapter() {
+        final ArrayList<HashMap<String, Object>> data = new ArrayList<>();
+
+        HashMap<String , Object> rank = new HashMap<>();
+        rank.put("icon", R.drawable.rank_list);
+        rank.put("title", "排行榜");
+        data.add(rank);
+
+        HashMap<String , Object> recommend = new HashMap<>();
+        recommend.put("icon", R.drawable.recommend_list);
+        recommend.put("title", "猜你喜欢");
+        data.add(recommend);
+
+        HashMap<String , Object> latest = new HashMap<>();
+        latest.put("icon", R.drawable.latest_list);
+        latest.put("title", "最新单曲");
+        data.add(latest);
+
+        int resource = R.layout.grid_cell_nav_net;
+        String[] from = {"icon", "title"};
+        int[] to = {R.id.iv_nav_panel_icon, R.id.tv_nav_panel_title};
+        return new SimpleAdapter(getActivity(), data, resource, from, to);
+    }
+
+    private BaseAdapter getBottomAdapter() {
+        final ArrayList<HashMap<String, Object>> data = new ArrayList<>();
+
+        HashMap<String , Object> rank = new HashMap<>();
+        rank.put("icon", R.drawable.rank_list);
+        rank.put("title", "排行榜");
+        data.add(rank);
+
+        HashMap<String , Object> recommend = new HashMap<>();
+        recommend.put("icon", R.drawable.recommend_list);
+        recommend.put("title", "猜你喜欢");
+        data.add(recommend);
+
+        HashMap<String , Object> latest = new HashMap<>();
+        latest.put("icon", R.drawable.latest_list);
+        latest.put("title", "最新单曲");
+        data.add(latest);
+
+        int resource = R.layout.grid_cell_nav_net;
+        String[] from = {"icon", "title"};
+        int[] to = {R.id.iv_nav_panel_icon, R.id.tv_nav_panel_title};
+        return new SimpleAdapter(getActivity(), data, resource, from, to);
+    }
+
 }
