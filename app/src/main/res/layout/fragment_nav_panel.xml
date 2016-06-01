@@ -1,39 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingBottom="50dp"
+    android:clipToPadding="false"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <GridView
-          android:id="@+id/gv_nav_top"
-          android:numColumns="3"
-          android:gravity="center"
-          android:fadingEdge="vertical"
-          android:stretchMode="columnWidth"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content" />
-    <include layout="@layout/slider_horizontal"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <GridView
-        android:id="@+id/gv_nav_center"
-        android:numColumns="3"
-        android:gravity="center"
-        android:fadingEdge="vertical"
-        android:stretchMode="columnWidth"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:text="歌单"
-        android:background="#dedede"
-        android:padding="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <GridView
-        android:id="@+id/gv_nav_bottom"
-        android:numColumns="3"
-        android:gravity="center"
-        android:fadingEdge="vertical"
-        android:stretchMode="columnWidth"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        android:layout_height="wrap_content">
+        <com.andy.music.widget.NoScrollGridView
+            android:id="@+id/gv_nav_top"
+            android:numColumns="1"
+            android:gravity="center"
+            android:fadingEdge="vertical"
+            android:stretchMode="columnWidth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <!--<include layout="@layout/slider_horizontal"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+        <com.andy.music.widget.NoScrollGridView
+            android:id="@+id/gv_nav_center"
+            android:numColumns="3"
+            android:gravity="center"
+            android:fadingEdge="vertical"
+            android:stretchMode="columnWidth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="歌单"
+            android:background="#efefef"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <com.andy.music.widget.NoScrollGridView
+            android:id="@+id/gv_nav_bottom"
+            android:numColumns="2"
+            android:gravity="center"
+            android:fadingEdge="vertical"
+            android:layout_margin="5dp"
+            android:verticalSpacing="5dp"
+            android:horizontalSpacing="5dp"
+            android:stretchMode="columnWidth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</ScrollView>

@@ -17,6 +17,7 @@ import cn.bmob.v3.listener.FindListener;
  */
 public class CloudSongList extends BaseSongList {
 
+    private String title;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated (savedInstanceState);
@@ -43,9 +44,12 @@ public class CloudSongList extends BaseSongList {
         super.onViewCreated(view, savedInstanceState);
         TopBarFragment topBar = (TopBarFragment)getActivity().getSupportFragmentManager().findFragmentByTag("topBar");
         if (topBar!=null) {
-            topBar.setCustomTitle("网络歌曲");
+            topBar.setCustomTitle(title);
         }
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
 }
