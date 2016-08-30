@@ -8,6 +8,8 @@
         android:id="@+id/lv_list_common"
         android:paddingBottom="50dp"
         android:clipToPadding="false"
+        android:divider="#dedede"
+        android:dividerHeight="0.1dp"
         android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

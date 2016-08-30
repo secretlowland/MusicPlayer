@@ -2,6 +2,8 @@ package com.andy.music.fragment;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
@@ -21,22 +23,33 @@ import java.util.List;
 public class LocalSongList extends BaseSongList {
 
     @Override
-    List<Music> getList() {
-        // 获取传递进来的内容（查询语句）
-        Bundle bundle = getArguments();
-        String selection = null;
-        String selectionArgs[] = null;
-        if (bundle != null) {
-            selection = bundle.getString("selection");
-            selectionArgs = bundle.getStringArray("selection_args");
-        }
-        Cursor searchCursor = CursorAdapter.get(selection, selectionArgs);
-        List<Music> musicList = null;
-        if (searchCursor != null) {
-            musicList = MusicScanner.scan(searchCursor);
-            searchCursor.close();
-        }
-        return musicList;
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated (savedInstanceState);
+
+        showLoadingView (true);
+        // 异步查询
+        Handler handler = new Handler ();
+        handler.postDelayed (new Runnable () {
+            @Override
+            public void run() {
+                // 获取传递进来的内容（查询语句）
+                Bundle bundle = getArguments();
+                String selection = null;
+                String selectionArgs[] = null;
+                if (bundle != null) {
+                    selection = bundle.getString("selection");
+                    selectionArgs = bundle.getStringArray("selection_args");
+                }
+                Cursor searchCursor = CursorAdapter.get(selection, selectionArgs);
+                if (searchCursor != null) {
+                    List<Music> musicList = MusicScanner.scan(searchCursor);
+                    updateList (musicList);
+                    searchCursor.close();
+                    showLoadingView (false);
+                }
+            }
+        }, 0);
+
     }
 
     @Override

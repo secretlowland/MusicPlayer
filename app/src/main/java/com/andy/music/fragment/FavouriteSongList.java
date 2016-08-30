@@ -3,17 +3,16 @@ package com.andy.music.fragment;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.andy.music.entity.Music;
-import com.andy.music.entity.TagConstants;
 import com.andy.music.function.MusicListManager;
 
-import java.io.DataOutput;
 import java.util.List;
 
 /**
@@ -23,11 +22,21 @@ import java.util.List;
 public class FavouriteSongList extends BaseSongList {
 
     private List<Music> musicList;
+
     @Override
-    List<Music> getList() {
-        MusicListManager manager = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_FAVORITE);
-        musicList = manager.getList();
-        return musicList;
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated (savedInstanceState);
+        showLoadingView (true);
+        Handler handler = new Handler ();
+        handler.postDelayed (new Runnable () {
+            @Override
+            public void run() {
+                MusicListManager manager = MusicListManager.getInstance (MusicListManager.MUSIC_LIST_FAVORITE);
+                musicList = (manager != null ? manager.getList () : null);
+                updateList (musicList);
+                showLoadingView (false);
+            }
+        }, 0);
     }
 
     @Override
@@ -45,15 +54,24 @@ public class FavouriteSongList extends BaseSongList {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                final Music music = musicList.get(position);
+                if (getSecAdapter() == null || musicList == null || musicList.isEmpty()) {
+                    return false;
+                }
+                final int subpos = getSecAdapter().getSubPosition(position);
+                final Music music = musicList.get(subpos);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("删除");
                 builder.setMessage("确定删除 " + music.getName() + "?");
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (MusicListManager.getInstance(MusicListManager.MUSIC_LIST_FAVORITE).remove(music)) {
-                            Toast.makeText(FavouriteSongList.this.getActivity(), "移除成功！", Toast.LENGTH_SHORT).show();
+                        MusicListManager manager = MusicListManager.getInstance(MusicListManager.MUSIC_LIST_FAVORITE);
+                        if (manager != null && manager.remove(music)) {
+                            Toast.makeText(FavouriteSongList.this.getActivity(), "移除成功", Toast.LENGTH_SHORT).show();
+                            musicList.remove(subpos);
+                            updateList(musicList);
+                        } else {
+                            Toast.makeText(FavouriteSongList.this.getActivity(), "移除成功", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -32,9 +33,24 @@ public abstract class BaseSongList extends ListFragment {
 
     private ListView listView;
     private SectionedListAdapter secAdapter;
+    private MusicListAdapter listAdapter;
+    private List<Music> musicList;
     private Receiver receiver = new Receiver();
 
-    abstract List<Music> getList();
+    protected void updateList(List<Music> data) {
+        this.musicList = data;
+        listAdapter.updateData (data);
+        secAdapter.notifyDataSetChanged ();
+    }
+
+    protected SectionedListAdapter getSecAdapter() {
+        return secAdapter;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate (savedInstanceState);
+    }
 
     @Override
     public void onStart() {
@@ -52,8 +68,8 @@ public abstract class BaseSongList extends ListFragment {
 
     @Override
     public BaseAdapter getAdapter() {
-        MusicListAdapter adapter = new MusicListAdapter(getActivity().getApplicationContext(), getList(), R.layout.list_cell_song);
-        secAdapter = SectionedListAdapter.Builder.create(getActivity(), adapter)
+        listAdapter = new MusicListAdapter(getActivity(), musicList);
+        secAdapter = SectionedListAdapter.Builder.create(getActivity(), listAdapter)
                 .setSectionizer(new Sectionizer<Music>() {
                     @Override
                     public CharSequence toSection(Music music) {
@@ -82,7 +98,7 @@ public abstract class BaseSongList extends ListFragment {
                 int subPos = secAdapter.getSubPosition(position);
 
                 // 定位当前歌曲列表和位置
-                MusicLocator.setCurrentMusicList(getList());
+                MusicLocator.setCurrentMusicList(musicList);
                 MusicLocator.setCurrentPosition(subPos);
 
                 // 发送播放歌曲的广播
@@ -117,7 +133,7 @@ public abstract class BaseSongList extends ListFragment {
 
             // 设置当前歌曲的样式
             Music curMusic = MusicLocator.getCurrentMusic();
-            if (curMusic!=null && curMusic.getPath().equals(tag)) {
+            if (curMusic!=null && tag.equals(curMusic.getPath())) {
                 view.setBackgroundColor(Color.parseColor("#c4d9c6"));
                 view.findViewById(R.id.v_locator_bar).setBackgroundColor(Color.parseColor("#729939"));
             }
